@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:dct="http://purl.org/dc/terms/"
+    xmlns:spdx="http://spdx.org/rdf/terms#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dcat="http://www.w3.org/ns/dcat#">
+  <dcat:Distribution rdf:about="http://data.europa.eu/88u/distribution/e455eae9-25d5-4b59-97ea-9cf23c3ef87e">
+    <dct:description xml:lang="sl-t-en-t0-mtec">Prenos nabora podatkov v formatu SDMX-CSV</dct:description>
+    <dct:title xml:lang="de-t-en-t0-mtec">Datensatz im SDMX-CSV-Format herunterladen</dct:title>
+    <dct:description xml:lang="lt-t-en-t0-mtec">Atsisiųsti duomenų rinkinį SDMX-CSV formatu</dct:description>
+    <dct:title xml:lang="fi-t-en-t0-mtec">Lataa datajoukko SDMX-CSV-muodossa</dct:title>
+    <dct:title xml:lang="it-t-en-t0-mtec">Scarica set di dati in formato SDMX-CSV</dct:title>
+    <dct:description xml:lang="ga-t-en-t0-mtec">Íoslódáil tacar sonraí i bhformáid SDMX-CSV</dct:description>
+    <dct:description xml:lang="lv-t-en-t0-mtec">Lejupielādēt datu kopu SDMX-CSV formātā</dct:description>
+    <dct:title xml:lang="hu-t-en-t0-mtec">Adatkészlet letöltése SDMX-CSV formátumban</dct:title>
+    <dcat:accessURL rdf:resource="https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/tps00199?format=SDMX-CSV&amp;compressed=true"/>
+    <dct:description xml:lang="hr-t-en-t0-mtec">Preuzimanje skup podataka u SDMX-CSV formatu</dct:description>
+    <dct:title xml:lang="sv-t-en-t0-mtec">Ladda ner dataset i SDMX-CSV-format</dct:title>
+    <dct:title xml:lang="lt-t-en-t0-mtec">Atsisiųskite duomenų rinkinį SDMX-CSV formatu</dct:title>
+    <dct:title xml:lang="et-t-en-t0-mtec">Andmestiku allalaadimine SDMX-CSV-vormingus</dct:title>
+    <dct:type rdf:resource="http://publications.europa.eu/resource/authority/distribution-type/DOWNLOADABLE_FILE"/>
+    <dct:description xml:lang="sv-t-en-t0-mtec">Ladda ner dataset i SDMX-CSV-format</dct:description>
+    <dct:description xml:lang="sk-t-en-t0-mtec">Sťahovanie dát vo formáte SDMX-CSV</dct:description>
+    <dct:title xml:lang="el-t-en-t0-mtec">Κατεβάστε το σύνολο δεδομένων σε μορφή SDMX-CSV</dct:title>
+    <dct:title xml:lang="pl-t-en-t0-mtec">Pobierz zestaw danych w formacie SDMX-CSV</dct:title>
+    <dct:identifier>https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/tps00199?format=SDMX-CSV&amp;compressed=true</dct:identifier>
+    <dct:title xml:lang="uk-t-en-t0-mtec">Завантажити набір даних у форматі SDMX-CSV</dct:title>
+    <dct:description xml:lang="fi-t-en-t0-mtec">Lataa datasetti SDMX-CSV-muodossa</dct:description>
+    <dct:description xml:lang="ro-t-en-t0-mtec">Descărcați setul de date în format SDMX-CSV</dct:description>
+    <dct:license>
+      <dct:LicenseDocument rdf:about="http://publications.europa.eu/resource/authority/licence/CC_BY_4_0"/>
+    </dct:license>
+    <dct:description xml:lang="da-t-en-t0-mtec">Download datasæt i SDMX-CSV-format</dct:description>
+    <dct:title xml:lang="da-t-en-t0-mtec">Download datasæt i SDMX-CSV format</dct:title>
+    <dcat:downloadURL rdf:resource="https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/tps00199?format=SDMX-CSV&amp;compressed=true"/>
+    <dct:description xml:lang="el-t-en-t0-mtec">Λήψη συνόλου δεδομένων σε μορφή SDMX-CSV</dct:description>
+    <dct:description xml:lang="de-t-en-t0-mtec">Datensatz im SDMX-CSV-Format herunterladen</dct:description>
+    <dct:rights>
+      <dct:RightsStatement rdf:about="http://publications.europa.eu/resource/authority/access-right/PUBLIC"/>
+    </dct:rights>
+    <dct:description xml:lang="mt-t-en-t0-mtec">Niżżel is-sett tad-data fil-format SDMX-CSV</dct:description>
+    <dct:title xml:lang="nl-t-en-t0-mtec">Download dataset in SDMX-CSV-formaat</dct:title>
+    <dct:title xml:lang="lv-t-en-t0-mtec">Lejupielādējiet datu kopu SDMX-CSV formātā</dct:title>
+    <dct:title xml:lang="bg-t-en-t0-mtec">Изтегляне на набор от данни във формат SDMX-CSV</dct:title>
+    <dct:compressformat>
+      <dct:MediaTypeOrExtent rdf:about="http://publications.europa.eu/resource/authority/file-type/GZIP"/>
+    </dct:compressformat>
+    <dct:title xml:lang="en">Download dataset in SDMX-CSV format</dct:title>
+    <dcat:mediaType rdf:resource="http://www.iana.org/assignments/media-types/text/csv"/>
+    <dct:title xml:lang="hr-t-en-t0-mtec">Preuzimanje skupa podataka u SDMX-CSV formatu</dct:title>
+    <dct:description xml:lang="pl-t-en-t0-mtec">Pobierz zestaw danych w formacie SDMX-CSV</dct:description>
+    <dct:title xml:lang="es-t-en-t0-mtec">Descargar conjunto de datos en formato SDMX-CSV</dct:title>
+    <dct:description xml:lang="nl-t-en-t0-mtec">Dataset downloaden in SDMX-CSV-formaat</dct:description>
+    <dct:description xml:lang="bg-t-en-t0-mtec">Изтегляне на набор от данни в SDMX-CSV формат</dct:description>
+    <dct:description xml:lang="et-t-en-t0-mtec">Laadige alla andmekogum SDMX-CSV formaadis</dct:description>
+    <dct:title xml:lang="fr-t-en-t0-mtec">Télécharger l’ensemble de données au format SDMX-CSV</dct:title>
+    <dct:description xml:lang="uk-t-en-t0-mtec">Завантажити набір даних у форматі SDMX-CSV</dct:description>
+    <dct:title xml:lang="mt-t-en-t0-mtec">Niżżel is-sett tad-data fil-format SDMX-CSV</dct:title>
+    <dct:format>
+      <dct:MediaTypeOrExtent rdf:about="http://publications.europa.eu/resource/authority/file-type/CSV"/>
+    </dct:format>
+    <dct:description xml:lang="hu-t-en-t0-mtec">Adatkészlet letöltése SDMX-CSV formátumban</dct:description>
+    <dct:title xml:lang="ro-t-en-t0-mtec">Descărcați setul de date în format SDMX-CSV</dct:title>
+    <dcat:byteSize>2819</dcat:byteSize>
+    <dct:description xml:lang="es-t-en-t0-mtec">Descargar el conjunto de datos en formato SDMX-CSV</dct:description>
+    <spdx:checksum>
+      <spdx:Checksum>
+        <spdx:checksumValue>d1eb485d10be71e8b5772f994b25c5c2ab66297c17beced6cf4800197d7b27ab</spdx:checksumValue>
+        <spdx:algorithm rdf:resource="http://spdx.org/rdf/terms#checksumAlgorithm_sha256"/>
+      </spdx:Checksum>
+    </spdx:checksum>
+    <dct:description xml:lang="cs-t-en-t0-mtec">Stáhněte si datový soubor ve formátu SDMX-CSV</dct:description>
+    <dct:title xml:lang="pt-t-en-t0-mtec">Transferir conjunto de dados no formato SDMX-CSV</dct:title>
+    <dct:description xml:lang="pt-t-en-t0-mtec">Baixe o conjunto de dados no formato SDMX-CSV</dct:description>
+    <dct:title xml:lang="sk-t-en-t0-mtec">Stiahnuť súbor údajov vo formáte SDMX-CSV</dct:title>
+    <dct:description xml:lang="it-t-en-t0-mtec">Scarica il set di dati in formato SDMX-CSV</dct:description>
+    <dct:description xml:lang="fr-t-en-t0-mtec">Télécharger l’ensemble de données au format SDMX-CSV</dct:description>
+    <dct:title xml:lang="sl-t-en-t0-mtec">Prenos nabora podatkov v formatu SDMX-CSV</dct:title>
+    <dct:title xml:lang="ga-t-en-t0-mtec">Íoslódáil tacar sonraí i bhformáid SDMX-CSV</dct:title>
+    <dct:title xml:lang="cs-t-en-t0-mtec">Stáhnout datovou sadu ve formátu SDMX-CSV</dct:title>
+  </dcat:Distribution>
+</rdf:RDF>
