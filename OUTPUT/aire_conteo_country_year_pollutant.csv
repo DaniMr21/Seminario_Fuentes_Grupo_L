@@ -1,0 +1,2281 @@
+country,year,air_pollutant,n_obs
+Albania,2024,C6H6,8
+Albania,2024,CO,9
+Albania,2024,NO,2
+Albania,2024,NO2,8
+Albania,2024,NOX as NO2,8
+Albania,2024,O3,8
+Albania,2024,PM10,9
+Albania,2024,PM2.5,7
+Albania,2024,SO2,8
+Andorra,2024,CO,1
+Andorra,2024,NO,1
+Andorra,2024,NO2,1
+Andorra,2024,NOX as NO2,1
+Andorra,2024,O3,3
+Andorra,2024,PM10,2
+Andorra,2024,PM2.5,2
+Andorra,2024,SO2,1
+Austria,2024,(CH3)2-CH-CH2-CH2-CH3,1
+Austria,2024,(CH3)3-C-CH2-CH-(CH3)2,1
+Austria,2024,"1,2,3-C6H3(CH3)3",1
+Austria,2024,"1,2,4-C6H3(CH3)3",1
+Austria,2024,"1,3,5-C6H3(CH3)3",1
+Austria,2024,As,2
+Austria,2024,As in PM10,38
+Austria,2024,BaP,3
+Austria,2024,BaP in PM10,111
+Austria,2024,Benzo(a)anthracene,3
+Austria,2024,Benzo(a)anthracene in PM10,2
+Austria,2024,Benzo(b)fluoranthene,3
+Austria,2024,Benzo(b)fluoranthene in PM10,2
+Austria,2024,Benzo(j)fluoranthene,3
+Austria,2024,Benzo(j)fluoranthene in PM10,2
+Austria,2024,Benzo(k)fluoranthene,3
+Austria,2024,Benzo(k)fluoranthene in PM10,2
+Austria,2024,C6H14,1
+Austria,2024,C6H5-C2H5,3
+Austria,2024,C6H5-CH3,3
+Austria,2024,C6H6,61
+Austria,2024,C7H16,1
+Austria,2024,C8H18,1
+Austria,2024,CO,176
+Austria,2024,Ca2+ in PM2.5,1
+Austria,2024,Cd,2
+Austria,2024,Cd in PM10,41
+Austria,2024,Cl- in PM2.5,1
+Austria,2024,Dibenzo(ah)anthracene,3
+Austria,2024,Dibenzo(ah)anthracene in PM10,2
+Austria,2024,EC in PM2.5,2
+Austria,2024,H2C=CH-CH2-CH2-CH3,1
+Austria,2024,H3C-(CH2)3-CH3,1
+Austria,2024,H3C-CH2-CH(CH3)2,1
+Austria,2024,H3C-HC=CH-CH2-CH3,1
+Austria,2024,Hg,2
+Austria,2024,Hg0,6
+Austria,2024,"Indeno-(1,2,3-cd)pyrene",3
+Austria,2024,"Indeno-(1,2,3-cd)pyrene in PM",2
+Austria,2024,K+ in PM2.5,1
+Austria,2024,Mg2+ in PM2.5,1
+Austria,2024,NH4+ in PM2.5,1
+Austria,2024,NO,433
+Austria,2024,NO2,737
+Austria,2024,NO3- in PM2.5,1
+Austria,2024,NOX as NO2,84
+Austria,2024,Na+  in PM2.5,1
+Austria,2024,Ni,2
+Austria,2024,Ni in PM10,37
+Austria,2024,O3,726
+Austria,2024,OC in PM2.5,2
+Austria,2024,PM10,1376
+Austria,2024,PM2.5,476
+Austria,2024,Pb,2
+Austria,2024,Pb in PM10,42
+Austria,2024,SO2,507
+Austria,2024,SO42- in PM2.5,1
+Austria,2024,"m,p-C6H4(CH3)2",3
+Austria,2024,o-C6H4-(CH3)2,3
+Belgium,2024,(CH3)2-CH-CH2-CH2-CH3,36
+Belgium,2024,(CH3)3-C-CH2-CH-(CH3)2,38
+Belgium,2024,"1,2,3-C6H3(CH3)3",32
+Belgium,2024,"1,2,4-C6H3(CH3)3",52
+Belgium,2024,"1,2-dichloroethane (air)",55
+Belgium,2024,"1,3,5-C6H3(CH3)3",54
+Belgium,2024,Acenaphthene,27
+Belgium,2024,Acenaphthylene,15
+Belgium,2024,Acenaphtylene,12
+Belgium,2024,Anthracene,27
+Belgium,2024,As,2
+Belgium,2024,As in PM10,95
+Belgium,2024,As in TSP,3
+Belgium,2024,BaP,26
+Belgium,2024,BaP in PM10,30
+Belgium,2024,Benzo(a)anthracene,56
+Belgium,2024,Benzo(b)fluoranthene,46
+Belgium,2024,Benzo(b+j+k)fluoranthenes,12
+Belgium,2024,"Benzo(b,j,k)fluoranthene",15
+Belgium,2024,Benzo(e)pyrene,11
+Belgium,2024,Benzo(ghi)perylene,56
+Belgium,2024,Benzo(j)fluoranthene,12
+Belgium,2024,Benzo(k)fluoranthene,46
+Belgium,2024,Black Carbon,60
+Belgium,2024,C6H12,48
+Belgium,2024,C6H14,54
+Belgium,2024,C6H5-C2H5,82
+Belgium,2024,C6H5-CH3,82
+Belgium,2024,C6H6,87
+Belgium,2024,C7H16,54
+Belgium,2024,C8H18,54
+Belgium,2024,C9H12,24
+Belgium,2024,C9H20,24
+Belgium,2024,CH2=CH-C(CH3)=CH2,37
+Belgium,2024,CH2=CH-CH=CH2,30
+Belgium,2024,CO,45
+Belgium,2024,Ca2+ in PM2.5,3
+Belgium,2024,Cd,2
+Belgium,2024,Cd in PM10,95
+Belgium,2024,Cd in TSP,3
+Belgium,2024,Chlorobenzene (air),20
+Belgium,2024,Chrysene,45
+Belgium,2024,Cl- in PM2.5,3
+Belgium,2024,Cr in PM10,74
+Belgium,2024,Cu in PM10,74
+Belgium,2024,Dibenzo(ah)anthracene,56
+Belgium,2024,EC in PM2.5,3
+Belgium,2024,Fluoranthene,56
+Belgium,2024,Fluorene,27
+Belgium,2024,H2C=CH-CH2-CH2-CH3,34
+Belgium,2024,H2C=CH-CH2-CH3,36
+Belgium,2024,H3C-(CH2)3-CH3,54
+Belgium,2024,H3C-CH(CH3)2,31
+Belgium,2024,H3C-CH2-CH(CH3)2,54
+Belgium,2024,H3C-CH2-CH2-CH3,36
+Belgium,2024,H3C-HC=CH-CH2-CH3,17
+Belgium,2024,Hg,2
+Belgium,2024,Hg0,13
+Belgium,2024,"Indeno-(1,2,3-cd)pyrene",56
+Belgium,2024,K+ in PM2.5,3
+Belgium,2024,Mg2+ in PM2.5,3
+Belgium,2024,Mn in PM10,74
+Belgium,2024,NH4+ in PM2.5,3
+Belgium,2024,NO,172
+Belgium,2024,NO2,251
+Belgium,2024,NO3- in PM2.5,3
+Belgium,2024,NOX as NO2,6
+Belgium,2024,Na+  in PM2.5,3
+Belgium,2024,Naphtalene,13
+Belgium,2024,Naphthalene,15
+Belgium,2024,Ni,2
+Belgium,2024,Ni in PM10,95
+Belgium,2024,Ni in TSP,3
+Belgium,2024,O3,61
+Belgium,2024,OC in PM2.5,3
+Belgium,2024,PM10,199
+Belgium,2024,PM2.5,136
+Belgium,2024,Pb in PM10,95
+Belgium,2024,Pb in TSP,16
+Belgium,2024,Phenanthrene,27
+Belgium,2024,Pyrene,56
+Belgium,2024,SO2,211
+Belgium,2024,SO42- in PM2.5,3
+Belgium,2024,Zn in PM10,74
+Belgium,2024,cis-H3C-CH=CH-CH3,36
+Belgium,2024,cis-H3C-HC=CH-CH2-CH3,22
+Belgium,2024,"m,p-C6H4(CH3)2",76
+Belgium,2024,o-C6H4-(CH3)2,82
+Belgium,2024,trans-H3C-CH=CH-CH3,36
+Belgium,2024,trans-H3C-HC=CH-CH2-CH3,31
+Bosnia and Herzegovina,2024,BS,15
+Bosnia and Herzegovina,2024,CO,25
+Bosnia and Herzegovina,2024,H2S,4
+Bosnia and Herzegovina,2024,NO,29
+Bosnia and Herzegovina,2024,NO2,35
+Bosnia and Herzegovina,2024,NOX as NO2,29
+Bosnia and Herzegovina,2024,O3,32
+Bosnia and Herzegovina,2024,PM10,36
+Bosnia and Herzegovina,2024,PM2.5,21
+Bosnia and Herzegovina,2024,SO2,53
+Bulgaria,2024,"1,2,3-C6H3(CH3)3",4
+Bulgaria,2024,"1,2,4-C6H3(CH3)3",4
+Bulgaria,2024,"1,3,5-C6H3(CH3)3",4
+Bulgaria,2024,As,5
+Bulgaria,2024,As in PM10,8
+Bulgaria,2024,BaP,16
+Bulgaria,2024,BaP in PM10,31
+Bulgaria,2024,C6H5-CH3,8
+Bulgaria,2024,C6H6,30
+Bulgaria,2024,CO,43
+Bulgaria,2024,Ca2+ in PM2.5,1
+Bulgaria,2024,Cd,11
+Bulgaria,2024,Cd in PM10,13
+Bulgaria,2024,Cl- in PM2.5,1
+Bulgaria,2024,H2S,8
+Bulgaria,2024,K+ in PM2.5,1
+Bulgaria,2024,Mg2+ in PM2.5,1
+Bulgaria,2024,NH3,3
+Bulgaria,2024,NH4+ in PM2.5,1
+Bulgaria,2024,NO,62
+Bulgaria,2024,NO2,62
+Bulgaria,2024,NO3- in PM2.5,1
+Bulgaria,2024,NOX as NO2,1
+Bulgaria,2024,Na+  in PM2.5,1
+Bulgaria,2024,Ni,6
+Bulgaria,2024,Ni in PM10,8
+Bulgaria,2024,O3,44
+Bulgaria,2024,PM10,102
+Bulgaria,2024,PM2.5,21
+Bulgaria,2024,Pb,10
+Bulgaria,2024,Pb in PM10,11
+Bulgaria,2024,SO2,71
+Bulgaria,2024,SO42- in PM2.5,1
+Bulgaria,2024,T-VOC,8
+Bulgaria,2024,THC (NM),10
+Bulgaria,2024,"m,p-C6H4(CH3)2",8
+Croatia,2024,"1,2,3-C6H3(CH3)3",1
+Croatia,2024,"1,2,4-C6H3(CH3)3",1
+Croatia,2024,"1,3,5-C6H3(CH3)3",1
+Croatia,2024,As in PM10,4
+Croatia,2024,BaP in PM10,11
+Croatia,2024,Benzo(a)anthracene in PM10,5
+Croatia,2024,Benzo(b)fluoranthene in PM10,5
+Croatia,2024,Benzo(j)fluoranthene in PM10,6
+Croatia,2024,Benzo(k)fluoranthene in PM10,5
+Croatia,2024,C2H6,1
+Croatia,2024,C6H14,1
+Croatia,2024,C6H5-C2H5,1
+Croatia,2024,C6H5-CH3,1
+Croatia,2024,C6H6,7
+Croatia,2024,C7H16,1
+Croatia,2024,C8H18,1
+Croatia,2024,CH2=CH-C(CH3)=CH2,1
+Croatia,2024,CH2=CH-CH3,1
+Croatia,2024,CH2=CH-CH=CH2,1
+Croatia,2024,CO,8
+Croatia,2024,Ca2+ in PM2.5,4
+Croatia,2024,Cd in PM10,4
+Croatia,2024,Cl- in PM2.5,4
+Croatia,2024,Dibenzo(ah)anthracene in PM10,5
+Croatia,2024,EC in PM2.5,4
+Croatia,2024,H2C=CH-CH2-CH2-CH3,1
+Croatia,2024,H2C=CH-CH2-CH3,1
+Croatia,2024,H2C=CH2,1
+Croatia,2024,H3C-(CH2)3-CH3,1
+Croatia,2024,H3C-CH(CH3)2,1
+Croatia,2024,H3C-CH2-CH(CH3)2,1
+Croatia,2024,H3C-CH2-CH2-CH3,1
+Croatia,2024,H3C-CH2-CH3,1
+Croatia,2024,HC=CH,1
+Croatia,2024,Hg0 + Hg-reactive,2
+Croatia,2024,"Indeno-(1,2,3-cd)pyrene in PM",5
+Croatia,2024,K+ in PM2.5,4
+Croatia,2024,Mg2+ in PM2.5,4
+Croatia,2024,NH4+ in PM2.5,4
+Croatia,2024,NO2,28
+Croatia,2024,NO3- in PM2.5,4
+Croatia,2024,NOX as NO2,28
+Croatia,2024,Na+  in PM2.5,4
+Croatia,2024,Ni in PM10,4
+Croatia,2024,O3,30
+Croatia,2024,OC in PM2.5,4
+Croatia,2024,PM10,35
+Croatia,2024,PM2.5,32
+Croatia,2024,Pb in PM10,4
+Croatia,2024,SO2,15
+Croatia,2024,SO42- in PM2.5,4
+Croatia,2024,cis-H3C-CH=CH-CH3,1
+Croatia,2024,"m,p-C6H4(CH3)2",1
+Croatia,2024,o-C6H4-(CH3)2,1
+Croatia,2024,trans-H3C-CH=CH-CH3,1
+Cyprus,2024,(CH3)2-CH-CH2-CH2-CH3,1
+Cyprus,2024,(CH3)3-C-CH2-CH-(CH3)2,1
+Cyprus,2024,"1,2,4-C6H3(CH3)3",1
+Cyprus,2024,"1,3,5-C6H3(CH3)3",1
+Cyprus,2024,Al,1
+Cyprus,2024,As,3
+Cyprus,2024,As in PM10,5
+Cyprus,2024,BaP in PM10,11
+Cyprus,2024,Benzo(a)anthracene in PM10,4
+Cyprus,2024,Benzo(b)fluoranthene in PM10,3
+Cyprus,2024,Benzo(ghi)perylene in PM10,3
+Cyprus,2024,Benzo(j)fluoranthene in PM10,2
+Cyprus,2024,Benzo(k)fluoranthene in PM10,3
+Cyprus,2024,C2H6,1
+Cyprus,2024,C6H14,1
+Cyprus,2024,C6H5-C2H5,1
+Cyprus,2024,C6H5-CH3,1
+Cyprus,2024,C6H6,3
+Cyprus,2024,C7H16,1
+Cyprus,2024,C8H18,1
+Cyprus,2024,CH2=CH-CH3,1
+Cyprus,2024,CH2=CH-CH=CH2,1
+Cyprus,2024,CO,5
+Cyprus,2024,Ca2+ in PM2.5,1
+Cyprus,2024,Cd,3
+Cyprus,2024,Cd in PM10,6
+Cyprus,2024,Cl- in PM2.5,1
+Cyprus,2024,Cr in PM10,1
+Cyprus,2024,Cu in PM10,1
+Cyprus,2024,Dibenzo(ah)anthracene in PM10,4
+Cyprus,2024,EC in PM2.5,2
+Cyprus,2024,Fe in PM10,1
+Cyprus,2024,Fluoranthene in PM10 (aerosol),4
+Cyprus,2024,H2C=CH-CH2-CH2-CH3,1
+Cyprus,2024,H2C=CH-CH2-CH3,1
+Cyprus,2024,H2C=CH2,1
+Cyprus,2024,H3C-(CH2)3-CH3,1
+Cyprus,2024,H3C-CH(CH3)2,1
+Cyprus,2024,H3C-CH2-CH(CH3)2,1
+Cyprus,2024,H3C-CH2-CH2-CH3,1
+Cyprus,2024,H3C-CH2-CH3,1
+Cyprus,2024,H3C-HC=CH-CH2-CH3,1
+Cyprus,2024,Hg in PM10,5
+Cyprus,2024,"Indeno-(1,2,3-cd)pyrene in PM",4
+Cyprus,2024,K+ in PM2.5,1
+Cyprus,2024,Mg2+ in PM2.5,1
+Cyprus,2024,Mn in PM10,1
+Cyprus,2024,NH4+ in PM2.5,1
+Cyprus,2024,NO2,4
+Cyprus,2024,NO3- in PM2.5,1
+Cyprus,2024,NOX as NO2,5
+Cyprus,2024,Na+  in PM2.5,1
+Cyprus,2024,Ni,3
+Cyprus,2024,Ni in PM10,5
+Cyprus,2024,O3,4
+Cyprus,2024,OC in PM2.5,2
+Cyprus,2024,PM10,6
+Cyprus,2024,PM2.5,9
+Cyprus,2024,Pb,3
+Cyprus,2024,Pb in PM10,5
+Cyprus,2024,SO2,5
+Cyprus,2024,SO42- in PM2.5,1
+Cyprus,2024,V in PM10,1
+Cyprus,2024,Zn in PM10,1
+Cyprus,2024,cis-H3C-CH=CH-CH3,1
+Cyprus,2024,"m,p-C6H4(CH3)2",1
+Cyprus,2024,o-C6H4-(CH3)2,1
+Cyprus,2024,trans-H3C-CH=CH-CH3,1
+Czechia,2024,(CH3)2-CH-CH2-CH2-CH3,2
+Czechia,2024,(CH3)3-C-CH2-CH-(CH3)2,2
+Czechia,2024,As in PM10,194
+Czechia,2024,BaP in PM10,235
+Czechia,2024,C2H6,2
+Czechia,2024,C6H14,2
+Czechia,2024,C6H5-C2H5,2
+Czechia,2024,C6H5-CH3,2
+Czechia,2024,C6H6,122
+Czechia,2024,C7H16,2
+Czechia,2024,C8H18,2
+Czechia,2024,CH2=CH-C(CH3)=CH2,2
+Czechia,2024,CH2=CH-CH3,2
+Czechia,2024,CH2=CH-CH=CH2,2
+Czechia,2024,CO,41
+Czechia,2024,Cd in PM10,195
+Czechia,2024,H2C=CH2,2
+Czechia,2024,H3C-(CH2)3-CH3,2
+Czechia,2024,H3C-CH(CH3)2,2
+Czechia,2024,H3C-CH2-CH2-CH3,2
+Czechia,2024,H3C-CH2-CH3,2
+Czechia,2024,HC=CH,2
+Czechia,2024,NO,122
+Czechia,2024,NO2,122
+Czechia,2024,NOX as NO2,118
+Czechia,2024,Ni in PM10,183
+Czechia,2024,O3,76
+Czechia,2024,PM10,216
+Czechia,2024,PM2.5,130
+Czechia,2024,Pb in PM10,128
+Czechia,2024,SO2,83
+Czechia,2024,"m,p-C6H4(CH3)2",2
+Czechia,2024,o-C6H4-(CH3)2,2
+Denmark,2024,(CH3)2-CH-CH2-CH2-CH3,1
+Denmark,2024,(CH3)3-C-CH2-CH-(CH3)2,1
+Denmark,2024,"1,2,3-C6H3(CH3)3",1
+Denmark,2024,"1,2,4-C6H3(CH3)3",1
+Denmark,2024,"1,3,5-C6H3(CH3)3",1
+Denmark,2024,As,14
+Denmark,2024,As in PM10,7
+Denmark,2024,BaP,1
+Denmark,2024,BaP in PM10,4
+Denmark,2024,Benzo(a)anthracene,1
+Denmark,2024,Benzo(a)anthracene in PM10,4
+Denmark,2024,Benzo(b)fluoranthene,2
+Denmark,2024,Benzo(b)fluoranthene in PM10,2
+Denmark,2024,"Benzo(b,j,k)fluoranthene",2
+Denmark,2024,Benzo(j)fluoranthene,2
+Denmark,2024,Benzo(j)fluoranthene in PM10,2
+Denmark,2024,Benzo(k)fluoranthene,2
+Denmark,2024,Benzo(k)fluoranthene in PM10,3
+Denmark,2024,C6H14,1
+Denmark,2024,C6H5-C2H5,1
+Denmark,2024,C6H5-CH3,5
+Denmark,2024,C6H6,5
+Denmark,2024,C7H16,1
+Denmark,2024,C8H18,1
+Denmark,2024,CH2=CH-C(CH3)=CH2,1
+Denmark,2024,CO,13
+Denmark,2024,Ca2+ in PM2.5,2
+Denmark,2024,Cd,14
+Denmark,2024,Cd in PM10,8
+Denmark,2024,Cl- in PM2.5,2
+Denmark,2024,Cr,1
+Denmark,2024,Dibenzo(ah)anthracene,1
+Denmark,2024,Dibenzo(ah)anthracene in PM10,4
+Denmark,2024,EC in PM2.5,6
+Denmark,2024,H2C=CH-CH2-CH2-CH3,1
+Denmark,2024,H3C-(CH2)3-CH3,1
+Denmark,2024,H3C-HC=CH-CH2-CH3,1
+Denmark,2024,"Indeno-(1,2,3-cd)pyrene",1
+Denmark,2024,"Indeno-(1,2,3-cd)pyrene in PM",5
+Denmark,2024,K+ in PM2.5,2
+Denmark,2024,Mg2+ in PM2.5,2
+Denmark,2024,Mn,1
+Denmark,2024,NH4+ in PM2.5,2
+Denmark,2024,NO,33
+Denmark,2024,NO2,31
+Denmark,2024,NO3- in PM2.5,2
+Denmark,2024,NOX as NO2,24
+Denmark,2024,Na+  in PM2.5,2
+Denmark,2024,Ni,14
+Denmark,2024,Ni in PM10,7
+Denmark,2024,O3,19
+Denmark,2024,OC in PM2.5,6
+Denmark,2024,PM10,32
+Denmark,2024,PM2.5,35
+Denmark,2024,Pb,11
+Denmark,2024,Pb in PM10,7
+Denmark,2024,SO2,14
+Denmark,2024,SO4 (H2SO4 aerosols) (SO4--),9
+Denmark,2024,SO42- in PM2.5,2
+Denmark,2024,Se,1
+Denmark,2024,"m,p-C6H4(CH3)2",1
+Denmark,2024,o-C6H4-(CH3)2,1
+Estonia,2024,As in PM10,5
+Estonia,2024,BaP,1
+Estonia,2024,BaP in PM10,6
+Estonia,2024,C6H6,4
+Estonia,2024,CO,8
+Estonia,2024,Cd in PM10,6
+Estonia,2024,Cd in TSP,1
+Estonia,2024,NO2,10
+Estonia,2024,NOX as NO2,10
+Estonia,2024,Ni in PM10,6
+Estonia,2024,Ni in TSP,1
+Estonia,2024,O3,10
+Estonia,2024,PM10,18
+Estonia,2024,PM2.5,9
+Estonia,2024,Pb in PM10,6
+Estonia,2024,Pb in TSP,1
+Estonia,2024,SO2,10
+Estonia,2024,SPM,2
+Finland,2024,(CH3)2-CH-CH2-CH2-CH3,2
+Finland,2024,"1,2,4-C6H3(CH3)3",1
+Finland,2024,"1,3,5-C6H3(CH3)3",5
+Finland,2024,3-methylpentane,2
+Finland,2024,Anthracene,6
+Finland,2024,As,12
+Finland,2024,As in PM10,17
+Finland,2024,BaP,7
+Finland,2024,BaP in PM10,33
+Finland,2024,Benzo(a)anthracene,6
+Finland,2024,Benzo(a)anthracene in PM10,27
+Finland,2024,Benzo(b)fluoranthene,3
+Finland,2024,Benzo(b)fluoranthene in PM10,17
+Finland,2024,"Benzo(b,j,k)fluoranthene",3
+Finland,2024,"Benzo(b,j,k)fluorantheneInPM1",8
+Finland,2024,Benzo(ghi)perylene,6
+Finland,2024,Benzo(j)fluoranthene,3
+Finland,2024,Benzo(j)fluoranthene in PM10,4
+Finland,2024,Benzo(k)fluoranthene,3
+Finland,2024,Benzo(k)fluoranthene in PM10,19
+Finland,2024,Black Carbon,5
+Finland,2024,C2H6,2
+Finland,2024,C6H14,2
+Finland,2024,C6H4-(CH3)2,4
+Finland,2024,C6H5-C2H5,12
+Finland,2024,C6H5-CH3,13
+Finland,2024,C6H6,14
+Finland,2024,C7H16,2
+Finland,2024,CH2=CH-C(CH3)=CH2,2
+Finland,2024,CH2=CH-CH3,2
+Finland,2024,CH2=CH-CH=CH2,2
+Finland,2024,CO,27
+Finland,2024,Ca2+ in PM2.5,5
+Finland,2024,Cd,12
+Finland,2024,Cd in PM10,17
+Finland,2024,Chrysene + Triphenylene,3
+Finland,2024,Cl- in PM2.5,5
+Finland,2024,Dibenzo(ah)anthracene,6
+Finland,2024,Dibenzo(ah)anthracene in PM10,27
+Finland,2024,EC in PM2.5,4
+Finland,2024,Fluoranthene,6
+Finland,2024,H2C=CH-CH2-CH3,2
+Finland,2024,H2C=CH2,1
+Finland,2024,H3C-(CH2)3-CH3,2
+Finland,2024,H3C-CH(CH3)2,2
+Finland,2024,H3C-CH2-CH(CH3)2,2
+Finland,2024,H3C-CH2-CH2-CH3,2
+Finland,2024,H3C-CH2-CH3,2
+Finland,2024,HC=CH,2
+Finland,2024,Hg,11
+Finland,2024,Hg0 + Hg-reactive,4
+Finland,2024,"Indeno-(1,2,3-cd)pyrene",6
+Finland,2024,"Indeno-(1,2,3-cd)pyrene in PM",29
+Finland,2024,K+ in PM2.5,5
+Finland,2024,Mg2+ in PM2.5,5
+Finland,2024,NH4+ in PM2.5,5
+Finland,2024,NO,96
+Finland,2024,NO2,154
+Finland,2024,NO3- in PM2.5,5
+Finland,2024,NOX as NO2,125
+Finland,2024,Na+  in PM2.5,5
+Finland,2024,Ni,12
+Finland,2024,Ni in PM10,17
+Finland,2024,O3,91
+Finland,2024,OC in PM2.5,6
+Finland,2024,PM10,233
+Finland,2024,PM2.5,103
+Finland,2024,Pb,4
+Finland,2024,Pb in PM10,7
+Finland,2024,Phenanthrene,6
+Finland,2024,Pyrene,6
+Finland,2024,SO2,55
+Finland,2024,SO4 (H2SO4 aerosols) (SO4--),2
+Finland,2024,SO42- in PM2.5,5
+Finland,2024,SPM,15
+Finland,2024,cis-H3C-CH=CH-CH3,2
+Finland,2024,"m,p-C6H4(CH3)2",7
+Finland,2024,o-C6H4-(CH3)2,7
+Finland,2024,trans-H3C-CH=CH-CH3,2
+Finland,NA,Hg0 + Hg-reactive,1
+France,2018,NOX as NO2,5
+France,2019,As in PM10,1
+France,2019,C6H6,1
+France,2019,Cd in PM10,1
+France,2019,Dibenzo(ah)anthracene in PM10,1
+France,2019,Ni in PM10,1
+France,2019,Pb in PM10,1
+France,2020,As in PM10,4
+France,2020,BaP in PM10,5
+France,2020,Benzo(a)anthracene in PM10,2
+France,2020,Benzo(b)fluoranthene in PM10,1
+France,2020,Benzo(e)pyrene in PM10,1
+France,2020,Benzo(ghi)perylene in PM10,2
+France,2020,Benzo(j)fluoranthene in PM10,1
+France,2020,Benzo(k)fluoranthene in PM10,1
+France,2020,C6H5-C2H5,2
+France,2020,C6H5-CH3,2
+France,2020,C6H6,2
+France,2020,CO,1
+France,2020,Cd in PM10,3
+France,2020,Chrysene in PM10,1
+France,2020,Dibenzo(ah)anthracene in PM10,2
+France,2020,"Indeno-(1,2,3-cd)pyrene in PM",1
+France,2020,NO,2
+France,2020,NO2,2
+France,2020,Ni in PM10,3
+France,2020,O3,2
+France,2020,PM2.5,2
+France,2020,Pb in PM10,7
+France,2020,SO2,1
+France,2020,"m,p-C6H4(CH3)2",1
+France,2020,o-C6H4-(CH3)2,1
+France,2021,C6H6,1
+France,2021,NOX as NO2,2
+France,2022,BaP in PM10,2
+France,2022,C6H5-C2H5,2
+France,2022,C6H5-CH3,2
+France,2022,C6H6,1
+France,2022,PM2.5,2
+France,2022,"m,p-C6H4(CH3)2",2
+France,2022,o-C6H4-(CH3)2,2
+France,2023,C6H6,1
+France,2023,CO,3
+France,2023,O3,1
+France,2024,(CH3)2-CH-CH2-CH2-CH3,1
+France,2024,(CH3)3-C-CH2-CH-(CH3)2,3
+France,2024,"1,1,1-trichloroethane (air)",2
+France,2024,"1,1,2-trichloroethane (air)",2
+France,2024,"1,1-dichloroethane (air)",2
+France,2024,"1,2,3-C6H3(CH3)3",3
+France,2024,"1,2,4-C6H3(CH3)3",3
+France,2024,"1,2-dichloroethane (air)",2
+France,2024,"1,2-dichloroethylene (air)",2
+France,2024,"1,3,5-C6H3(CH3)3",3
+France,2024,2-Methyl Naphthalene,1
+France,2024,Acenaphthene,1
+France,2024,Acetaldehyde,9
+France,2024,Acroleine,1
+France,2024,Anthracene,1
+France,2024,Anthracene in PM10 (aerosol),11
+France,2024,As,13
+France,2024,As in PM10,194
+France,2024,BaP,13
+France,2024,BaP in PM10,229
+France,2024,Benzaldehyde,2
+France,2024,Benzo(a)anthracene,13
+France,2024,Benzo(a)anthracene in PM10,168
+France,2024,Benzo(b)fluoranthene,13
+France,2024,Benzo(b)fluoranthene in PM10,157
+France,2024,Benzo(b+j)fluoranthene,2
+France,2024,"Benzo(b,j,k)fluorantheneInPM1",1
+France,2024,Benzo(e)pyrene,1
+France,2024,Benzo(e)pyrene in PM10,93
+France,2024,Benzo(ghi)perylene,7
+France,2024,Benzo(ghi)perylene in PM10,137
+France,2024,Benzo(j)fluoranthene,13
+France,2024,Benzo(j)fluoranthene in PM10,158
+France,2024,Benzo(k)fluoranthene,13
+France,2024,Benzo(k)fluoranthene in PM10,159
+France,2024,Butanales,2
+France,2024,C2Cl4,2
+France,2024,C2H6,3
+France,2024,C6H12,2
+France,2024,C6H14,3
+France,2024,C6H4Cl2,2
+France,2024,C6H5-C2H5,179
+France,2024,C6H5-CH3,198
+France,2024,C6H5-CH=CH2,3
+France,2024,C6H6,313
+France,2024,C7H16,3
+France,2024,C8H18,3
+France,2024,CH2=CH-C(CH3)=CH2,3
+France,2024,CH2=CH-CH3,3
+France,2024,CH2=CH-CH=CH2,3
+France,2024,CHCl=CCl2,6
+France,2024,CO,110
+France,2024,Ca2+ in PM2.5,7
+France,2024,Cd,13
+France,2024,Cd in PM10,195
+France,2024,Chlorobenzene (air),1
+France,2024,Chrysene,1
+France,2024,Chrysene in PM10,101
+France,2024,Cl- in PM2.5,7
+France,2024,Co in PM10,13
+France,2024,Cr,6
+France,2024,Cr in PM10,17
+France,2024,Cu,6
+France,2024,Cu in PM10,18
+France,2024,Dibenzo(ah)anthracene,13
+France,2024,Dibenzo(ah)anthracene in PM10,173
+France,2024,EC in PM2.5,10
+France,2024,Fluoranthene,1
+France,2024,Fluoranthene in PM10 (aerosol),7
+France,2024,Fluorene,1
+France,2024,H2C=CH-CH2-CH2-CH3,3
+France,2024,H2C=CH-CH2-CH3,3
+France,2024,H2C=CH2,3
+France,2024,H3C-(CH2)3-CH3,3
+France,2024,H3C-CH(CH3)2,3
+France,2024,H3C-CH2-CH(CH3)2,3
+France,2024,H3C-CH2-CH2-CH3,3
+France,2024,H3C-CH2-CH3,3
+France,2024,H3C-HC=CH-CH2-CH3,1
+France,2024,HC=CH,3
+France,2024,HCHO,9
+France,2024,Hg,2
+France,2024,Hg in PM10,1
+France,2024,"Indeno-(1,2,3-cd)pyrene",13
+France,2024,"Indeno-(1,2,3-cd)pyrene in PM",160
+France,2024,K+ in PM2.5,7
+France,2024,Mg2+ in PM2.5,7
+France,2024,Mn in PM10,13
+France,2024,NH4+ in PM2.5,7
+France,2024,NO,1001
+France,2024,NO2,1013
+France,2024,NO3- in PM2.5,7
+France,2024,NOX as NO2,544
+France,2024,Na+  in PM2.5,7
+France,2024,Naphthalene,1
+France,2024,Ni,13
+France,2024,Ni in PM10,190
+France,2024,O3,765
+France,2024,OC in PM2.5,10
+France,2024,PM10,1294
+France,2024,PM2.5,645
+France,2024,Pb,13
+France,2024,Pb in PM10,262
+France,2024,Phenanthrene,1
+France,2024,Phenanthrene in PM10 (aerosol),11
+France,2024,Propanal,2
+France,2024,Pyrene,1
+France,2024,Pyrene in PM10 (aerosol),7
+France,2024,SO2,356
+France,2024,SO42- in PM2.5,7
+France,2024,Se in PM10,5
+France,2024,Sn in PM10,3
+France,2024,Tetrachloromethane (air),3
+France,2024,V in PM10,13
+France,2024,Valeraldehyde,2
+France,2024,Zn,7
+France,2024,Zn in PM10,19
+France,2024,cis-H3C-CH=CH-CH3,3
+France,2024,cis-H3C-HC=CH-CH2-CH3,3
+France,2024,"m,p-C6H4(CH3)2",176
+France,2024,o-C6H4-(CH3)2,178
+France,2024,trans-H3C-CH=CH-CH3,3
+France,2024,trans-H3C-HC=CH-CH2-CH3,3
+Georgia,2019,CO,6
+Georgia,2019,NO,6
+Georgia,2019,NO2,7
+Georgia,2019,NOX as NO2,5
+Georgia,2019,O3,7
+Georgia,2019,PM1,4
+Georgia,2019,PM10,7
+Georgia,2019,PM2.5,7
+Georgia,2019,SO2,7
+Germany,2024,(CH3)2-CH-CH2-CH2-CH3,5
+Germany,2024,As,141
+Germany,2024,As in PM10,306
+Germany,2024,As in PM2.5,6
+Germany,2024,BaP,13
+Germany,2024,BaP in PM10,280
+Germany,2024,BaP in PM2.5,5
+Germany,2024,Benzo(a)anthracene,13
+Germany,2024,Benzo(a)anthracene in PM10,87
+Germany,2024,Benzo(a)anthracene in PM2.5,1
+Germany,2024,Benzo(b)fluoranthene,6
+Germany,2024,Benzo(b)fluoranthene in PM10,66
+Germany,2024,Benzo(b)fluoranthene in PM2.5,1
+Germany,2024,"Benzo(b,j)fluorantheneinPM10",5
+Germany,2024,"Benzo(b,j,k)fluoranthene",5
+Germany,2024,"Benzo(b,j,k)fluorantheneInPM1",21
+Germany,2024,Benzo(j)fluoranthene,6
+Germany,2024,Benzo(j)fluoranthene in PM10,54
+Germany,2024,Benzo(j)fluoranthene in PM2.5,1
+Germany,2024,Benzo(k)fluoranthene,8
+Germany,2024,Benzo(k)fluoranthene in PM10,86
+Germany,2024,Benzo(k)fluoranthene in PM2.5,1
+Germany,2024,Butenes,5
+Germany,2024,C2H6,5
+Germany,2024,C6H14,5
+Germany,2024,C6H5-C2H5,48
+Germany,2024,C6H5-CH3,160
+Germany,2024,C6H6,267
+Germany,2024,C7H16,5
+Germany,2024,CH2=CH-C(CH3)=CH2,5
+Germany,2024,CH2=CH-CH3,5
+Germany,2024,CH2=CH-CH=CH2,5
+Germany,2024,CH4,20
+Germany,2024,CO,162
+Germany,2024,CO2,12
+Germany,2024,Ca2+ in PM10,12
+Germany,2024,Ca2+ in PM2.5,33
+Germany,2024,Cd,142
+Germany,2024,Cd in PM10,307
+Germany,2024,Cd in PM2.5,6
+Germany,2024,Cl- in PM10,12
+Germany,2024,Cl- in PM2.5,33
+Germany,2024,Co in PM10,30
+Germany,2024,Cu in PM10,29
+Germany,2024,Dibenzo(ah)anthracene,13
+Germany,2024,Dibenzo(ah)anthracene in PM10,84
+Germany,2024,Dibenzo(ah)anthracene in PM2.5,1
+Germany,2024,EC in PM2.5,5
+Germany,2024,Fe in PM10,5
+Germany,2024,H2C=CH-CH2-CH3,5
+Germany,2024,H2C=CH2,5
+Germany,2024,H2S,4
+Germany,2024,H3C-(CH2)3-CH3,5
+Germany,2024,H3C-CH(CH3)2,5
+Germany,2024,H3C-CH2-CH(CH3)2,5
+Germany,2024,H3C-CH2-CH2-CH3,5
+Germany,2024,H3C-CH2-CH3,5
+Germany,2024,HC=CH,5
+Germany,2024,Hg,10
+Germany,2024,Hg in PM2.5,1
+Germany,2024,Hg-reactive,1
+Germany,2024,Hg0 + Hg-reactive,8
+Germany,2024,"Indeno-(1,2,3-cd)pyrene",13
+Germany,2024,"Indeno-(1,2,3-cd)pyrene in PM",89
+Germany,2024,"Indeno-(1,2,3-cd)pyrene in PM2",1
+Germany,2024,K+ in PM10,12
+Germany,2024,K+ in PM2.5,33
+Germany,2024,Mg2+ in PM10,12
+Germany,2024,Mg2+ in PM2.5,33
+Germany,2024,Mn in PM10,29
+Germany,2024,N2O,2
+Germany,2024,NH3,21
+Germany,2024,NH4+ in PM10,12
+Germany,2024,NH4+ in PM2.5,33
+Germany,2024,NO,635
+Germany,2024,NO2,1091
+Germany,2024,NO3- in PM10,12
+Germany,2024,NO3- in PM2.5,33
+Germany,2024,NOX as NO2,506
+Germany,2024,Na+  in PM10,12
+Germany,2024,Na+  in PM2.5,33
+Germany,2024,Ni,139
+Germany,2024,Ni in PM10,308
+Germany,2024,Ni in PM2.5,6
+Germany,2024,O3,403
+Germany,2024,OC in PM2.5,5
+Germany,2024,PM1,1
+Germany,2024,PM10,1231
+Germany,2024,PM2.5,585
+Germany,2024,Pb,142
+Germany,2024,Pb in PM10,308
+Germany,2024,Pb in PM2.5,6
+Germany,2024,Pentenes,5
+Germany,2024,SO2,217
+Germany,2024,SO42-  in PM10,12
+Germany,2024,SO42- in PM2.5,33
+Germany,2024,SPM,3
+Germany,2024,THC (NM),21
+Germany,2024,V in PM10,29
+Germany,2024,cis-H3C-CH=CH-CH3,5
+Germany,2024,cis-H3C-HC=CH-CH2-CH3,5
+Germany,2024,"m,p-C6H4(CH3)2",91
+Germany,2024,o-C6H4-(CH3)2,91
+Germany,2024,trans-H3C-CH=CH-CH3,5
+Germany,2024,trans-H3C-HC=CH-CH2-CH3,5
+Greece,2023,Hg in PM10,1
+Greece,2024,As,9
+Greece,2024,As in PM10,7
+Greece,2024,BS,13
+Greece,2024,BaP in PM10,8
+Greece,2024,Benzo(e)pyrene,8
+Greece,2024,C6H5-C2H5,1
+Greece,2024,C6H5-CH3,2
+Greece,2024,C6H6,19
+Greece,2024,CO,51
+Greece,2024,Cd,9
+Greece,2024,Cd in PM10,8
+Greece,2024,NO,81
+Greece,2024,NO2,82
+Greece,2024,NOX as NO2,36
+Greece,2024,Ni,9
+Greece,2024,Ni in PM10,7
+Greece,2024,O3,79
+Greece,2024,PM10,73
+Greece,2024,PM2.5,32
+Greece,2024,Pb,10
+Greece,2024,Pb in PM10,7
+Greece,2024,SO2,70
+Greece,2024,SPM,5
+Greece,2024,"m,p-C6H4(CH3)2",1
+Greece,2024,o-C6H4-(CH3)2,1
+Hungary,2024,As,2
+Hungary,2024,As in PM10,20
+Hungary,2024,BaP,1
+Hungary,2024,BaP in PM10,22
+Hungary,2024,Benzo(a)anthracene,1
+Hungary,2024,Benzo(a)anthracene in PM10,3
+Hungary,2024,"Benzo(b,j,k)fluoranthene",1
+Hungary,2024,"Benzo(b,j,k)fluorantheneInPM1",3
+Hungary,2024,C2H6,2
+Hungary,2024,C6H5-C2H5,26
+Hungary,2024,C6H5-CH3,27
+Hungary,2024,C6H6,26
+Hungary,2024,CH2=CH-CH3,2
+Hungary,2024,CO,78
+Hungary,2024,Ca2+ in PM2.5,1
+Hungary,2024,Cd,2
+Hungary,2024,Cd in PM10,19
+Hungary,2024,Cl- in PM2.5,1
+Hungary,2024,Dibenzo(ah)anthracene,1
+Hungary,2024,Dibenzo(ah)anthracene in PM10,3
+Hungary,2024,EC in PM2.5,1
+Hungary,2024,H2C=CH-CH2-CH3,2
+Hungary,2024,H2C=CH2,2
+Hungary,2024,H3C-(CH2)3-CH3,2
+Hungary,2024,H3C-CH(CH3)2,2
+Hungary,2024,H3C-CH2-CH(CH3)2,2
+Hungary,2024,H3C-CH2-CH2-CH3,2
+Hungary,2024,H3C-CH2-CH3,2
+Hungary,2024,Hg,2
+Hungary,2024,Hg0 + Hg-reactive,1
+Hungary,2024,"Indeno-(1,2,3-cd)pyrene",1
+Hungary,2024,"Indeno-(1,2,3-cd)pyrene in PM",3
+Hungary,2024,K+ in PM2.5,1
+Hungary,2024,Mg2+ in PM2.5,1
+Hungary,2024,N-DEP,1
+Hungary,2024,NH4+ in PM2.5,1
+Hungary,2024,NO,9
+Hungary,2024,NO2,72
+Hungary,2024,NO3- in PM2.5,1
+Hungary,2024,NOX as NO2,56
+Hungary,2024,Na+  in PM2.5,1
+Hungary,2024,Ni,2
+Hungary,2024,Ni in PM10,17
+Hungary,2024,O3,50
+Hungary,2024,OC in PM2.5,1
+Hungary,2024,PM10,68
+Hungary,2024,PM2.5,24
+Hungary,2024,Pb,2
+Hungary,2024,Pb in PM10,17
+Hungary,2024,S-DEP,1
+Hungary,2024,SO2,66
+Hungary,2024,SO42- in PM2.5,1
+Hungary,2024,SPM,8
+Hungary,2024,"m,p-C6H4(CH3)2",23
+Hungary,2024,o-C6H4-(CH3)2,23
+Hungary,2024,pH,1
+Iceland,2024,As in PM10,2
+Iceland,2024,BaP,2
+Iceland,2024,C6H5-CH3,1
+Iceland,2024,C6H6,1
+Iceland,2024,CH4,2
+Iceland,2024,CO,4
+Iceland,2024,Cd in PM10,2
+Iceland,2024,Cr in PM10,2
+Iceland,2024,Cu in PM10,2
+Iceland,2024,H2S,42
+Iceland,2024,Hg in PM10,2
+Iceland,2024,NO,32
+Iceland,2024,NO2,31
+Iceland,2024,NOX as NO2,30
+Iceland,2024,Ni in PM10,2
+Iceland,2024,O3,7
+Iceland,2024,PAH,6
+Iceland,2024,PM1,10
+Iceland,2024,PM10,58
+Iceland,2024,PM2.5,35
+Iceland,2024,Pb in PM10,2
+Iceland,2024,SO2,66
+Iceland,2024,SO4 (H2SO4 aerosols) (SO4--),2
+Iceland,2024,THC (NM),2
+Iceland,2024,Zn in PM10,2
+Iceland,2024,"m,p-C6H4(CH3)2",1
+Iceland,2024,pH,1
+Ireland,2020,NO2,1
+Ireland,2020,NOX as NO2,1
+Ireland,2024,Acenaphthene,6
+Ireland,2024,Acenaphtylene,6
+Ireland,2024,Anthracene,6
+Ireland,2024,As,3
+Ireland,2024,As in PM10,7
+Ireland,2024,BaP,2
+Ireland,2024,BaP in PM10,7
+Ireland,2024,Benzo(a)anthracene,2
+Ireland,2024,Benzo(a)anthracene in PM10,6
+Ireland,2024,Benzo(b)fluoranthene,2
+Ireland,2024,Benzo(b)fluoranthene in PM10,6
+Ireland,2024,"Benzo(b,j,k)fluorantheneInPM1",5
+Ireland,2024,Benzo(ghi)perylene,6
+Ireland,2024,Benzo(j)fluoranthene in PM10,6
+Ireland,2024,Benzo(k)fluoranthene,2
+Ireland,2024,Benzo(k)fluoranthene in PM10,6
+Ireland,2024,C6H5-C2H5,3
+Ireland,2024,C6H5-CH3,4
+Ireland,2024,C6H6,4
+Ireland,2024,CO,8
+Ireland,2024,Ca2+ in PM2.5,1
+Ireland,2024,Cd,3
+Ireland,2024,Cd in PM10,7
+Ireland,2024,Chrysene,6
+Ireland,2024,Cl- in PM2.5,1
+Ireland,2024,Dibenzo(ah)anthracene,2
+Ireland,2024,Dibenzo(ah)anthracene in PM10,6
+Ireland,2024,EC in PM2.5,1
+Ireland,2024,Fluoranthene,6
+Ireland,2024,Fluorene,6
+Ireland,2024,Hg,3
+Ireland,2024,Hg0 + Hg-reactive,1
+Ireland,2024,"Indeno-(1,2,3-cd)pyrene",2
+Ireland,2024,"Indeno-(1,2,3-cd)pyrene in PM",6
+Ireland,2024,K+ in PM2.5,1
+Ireland,2024,Mg2+ in PM2.5,1
+Ireland,2024,NH4+ in PM2.5,1
+Ireland,2024,NO2,39
+Ireland,2024,NO3- in PM2.5,1
+Ireland,2024,NOX as NO2,39
+Ireland,2024,Na+  in PM2.5,1
+Ireland,2024,Naphtalene,6
+Ireland,2024,Ni,3
+Ireland,2024,Ni in PM10,7
+Ireland,2024,O3,23
+Ireland,2024,OC in PM2.5,1
+Ireland,2024,PM10,73
+Ireland,2024,PM2.5,68
+Ireland,2024,Pb,3
+Ireland,2024,Pb in PM10,7
+Ireland,2024,Phenanthrene,6
+Ireland,2024,Pyrene,6
+Ireland,2024,SO2,18
+Ireland,2024,SO42- in PM2.5,1
+Ireland,2024,"m,p-C6H4(CH3)2",3
+Ireland,2024,o-C6H4-(CH3)2,3
+Italy,2019,PM10,1
+Italy,2019,PM2.5,1
+Italy,2024,"1,3,5-C6H3(CH3)3",1
+Italy,2024,As in PM10,228
+Italy,2024,BaP in PM10,259
+Italy,2024,Benzo(a)anthracene in PM10,13
+Italy,2024,Benzo(b)fluoranthene in PM10,13
+Italy,2024,Benzo(j)fluoranthene in PM10,13
+Italy,2024,Benzo(k)fluoranthene in PM10,13
+Italy,2024,Black Carbon,2
+Italy,2024,C6H14,1
+Italy,2024,C6H4-(CH3)2,16
+Italy,2024,C6H5-C2H5,75
+Italy,2024,C6H5-CH3,148
+Italy,2024,C6H6,377
+Italy,2024,C7H16,1
+Italy,2024,C8H18,1
+Italy,2024,CH4,14
+Italy,2024,CO,368
+Italy,2024,Ca2+ in PM10,1
+Italy,2024,Ca2+ in PM2.5,1
+Italy,2024,Cd in PM10,229
+Italy,2024,Cl- in PM10,1
+Italy,2024,Cl- in PM2.5,1
+Italy,2024,Cr in PM10,2
+Italy,2024,Cu in PM10,2
+Italy,2024,Dibenzo(ah)anthracene in PM10,13
+Italy,2024,Fe in PM10,2
+Italy,2024,H2S,20
+Italy,2024,Hg in PM10,1
+Italy,2024,"Indeno-(1,2,3-cd)pyrene in PM",13
+Italy,2024,K+ in PM10,1
+Italy,2024,K+ in PM2.5,1
+Italy,2024,Mg2+ in PM10,1
+Italy,2024,Mg2+ in PM2.5,1
+Italy,2024,Mn in PM10,2
+Italy,2024,NH3,1
+Italy,2024,NH4+ in PM10,1
+Italy,2024,NH4+ in PM2.5,1
+Italy,2024,NO,572
+Italy,2024,NO2,866
+Italy,2024,NO3- in PM10,1
+Italy,2024,NO3- in PM2.5,1
+Italy,2024,NOX as NO2,615
+Italy,2024,Na+  in PM10,1
+Italy,2024,Na+  in PM2.5,1
+Italy,2024,Ni in PM10,222
+Italy,2024,O3,492
+Italy,2024,PAH,2
+Italy,2024,PM1,3
+Italy,2024,PM10,999
+Italy,2024,PM2.5,536
+Italy,2024,Pb,1
+Italy,2024,Pb in PM10,221
+Italy,2024,SO2,351
+Italy,2024,SO42-  in PM10,1
+Italy,2024,SO42- in PM2.5,1
+Italy,2024,SPM,2
+Italy,2024,THC (NM),14
+Italy,2024,Zn in PM10,2
+Italy,2024,"m,p-C6H4(CH3)2",71
+Italy,2024,m-C6H4-(CH3)2,20
+Italy,2024,o-C6H4-(CH3)2,98
+Italy,2024,p-C6H4(CH3)2,9
+Kosovo under UNSCR 1244/99,2017,PM10,1
+Kosovo under UNSCR 1244/99,2023,CO,1
+Kosovo under UNSCR 1244/99,2023,NO,1
+Kosovo under UNSCR 1244/99,2023,NO2,1
+Kosovo under UNSCR 1244/99,2023,NOX as NO2,1
+Kosovo under UNSCR 1244/99,2023,O3,1
+Kosovo under UNSCR 1244/99,2023,PM10,1
+Kosovo under UNSCR 1244/99,2023,PM2.5,1
+Kosovo under UNSCR 1244/99,2023,SO2,1
+Kosovo under UNSCR 1244/99,2024,CO,12
+Kosovo under UNSCR 1244/99,2024,NO,12
+Kosovo under UNSCR 1244/99,2024,NO2,15
+Kosovo under UNSCR 1244/99,2024,NOX as NO2,12
+Kosovo under UNSCR 1244/99,2024,O3,13
+Kosovo under UNSCR 1244/99,2024,PM10,12
+Kosovo under UNSCR 1244/99,2024,PM2.5,12
+Kosovo under UNSCR 1244/99,2024,SO2,17
+Latvia,2024,As,8
+Latvia,2024,As in PM10,11
+Latvia,2024,BaP,4
+Latvia,2024,BaP in PM10,14
+Latvia,2024,Benzo(a)anthracene,1
+Latvia,2024,Benzo(a)anthracene in PM10,12
+Latvia,2024,Benzo(b)fluoranthene,1
+Latvia,2024,Benzo(b)fluoranthene in PM10,12
+Latvia,2024,Benzo(j)fluoranthene,1
+Latvia,2024,Benzo(j)fluoranthene in PM10,7
+Latvia,2024,Benzo(k)fluoranthene,1
+Latvia,2024,Benzo(k)fluoranthene in PM10,12
+Latvia,2024,C6H5-C2H5,7
+Latvia,2024,C6H5-CH3,12
+Latvia,2024,C6H6,18
+Latvia,2024,CO,5
+Latvia,2024,Ca2+ in PM2.5,3
+Latvia,2024,Cd,8
+Latvia,2024,Cd in PM10,11
+Latvia,2024,Cl- in PM2.5,3
+Latvia,2024,Dibenzo(ah)anthracene,1
+Latvia,2024,Dibenzo(ah)anthracene in PM10,12
+Latvia,2024,EC in PM2.5,1
+Latvia,2024,Hg,1
+Latvia,2024,Hg0,1
+Latvia,2024,"Indeno-(1,2,3-cd)pyrene",1
+Latvia,2024,"Indeno-(1,2,3-cd)pyrene in PM",12
+Latvia,2024,K+ in PM2.5,3
+Latvia,2024,Mg2+ in PM2.5,3
+Latvia,2024,NH4,2
+Latvia,2024,NH4+ in PM2.5,2
+Latvia,2024,NO,10
+Latvia,2024,NO2,26
+Latvia,2024,NO3,2
+Latvia,2024,NO3- in PM2.5,3
+Latvia,2024,NOX as NO2,9
+Latvia,2024,Na+  in PM2.5,3
+Latvia,2024,Ni,8
+Latvia,2024,Ni in PM10,11
+Latvia,2024,O3,25
+Latvia,2024,OC in PM2.5,1
+Latvia,2024,PM10,20
+Latvia,2024,PM2.5,14
+Latvia,2024,Pb,9
+Latvia,2024,Pb in PM10,11
+Latvia,2024,SO2,21
+Latvia,2024,SO4 (H2SO4 aerosols) (SO4--),2
+Latvia,2024,SO42- in PM2.5,3
+Latvia,2024,"m,p-C6H4(CH3)2",7
+Latvia,2024,o-C6H4-(CH3)2,7
+Lithuania,2024,(CH3)2-CH-CH2-CH2-CH3,1
+Lithuania,2024,"1,2,3-C6H3(CH3)3",1
+Lithuania,2024,"1,2,4-C6H3(CH3)3",1
+Lithuania,2024,"1,3,5-C6H3(CH3)3",1
+Lithuania,2024,As,3
+Lithuania,2024,As in PM10,6
+Lithuania,2024,BaP,3
+Lithuania,2024,BaP in PM10,6
+Lithuania,2024,Benzo(a)anthracene in PM10,6
+Lithuania,2024,Benzo(b)fluoranthene in PM10,6
+Lithuania,2024,Benzo(k)fluoranthene in PM10,6
+Lithuania,2024,C2H6,3
+Lithuania,2024,C6H14,1
+Lithuania,2024,C6H5-C2H5,1
+Lithuania,2024,C6H5-CH3,2
+Lithuania,2024,C6H6,22
+Lithuania,2024,C7H16,1
+Lithuania,2024,C8H18,1
+Lithuania,2024,CH2=CH-C(CH3)=CH2,1
+Lithuania,2024,CH2=CH-CH3,2
+Lithuania,2024,CH2=CH-CH=CH2,1
+Lithuania,2024,CO,23
+Lithuania,2024,Ca2+ in PM2.5,1
+Lithuania,2024,Cd,3
+Lithuania,2024,Cd in PM10,6
+Lithuania,2024,Cl- in PM2.5,1
+Lithuania,2024,Dibenzo(ah)anthracene in PM10,6
+Lithuania,2024,EC in PM2.5,1
+Lithuania,2024,H2C=CH-CH2-CH2-CH3,1
+Lithuania,2024,H2C=CH-CH2-CH3,3
+Lithuania,2024,H2C=CH2,2
+Lithuania,2024,H3C-(CH2)3-CH3,1
+Lithuania,2024,H3C-CH(CH3)2,5
+Lithuania,2024,H3C-CH2-CH(CH3)2,1
+Lithuania,2024,H3C-CH2-CH2-CH3,2
+Lithuania,2024,H3C-CH2-CH3,2
+Lithuania,2024,HC=CH,1
+Lithuania,2024,HNO3+NO3,3
+Lithuania,2024,Hg,2
+Lithuania,2024,Hg0 + Hg-reactive,1
+Lithuania,2024,"Indeno-(1,2,3-cd)pyrene in PM",6
+Lithuania,2024,K+ in PM2.5,1
+Lithuania,2024,Mg2+ in PM2.5,1
+Lithuania,2024,NH3+NH4,3
+Lithuania,2024,NH4+ in PM2.5,1
+Lithuania,2024,NO,3
+Lithuania,2024,NO2,42
+Lithuania,2024,NO3- in PM2.5,1
+Lithuania,2024,NOX as NO2,33
+Lithuania,2024,Na+  in PM2.5,1
+Lithuania,2024,Ni,3
+Lithuania,2024,Ni in PM10,6
+Lithuania,2024,O3,39
+Lithuania,2024,OC in PM2.5,1
+Lithuania,2024,PM10,37
+Lithuania,2024,PM2.5,18
+Lithuania,2024,Pb,8
+Lithuania,2024,Pb in PM10,6
+Lithuania,2024,SO2,35
+Lithuania,2024,SO2 + SO4--,3
+Lithuania,2024,SO42- in PM2.5,1
+Lithuania,2024,cis-H3C-CH=CH-CH3,3
+Lithuania,2024,"m,p-C6H4(CH3)2",1
+Lithuania,2024,o-C6H4-(CH3)2,2
+Lithuania,2024,trans-H3C-CH=CH-CH3,2
+Luxembourg,2023,C6H6,1
+Luxembourg,2023,CO,3
+Luxembourg,2024,As in PM10,7
+Luxembourg,2024,BS,5
+Luxembourg,2024,BaP in PM10,7
+Luxembourg,2024,C6H5-CH3,2
+Luxembourg,2024,C6H6,3
+Luxembourg,2024,CO,8
+Luxembourg,2024,Cd in PM10,7
+Luxembourg,2024,NO,15
+Luxembourg,2024,NO2,265
+Luxembourg,2024,NOX as NO2,3
+Luxembourg,2024,Ni in PM10,7
+Luxembourg,2024,O3,10
+Luxembourg,2024,PM10,19
+Luxembourg,2024,PM2.5,10
+Luxembourg,2024,Pb in PM10,7
+Luxembourg,2024,SA,5
+Luxembourg,2024,SO2,12
+Malta,2021,As,1
+Malta,2021,BaP,1
+Malta,2021,Benzo(a)anthracene,1
+Malta,2021,Benzo(b)fluoranthene,1
+Malta,2021,Benzo(j)fluoranthene,1
+Malta,2021,Benzo(k)fluoranthene,1
+Malta,2021,Cd,1
+Malta,2021,Dibenzo(ah)anthracene,1
+Malta,2021,Hg,1
+Malta,2021,Hg0,1
+Malta,2021,"Indeno-(1,2,3-cd)pyrene",1
+Malta,2021,Ni,1
+Malta,2021,Pb,1
+Malta,2024,As,1
+Malta,2024,As in PM10,8
+Malta,2024,BaP,1
+Malta,2024,BaP in PM10,8
+Malta,2024,Benzo(a)anthracene,1
+Malta,2024,Benzo(a)anthracene in PM10,8
+Malta,2024,Benzo(b)fluoranthene,1
+Malta,2024,Benzo(b)fluoranthene in PM10,8
+Malta,2024,Benzo(j)fluoranthene,1
+Malta,2024,Benzo(j)fluoranthene in PM10,8
+Malta,2024,Benzo(k)fluoranthene,1
+Malta,2024,Benzo(k)fluoranthene in PM10,8
+Malta,2024,C6H5-C2H5,11
+Malta,2024,C6H5-CH3,11
+Malta,2024,C6H6,11
+Malta,2024,CO,8
+Malta,2024,Ca2+ in PM2.5,2
+Malta,2024,Cd,1
+Malta,2024,Cd in PM10,8
+Malta,2024,Cl- in PM2.5,2
+Malta,2024,Dibenzo(ah)anthracene,1
+Malta,2024,Dibenzo(ah)anthracene in PM10,8
+Malta,2024,Dibenzo(ah)pyrene,4
+Malta,2024,EC in PM2.5,2
+Malta,2024,Hg,1
+Malta,2024,Hg0,1
+Malta,2024,"Indeno-(1,2,3-cd)pyrene",1
+Malta,2024,"Indeno-(1,2,3-cd)pyrene in PM",8
+Malta,2024,K+ in PM2.5,2
+Malta,2024,Mg2+ in PM2.5,2
+Malta,2024,NH4+ in PM2.5,2
+Malta,2024,NO,9
+Malta,2024,NO2,9
+Malta,2024,NO3- in PM2.5,2
+Malta,2024,NOX as NO2,3
+Malta,2024,Na+  in PM2.5,2
+Malta,2024,Ni,2
+Malta,2024,Ni in PM10,8
+Malta,2024,O3,12
+Malta,2024,OC in PM2.5,2
+Malta,2024,PM10,17
+Malta,2024,PM2.5,17
+Malta,2024,Pb,1
+Malta,2024,Pb in PM10,8
+Malta,2024,SO2,9
+Malta,2024,SO42- in PM2.5,2
+Malta,2024,"m,p-C6H4(CH3)2",9
+Malta,2024,o-C6H4-(CH3)2,11
+Montenegro,2022,CO,1
+Montenegro,2022,NO,1
+Montenegro,2022,NO2,1
+Montenegro,2022,NOX as NO2,1
+Montenegro,2022,PM10,3
+Montenegro,2024,CO,9
+Montenegro,2024,NO,11
+Montenegro,2024,NO2,11
+Montenegro,2024,NOX as NO2,11
+Montenegro,2024,O3,4
+Montenegro,2024,PM10,17
+Montenegro,2024,PM2.5,10
+Montenegro,2024,SO2,7
+Netherlands,2019,Benzo(ghi)perylene,6
+Netherlands,2019,Ca++,6
+Netherlands,2019,Chrysene,6
+Netherlands,2019,Cl-,7
+Netherlands,2019,Mg++,6
+Netherlands,2019,NH4,7
+Netherlands,2019,NO,1
+Netherlands,2019,NO2,1
+Netherlands,2019,NO3,7
+Netherlands,2019,NOX as NO2,1
+Netherlands,2019,Na+,6
+Netherlands,2019,O3,1
+Netherlands,2019,PM10,1
+Netherlands,2019,PM2.5,1
+Netherlands,2019,SO4 (H2SO4 aerosols) (SO4--),7
+Netherlands,2019,Zn,6
+Netherlands,2022,"1,2,3-C6H3(CH3)3",1
+Netherlands,2022,"1,2,4-C6H3(CH3)3",1
+Netherlands,2022,"1,3,5-C6H3(CH3)3",1
+Netherlands,2022,As,4
+Netherlands,2022,BS,13
+Netherlands,2022,BaP in PM2.5,2
+Netherlands,2022,C2Cl4,9
+Netherlands,2022,C2H6,1
+Netherlands,2022,C6H14,1
+Netherlands,2022,C6H5-C2H5,8
+Netherlands,2022,C6H5-CH3,8
+Netherlands,2022,C6H6,10
+Netherlands,2022,C7H16,1
+Netherlands,2022,C8H18,1
+Netherlands,2022,CH2=CH-CH3,1
+Netherlands,2022,CHCl=CCl2,9
+Netherlands,2022,CO,16
+Netherlands,2022,Ca++,1
+Netherlands,2022,Cd,9
+Netherlands,2022,Cl-,1
+Netherlands,2022,Co,4
+Netherlands,2022,Cr,4
+Netherlands,2022,Cu,4
+Netherlands,2022,Fe,4
+Netherlands,2022,H+,1
+Netherlands,2022,H2C=CH-CH2-CH3,1
+Netherlands,2022,H2C=CH2,1
+Netherlands,2022,H3C-(CH2)3-CH3,1
+Netherlands,2022,H3C-CH2-CH2-CH3,1
+Netherlands,2022,H3C-CH2-CH3,1
+Netherlands,2022,HC=CH,1
+Netherlands,2022,K+,1
+Netherlands,2022,Mg++,1
+Netherlands,2022,N-DEP,4
+Netherlands,2022,NH4+,1
+Netherlands,2022,NO,29
+Netherlands,2022,NO2,30
+Netherlands,2022,NO3-,1
+Netherlands,2022,NOX as NO2,40
+Netherlands,2022,Na+,1
+Netherlands,2022,Ni,4
+Netherlands,2022,O3,11
+Netherlands,2022,PM10,11
+Netherlands,2022,PM2.5,23
+Netherlands,2022,Pb,8
+Netherlands,2022,S-DEP,15
+Netherlands,2022,SO2,31
+Netherlands,2022,SO4--,1
+Netherlands,2022,Vanadium,4
+Netherlands,2022,Zn,4
+Netherlands,2022,cis-H3C-CH=CH-CH3,1
+Netherlands,2022,k,1
+Netherlands,2022,"m,p-C6H4(CH3)2",12
+Netherlands,2022,o-C6H4-(CH3)2,8
+Netherlands,2022,pH,1
+Netherlands,2022,trans-H3C-CH=CH-CH3,1
+Netherlands,2023,"1,1,1-trichloroethane (air)",1
+Netherlands,2023,"1,1,2-trichloroethane (air)",1
+Netherlands,2023,"1,2-dichloroethane (air)",1
+Netherlands,2023,C6H4Cl2,1
+Netherlands,2023,C6H5-CH=CH2,1
+Netherlands,2023,C9H12,1
+Netherlands,2023,C9H20,1
+Netherlands,2023,Chlorobenzene (air),1
+Netherlands,2023,EC in PM2.5,1
+Netherlands,2023,OC in PM2.5,1
+Netherlands,2023,Tetrachloromethane (air),1
+Netherlands,2023,m-C6H4-(CH3)2,1
+Netherlands,2023,p-C6H4(CH3)2,1
+Netherlands,2024,(CH3)2-CH-CH2-CH2-CH3,2
+Netherlands,2024,(CH3)3-C-CH2-CH-(CH3)2,2
+Netherlands,2024,"1,1,1-trichloroethane (air)",14
+Netherlands,2024,"1,1,2-trichloroethane (air)",14
+Netherlands,2024,"1,2,3-C6H3(CH3)3",17
+Netherlands,2024,"1,2,4-C6H3(CH3)3",17
+Netherlands,2024,"1,2-dichloroethane (air)",14
+Netherlands,2024,"1,3,5-C6H3(CH3)3",17
+Netherlands,2024,Anthracene,1
+Netherlands,2024,As,61
+Netherlands,2024,As in PM10,6
+Netherlands,2024,As in PM2.5,2
+Netherlands,2024,BS,46
+Netherlands,2024,BaP,1
+Netherlands,2024,BaP in PM10,13
+Netherlands,2024,Benzo(a)anthracene,1
+Netherlands,2024,Benzo(a)anthracene in PM10,8
+Netherlands,2024,"Benzo(b,j,k)fluoranthene",1
+Netherlands,2024,"Benzo(b,j,k)fluorantheneInPM1",8
+Netherlands,2024,Benzo(ghi)perylene,1
+Netherlands,2024,Benzo(ghi)perylene in PM10,8
+Netherlands,2024,Black Carbon,39
+Netherlands,2024,C2H6,2
+Netherlands,2024,C6H14,17
+Netherlands,2024,C6H4Cl2,14
+Netherlands,2024,C6H5-C2H5,24
+Netherlands,2024,C6H5-CH3,52
+Netherlands,2024,C6H5-CH=CH2,14
+Netherlands,2024,C6H6,51
+Netherlands,2024,C7H16,17
+Netherlands,2024,C8H18,17
+Netherlands,2024,C9H12,14
+Netherlands,2024,C9H20,14
+Netherlands,2024,CH2=CH-C(CH3)=CH2,2
+Netherlands,2024,CH2=CH-CH3,2
+Netherlands,2024,CH2=CH-CH=CH2,2
+Netherlands,2024,CO,131
+Netherlands,2024,Ca++,83
+Netherlands,2024,Ca2+ in PM10,6
+Netherlands,2024,Ca2+ in PM2.5,2
+Netherlands,2024,Cd,61
+Netherlands,2024,Cd in PM10,6
+Netherlands,2024,Cd in PM2.5,2
+Netherlands,2024,Chlorobenzene (air),14
+Netherlands,2024,Chrysene,1
+Netherlands,2024,Chrysene in PM10,8
+Netherlands,2024,Cl-,76
+Netherlands,2024,Cl- in PM10,7
+Netherlands,2024,Cl- in PM2.5,2
+Netherlands,2024,Co,53
+Netherlands,2024,Cr,59
+Netherlands,2024,Cu,59
+Netherlands,2024,Dibenzo(ah)anthracene,1
+Netherlands,2024,Dibenzo(ah)anthracene in PM10,8
+Netherlands,2024,EC in PM2.5,1
+Netherlands,2024,Fe,59
+Netherlands,2024,Fluoranthene,1
+Netherlands,2024,Fluorene,1
+Netherlands,2024,H+,63
+Netherlands,2024,H2C=CH-CH2-CH2-CH3,2
+Netherlands,2024,H2C=CH-CH2-CH3,2
+Netherlands,2024,H2C=CH2,2
+Netherlands,2024,H3C-(CH2)3-CH3,2
+Netherlands,2024,H3C-CH(CH3)2,2
+Netherlands,2024,H3C-CH2-CH(CH3)2,2
+Netherlands,2024,H3C-CH2-CH2-CH3,2
+Netherlands,2024,H3C-CH2-CH3,2
+Netherlands,2024,H3C-HC=CH-CH2-CH3,2
+Netherlands,2024,HC=CH,2
+Netherlands,2024,Hg,1
+Netherlands,2024,"Indeno-(1,2,3-cd)pyrene",1
+Netherlands,2024,"Indeno-(1,2,3-cd)pyrene in PM",8
+Netherlands,2024,K+,75
+Netherlands,2024,K+ in PM2.5,2
+Netherlands,2024,Mg++,75
+Netherlands,2024,Mg2+ in PM10,6
+Netherlands,2024,Mg2+ in PM2.5,2
+Netherlands,2024,Mn,45
+Netherlands,2024,NH3,22
+Netherlands,2024,NH4,13
+Netherlands,2024,NH4+,63
+Netherlands,2024,NH4+ in PM10,7
+Netherlands,2024,NH4+ in PM2.5,2
+Netherlands,2024,NO,329
+Netherlands,2024,NO2,329
+Netherlands,2024,NO3,13
+Netherlands,2024,NO3-,63
+Netherlands,2024,NO3- in PM10,7
+Netherlands,2024,NO3- in PM2.5,2
+Netherlands,2024,NOX as NO2,329
+Netherlands,2024,Na+,75
+Netherlands,2024,Na+  in PM10,6
+Netherlands,2024,Na+  in PM2.5,2
+Netherlands,2024,Naphtalene,14
+Netherlands,2024,Naphthalene,1
+Netherlands,2024,Ni,61
+Netherlands,2024,Ni in PM10,6
+Netherlands,2024,Ni in PM2.5,2
+Netherlands,2024,O3,183
+Netherlands,2024,OC in PM2.5,1
+Netherlands,2024,PM10,143
+Netherlands,2024,PM2.5,97
+Netherlands,2024,PO43-,60
+Netherlands,2024,Pb,61
+Netherlands,2024,Pb in PM10,6
+Netherlands,2024,Pb in PM2.5,2
+Netherlands,2024,Phenanthrene,1
+Netherlands,2024,Pyrene,1
+Netherlands,2024,SO2,336
+Netherlands,2024,SO4 (H2SO4 aerosols) (SO4--),13
+Netherlands,2024,SO4--,63
+Netherlands,2024,SO42-  in PM10,7
+Netherlands,2024,SO42- in PM2.5,2
+Netherlands,2024,Tetrachloromethane (air),14
+Netherlands,2024,Vanadium,53
+Netherlands,2024,Zn,62
+Netherlands,2024,Zn in PM10,6
+Netherlands,2024,Zn in PM2.5,2
+Netherlands,2024,cis-H3C-CH=CH-CH3,3
+Netherlands,2024,gamma-HCH,1
+Netherlands,2024,k,63
+Netherlands,2024,"m,p-C6H4(CH3)2",23
+Netherlands,2024,m-C6H4-(CH3)2,14
+Netherlands,2024,o-C6H4-(CH3)2,24
+Netherlands,2024,p-C6H4(CH3)2,14
+Netherlands,2024,pH,63
+Netherlands,2024,trans-H3C-CH=CH-CH3,2
+North Macedonia,2024,BS,58
+North Macedonia,2024,C6H6,8
+North Macedonia,2024,CO,88
+North Macedonia,2024,NO,92
+North Macedonia,2024,NO2,88
+North Macedonia,2024,NOX as NO2,88
+North Macedonia,2024,O3,83
+North Macedonia,2024,PM10,88
+North Macedonia,2024,PM2.5,42
+North Macedonia,2024,SO2,147
+Norway,2024,As,3
+Norway,2024,As in PM10,4
+Norway,2024,BaP,1
+Norway,2024,BaP in PM10,10
+Norway,2024,C6H6,14
+Norway,2024,CO,8
+Norway,2024,Cd,3
+Norway,2024,Cd in PM10,4
+Norway,2024,Hg0,1
+Norway,2024,NO,73
+Norway,2024,NO2,81
+Norway,2024,NOX as NO2,73
+Norway,2024,Ni,3
+Norway,2024,Ni in PM10,4
+Norway,2024,O3,18
+Norway,2024,PM10,91
+Norway,2024,PM2.5,80
+Norway,2024,Pb,2
+Norway,2024,Pb in PM10,3
+Norway,2024,SO2,15
+Poland,2024,(CH3)2-CH-CH2-CH2-CH3,1
+Poland,2024,(CH3)3-C-CH2-CH-(CH3)2,1
+Poland,2024,"1,2,3-C6H3(CH3)3",1
+Poland,2024,"1,2,4-C6H3(CH3)3",1
+Poland,2024,"1,3,5-C6H3(CH3)3",1
+Poland,2024,As,4
+Poland,2024,As in PM10,156
+Poland,2024,BaP,4
+Poland,2024,BaP in PM10,312
+Poland,2024,Benzo(a)anthracene,4
+Poland,2024,Benzo(a)anthracene in PM10,39
+Poland,2024,Benzo(b)fluoranthene,4
+Poland,2024,Benzo(b)fluoranthene in PM10,39
+Poland,2024,Benzo(j)fluoranthene,4
+Poland,2024,Benzo(j)fluoranthene in PM10,40
+Poland,2024,Benzo(k)fluoranthene,4
+Poland,2024,Benzo(k)fluoranthene in PM10,39
+Poland,2024,C2H6,1
+Poland,2024,C6H14,1
+Poland,2024,C6H5-C2H5,1
+Poland,2024,C6H5-CH3,1
+Poland,2024,C6H6,130
+Poland,2024,C7H16,1
+Poland,2024,C8H18,1
+Poland,2024,CH2=CH-C(CH3)=CH2,1
+Poland,2024,CH2=CH-CH3,1
+Poland,2024,CH2=CH-CH=CH2,1
+Poland,2024,CO,132
+Poland,2024,Ca2+ in PM2.5,5
+Poland,2024,Cd,4
+Poland,2024,Cd in PM10,155
+Poland,2024,Cl- in PM2.5,5
+Poland,2024,Dibenzo(ah)anthracene,4
+Poland,2024,Dibenzo(ah)anthracene in PM10,39
+Poland,2024,Dibenzo(ah)pyrene in PM10,23
+Poland,2024,EC in PM2.5,5
+Poland,2024,H2C=CH-CH2-CH2-CH3,1
+Poland,2024,H2C=CH-CH2-CH3,1
+Poland,2024,H2C=CH2,1
+Poland,2024,H3C-(CH2)3-CH3,1
+Poland,2024,H3C-CH(CH3)2,1
+Poland,2024,H3C-CH2-CH(CH3)2,1
+Poland,2024,H3C-CH2-CH2-CH3,1
+Poland,2024,H3C-CH2-CH3,1
+Poland,2024,H3C-HC=CH-CH2-CH3,1
+Poland,2024,HC=CH,1
+Poland,2024,HCHO,2
+Poland,2024,Hg,4
+Poland,2024,Hg0 + Hg-reactive,6
+Poland,2024,"Indeno-(1,2,3-cd)pyrene",4
+Poland,2024,"Indeno-(1,2,3-cd)pyrene in PM",39
+Poland,2024,K+ in PM2.5,5
+Poland,2024,Mg2+ in PM2.5,5
+Poland,2024,NH4+ in PM2.5,5
+Poland,2024,NO,203
+Poland,2024,NO2,258
+Poland,2024,NO3- in PM2.5,5
+Poland,2024,NOX as NO2,253
+Poland,2024,Na+  in PM2.5,5
+Poland,2024,Ni,4
+Poland,2024,Ni in PM10,154
+Poland,2024,O3,152
+Poland,2024,OC in PM2.5,5
+Poland,2024,PM10,646
+Poland,2024,PM2.5,275
+Poland,2024,Pb in PM10,158
+Poland,2024,SO2,223
+Poland,2024,SO42- in PM2.5,5
+Poland,2024,cis-H3C-CH=CH-CH3,1
+Poland,2024,"m,p-C6H4(CH3)2",1
+Poland,2024,o-C6H4-(CH3)2,1
+Poland,2024,trans-H3C-CH=CH-CH3,1
+Portugal,2024,Aldrin,2
+Portugal,2024,Anthracene,2
+Portugal,2024,As,5
+Portugal,2024,As in PM10,3
+Portugal,2024,BaP,4
+Portugal,2024,BaP in PM10,3
+Portugal,2024,Benzo(a)anthracene,4
+Portugal,2024,Benzo(a)anthracene in PM10,3
+Portugal,2024,Benzo(b)fluoranthene,4
+Portugal,2024,Benzo(b)fluoranthene in PM10,6
+Portugal,2024,Benzo(ghi)perylene,2
+Portugal,2024,Benzo(ghi)perylene in PM10,2
+Portugal,2024,Benzo(k)fluoranthene,4
+Portugal,2024,Benzo(k)fluoranthene in PM10,3
+Portugal,2024,Black Carbon,2
+Portugal,2024,C6H5-C2H5,4
+Portugal,2024,C6H5-CH3,4
+Portugal,2024,C6H6,22
+Portugal,2024,CO,37
+Portugal,2024,Ca++,2
+Portugal,2024,Ca2+ in PM10,1
+Portugal,2024,Ca2+ in PM2.5,1
+Portugal,2024,Cd,5
+Portugal,2024,Cd in PM10,3
+Portugal,2024,Chrysene,2
+Portugal,2024,Cl-,2
+Portugal,2024,Cl- in PM10,1
+Portugal,2024,Cl- in PM2.5,1
+Portugal,2024,Cr,2
+Portugal,2024,Cu,2
+Portugal,2024,Dibenzo(ah)anthracene,4
+Portugal,2024,Dibenzo(ah)anthracene in PM10,3
+Portugal,2024,Dieldrin,2
+Portugal,2024,EC in PM10,1
+Portugal,2024,EC in PM2.5,1
+Portugal,2024,Endrin,2
+Portugal,2024,Fluoranthene,2
+Portugal,2024,H2S,1
+Portugal,2024,HCB,2
+Portugal,2024,Heptachlor,2
+Portugal,2024,Heptachlor Epoxide,2
+Portugal,2024,Hg,4
+Portugal,2024,"Indeno-(1,2,3-cd)pyrene",4
+Portugal,2024,"Indeno-(1,2,3-cd)pyrene in PM",3
+Portugal,2024,K+,2
+Portugal,2024,K+ in PM10,1
+Portugal,2024,K+ in PM2.5,1
+Portugal,2024,Mg++,2
+Portugal,2024,Mg2+ in PM10,1
+Portugal,2024,Mg2+ in PM2.5,1
+Portugal,2024,NH4+,2
+Portugal,2024,NH4+ in PM10,1
+Portugal,2024,NH4+ in PM2.5,1
+Portugal,2024,NO,150
+Portugal,2024,NO2,151
+Portugal,2024,NO3-,2
+Portugal,2024,NO3- in PM10,3
+Portugal,2024,NO3- in PM2.5,1
+Portugal,2024,NOX as NO2,153
+Portugal,2024,Na+,2
+Portugal,2024,Na+  in PM10,1
+Portugal,2024,Na+  in PM2.5,1
+Portugal,2024,Ni,4
+Portugal,2024,Ni in PM10,3
+Portugal,2024,O3,114
+Portugal,2024,OC in PM10,1
+Portugal,2024,OC in PM2.5,1
+Portugal,2024,PCB-101,2
+Portugal,2024,PCB-128,2
+Portugal,2024,PCB-153,2
+Portugal,2024,PCB-180,2
+Portugal,2024,PCB-28,2
+Portugal,2024,PCB-31,2
+Portugal,2024,PCB-52,2
+Portugal,2024,PM10,132
+Portugal,2024,PM2.5,50
+Portugal,2024,Pb,4
+Portugal,2024,Pb in PM10,3
+Portugal,2024,Phenanthrene,2
+Portugal,2024,Pyrene,2
+Portugal,2024,SO2,62
+Portugal,2024,SO4--,2
+Portugal,2024,SO42-  in PM10,1
+Portugal,2024,SO42- in PM2.5,1
+Portugal,2024,Zn,2
+Portugal,2024,alpha-HCH,2
+Portugal,2024,gamma-HCH,2
+Portugal,2024,"m,p-C6H4(CH3)2",4
+Portugal,2024,o-C6H4-(CH3)2,4
+Romania,2024,As in PM10,108
+Romania,2024,BaP,1
+Romania,2024,BaP in PM10,14
+Romania,2024,C6H6,108
+Romania,2024,CO,149
+Romania,2024,Cd in PM10,124
+Romania,2024,NO,15
+Romania,2024,NO2,167
+Romania,2024,NOX as NO2,8
+Romania,2024,Ni in PM10,118
+Romania,2024,O3,106
+Romania,2024,PM10,362
+Romania,2024,PM2.5,96
+Romania,2024,Pb in PM10,131
+Romania,2024,SO2,168
+Serbia,2024,As in PM10,4
+Serbia,2024,BS,21
+Serbia,2024,C6H6,4
+Serbia,2024,CO,24
+Serbia,2024,Cd in PM10,4
+Serbia,2024,NO,24
+Serbia,2024,NO2,47
+Serbia,2024,NOX as NO2,24
+Serbia,2024,Ni in PM10,4
+Serbia,2024,O3,12
+Serbia,2024,PM10,28
+Serbia,2024,PM2.5,15
+Serbia,2024,Pb in PM10,4
+Serbia,2024,SO2,48
+Slovakia,2024,As,26
+Slovakia,2024,As in PM10,20
+Slovakia,2024,BaP,9
+Slovakia,2024,BaP in PM10,34
+Slovakia,2024,C6H6,73
+Slovakia,2024,CO,49
+Slovakia,2024,Cd,27
+Slovakia,2024,Cd in PM10,18
+Slovakia,2024,H2S,6
+Slovakia,2024,Hg0,2
+Slovakia,2024,NO,93
+Slovakia,2024,NO2,103
+Slovakia,2024,NOX as NO2,102
+Slovakia,2024,Ni,26
+Slovakia,2024,Ni in PM10,20
+Slovakia,2024,O3,70
+Slovakia,2024,PM10,111
+Slovakia,2024,PM2.5,97
+Slovakia,2024,Pb,33
+Slovakia,2024,Pb in PM10,18
+Slovakia,2024,SO2,82
+Slovakia,2024,SPM,31
+Slovenia,2024,As,1
+Slovenia,2024,As in PM10,14
+Slovenia,2024,BaP,1
+Slovenia,2024,BaP in PM10,17
+Slovenia,2024,Benzo(a)anthracene,1
+Slovenia,2024,Benzo(a)anthracene in PM10,13
+Slovenia,2024,"Benzo(b,j,k)fluoranthene",1
+Slovenia,2024,"Benzo(b,j,k)fluorantheneInPM1",13
+Slovenia,2024,C6H5-C2H5,2
+Slovenia,2024,C6H5-CH3,2
+Slovenia,2024,C6H6,3
+Slovenia,2024,CO,11
+Slovenia,2024,Ca2+ in PM2.5,8
+Slovenia,2024,Cd,1
+Slovenia,2024,Cd in PM10,14
+Slovenia,2024,Cl- in PM2.5,8
+Slovenia,2024,Dibenzo(ah)anthracene,1
+Slovenia,2024,Dibenzo(ah)anthracene in PM10,13
+Slovenia,2024,EC in PM2.5,8
+Slovenia,2024,Hg,1
+Slovenia,2024,Hg0 + Hg-reactive,1
+Slovenia,2024,"Indeno-(1,2,3-cd)pyrene",1
+Slovenia,2024,"Indeno-(1,2,3-cd)pyrene in PM",13
+Slovenia,2024,K+ in PM2.5,8
+Slovenia,2024,Mg2+ in PM2.5,8
+Slovenia,2024,NH4+ in PM2.5,8
+Slovenia,2024,NO2,32
+Slovenia,2024,NO3- in PM2.5,8
+Slovenia,2024,NOX as NO2,27
+Slovenia,2024,Na+  in PM2.5,8
+Slovenia,2024,Ni,1
+Slovenia,2024,Ni in PM10,14
+Slovenia,2024,O3,37
+Slovenia,2024,OC in PM2.5,9
+Slovenia,2024,PM10,88
+Slovenia,2024,PM2.5,28
+Slovenia,2024,Pb,1
+Slovenia,2024,Pb in PM10,14
+Slovenia,2024,SO2,23
+Slovenia,2024,SO42- in PM2.5,8
+Slovenia,2024,SPM,1
+Slovenia,2024,"m,p-C6H4(CH3)2",2
+Slovenia,2024,o-C6H4-(CH3)2,2
+Spain,2024,(CH3)2-CH-CH2-CH2-CH3,8
+Spain,2024,(CH3)3-C-CH2-CH-(CH3)2,19
+Spain,2024,"1,2,3-C6H3(CH3)3",17
+Spain,2024,"1,2,4-C6H3(CH3)3",19
+Spain,2024,"1,3,5-C6H3(CH3)3",19
+Spain,2024,Acenaphthene,36
+Spain,2024,Acenaphthylene,6
+Spain,2024,Acenaphtylene,44
+Spain,2024,Anthracene,55
+Spain,2024,As,7
+Spain,2024,As in PM10,310
+Spain,2024,BaP,7
+Spain,2024,BaP in PM10,287
+Spain,2024,Benzo(a)anthracene,7
+Spain,2024,Benzo(a)anthracene in PM10,167
+Spain,2024,Benzo(b)fluoranthene,7
+Spain,2024,Benzo(b)fluoranthene in PM10,155
+Spain,2024,Benzo(b+j)fluoranthene,5
+Spain,2024,"Benzo(b,j)fluorantheneinPM10",6
+Spain,2024,"Benzo(b,j,k)fluorantheneInPM1",1
+Spain,2024,Benzo(e)pyrene in PM10,4
+Spain,2024,Benzo(ghi)perylene,7
+Spain,2024,Benzo(ghi)perylene in PM10,71
+Spain,2024,Benzo(j)fluoranthene,6
+Spain,2024,Benzo(j)fluoranthene in PM10,134
+Spain,2024,Benzo(k)fluoranthene,7
+Spain,2024,Benzo(k)fluoranthene in PM10,158
+Spain,2024,Benzo(k+j)fluoranthene,5
+Spain,2024,Benzo(k+j)fluoranthene in PM10,4
+Spain,2024,C2H6,1
+Spain,2024,C6H12,2
+Spain,2024,C6H14,12
+Spain,2024,C6H4-(CH3)2,37
+Spain,2024,C6H5-C2H5,77
+Spain,2024,C6H5-CH3,150
+Spain,2024,C6H6,236
+Spain,2024,C7H16,20
+Spain,2024,C8H18,20
+Spain,2024,CH2=CH-C(CH3)=CH2,17
+Spain,2024,CH2=CH-CH3,1
+Spain,2024,CH2=CH-CH=CH2,7
+Spain,2024,CO,375
+Spain,2024,Ca2+ in PM2.5,11
+Spain,2024,Cd,7
+Spain,2024,Cd in PM10,311
+Spain,2024,Chrysene,67
+Spain,2024,Cl- in PM2.5,6
+Spain,2024,Cr,6
+Spain,2024,Cr in PM10,4
+Spain,2024,Cu,10
+Spain,2024,Dibenzo(ah)anthracene,7
+Spain,2024,Dibenzo(ah)anthracene in PM10,166
+Spain,2024,EC in PM2.5,6
+Spain,2024,Fe,4
+Spain,2024,Fluoranthene,87
+Spain,2024,Fluorene,50
+Spain,2024,H2C=CH-CH2-CH2-CH3,12
+Spain,2024,H2C=CH-CH2-CH3,6
+Spain,2024,H2C=CH2,1
+Spain,2024,H2S,4
+Spain,2024,H3C-(CH2)3-CH3,18
+Spain,2024,H3C-CH(CH3)2,8
+Spain,2024,H3C-CH2-CH(CH3)2,12
+Spain,2024,H3C-CH2-CH2-CH3,8
+Spain,2024,H3C-CH2-CH3,1
+Spain,2024,H3C-HC=CH-CH2-CH3,11
+Spain,2024,HC=CH,1
+Spain,2024,HCHO,4
+Spain,2024,Hg,8
+Spain,2024,Hg in PM10,16
+Spain,2024,Hg0 + Hg-reactive,5
+Spain,2024,"Indeno-(1,2,3-cd)pyrene",7
+Spain,2024,"Indeno-(1,2,3-cd)pyrene in PM",166
+Spain,2024,K+ in PM2.5,11
+Spain,2024,Mg2+ in PM2.5,11
+Spain,2024,Mn,6
+Spain,2024,NH3,8
+Spain,2024,NH4+ in PM2.5,6
+Spain,2024,NO,777
+Spain,2024,NO2,798
+Spain,2024,NO3- in PM2.5,6
+Spain,2024,NOX as NO2,772
+Spain,2024,Na+  in PM2.5,11
+Spain,2024,Naphtalene,30
+Spain,2024,Naphthalene,6
+Spain,2024,Ni,7
+Spain,2024,Ni in PM10,310
+Spain,2024,O3,653
+Spain,2024,OC in PM2.5,6
+Spain,2024,PM1,2
+Spain,2024,PM10,982
+Spain,2024,PM2.5,571
+Spain,2024,Pb,6
+Spain,2024,Pb in PM10,334
+Spain,2024,Perylene,5
+Spain,2024,Perylene in PM10,14
+Spain,2024,Phenanthrene,49
+Spain,2024,Pyrene,66
+Spain,2024,SO2,659
+Spain,2024,SO42- in PM2.5,6
+Spain,2024,T-VOC,9
+Spain,2024,THC (NM),10
+Spain,2024,Zn,6
+Spain,2024,Zn in PM10,4
+Spain,2024,cis-H3C-CH=CH-CH3,7
+Spain,2024,"m,p-C6H4(CH3)2",106
+Spain,2024,m-C6H4-(CH3)2,3
+Spain,2024,o-C6H4-(CH3)2,63
+Spain,2024,trans-H3C-CH=CH-CH3,7
+Spain,2024,trans-H3C-HC=CH-CH2-CH3,8
+Sweden,2024,(CH3)2-CH-CH2-CH2-CH3,1
+Sweden,2024,(CH3)3-C-CH2-CH-(CH3)2,1
+Sweden,2024,"1,2,3-C6H3(CH3)3",1
+Sweden,2024,"1,2,4-C6H3(CH3)3",1
+Sweden,2024,"1,3,5-C6H3(CH3)3",1
+Sweden,2024,3-methylpentane,1
+Sweden,2024,6:2-FTS,4
+Sweden,2024,Aldrin,2
+Sweden,2024,Anthracene,12
+Sweden,2024,Anthracene in PM10 (aerosol),2
+Sweden,2024,Anti-DP,3
+Sweden,2024,As,5
+Sweden,2024,As in PM10,11
+Sweden,2024,Atrazine,2
+Sweden,2024,BDE100,8
+Sweden,2024,BDE153,8
+Sweden,2024,BDE154,8
+Sweden,2024,BDE209,4
+Sweden,2024,BDE47,8
+Sweden,2024,BDE85,8
+Sweden,2024,BDE99,8
+Sweden,2024,BEH-TEBP,3
+Sweden,2024,BS,2
+Sweden,2024,BTBPT,3
+Sweden,2024,BaP,12
+Sweden,2024,BaP in PM10,13
+Sweden,2024,BaP in PM2.5,3
+Sweden,2024,Back scattering,1
+Sweden,2024,Benzo(a)anthracene,12
+Sweden,2024,Benzo(a)anthracene in PM10,2
+Sweden,2024,Benzo(a)anthracene in PM2.5,3
+Sweden,2024,Benzo(b)fluoranthene,12
+Sweden,2024,Benzo(b)fluoranthene in PM10,2
+Sweden,2024,Benzo(ghi)perylene,12
+Sweden,2024,Benzo(ghi)perylene in PM10,2
+Sweden,2024,Benzo(j)fluoranthene,8
+Sweden,2024,Benzo(j)fluoranthene in PM2.5,3
+Sweden,2024,Benzo(k)fluoranthene,12
+Sweden,2024,Benzo(k)fluoranthene in PM10,2
+Sweden,2024,Benzo(k)fluoranthene in PM2.5,3
+Sweden,2024,Black Carbon,17
+Sweden,2024,C2H6,1
+Sweden,2024,C6H14,1
+Sweden,2024,C6H4-(CH3)2,2
+Sweden,2024,C6H5-C2H5,5
+Sweden,2024,C6H5-CH3,14
+Sweden,2024,C6H6,57
+Sweden,2024,C7H16,1
+Sweden,2024,C8H18,4
+Sweden,2024,C9H20,3
+Sweden,2024,CDD1N,4
+Sweden,2024,CDD4X,4
+Sweden,2024,CDD6P,4
+Sweden,2024,CDD6X,4
+Sweden,2024,CDD9X,4
+Sweden,2024,CDDO,4
+Sweden,2024,CDF2N,4
+Sweden,2024,CDF2T,4
+Sweden,2024,CDF4X,4
+Sweden,2024,CDF6P,4
+Sweden,2024,CDF6X,4
+Sweden,2024,CDF9P,4
+Sweden,2024,CDF9X,4
+Sweden,2024,CDFDN,1
+Sweden,2024,CDFDX,1
+Sweden,2024,CDFO,4
+Sweden,2024,CDFP2,4
+Sweden,2024,CDFX1,4
+Sweden,2024,CH2=CH-C(CH3)=CH2,1
+Sweden,2024,CH2=CH-CH3,1
+Sweden,2024,CH2=CH-CH=CH2,1
+Sweden,2024,CO,16
+Sweden,2024,Ca++,88
+Sweden,2024,Cd,5
+Sweden,2024,Cd in PM10,11
+Sweden,2024,Chrysene,12
+Sweden,2024,Chrysene in PM10,2
+Sweden,2024,Cl-,87
+Sweden,2024,Co,5
+Sweden,2024,Co in PM10,5
+Sweden,2024,Cr,5
+Sweden,2024,Cr in PM10,5
+Sweden,2024,Cu,5
+Sweden,2024,Cu in PM10,5
+Sweden,2024,Cyclo-hexane,1
+Sweden,2024,DBDPE,3
+Sweden,2024,DCMU,2
+Sweden,2024,Dibenzo(ah)anthracene,12
+Sweden,2024,Dibenzo(ah)anthracene in PM10,2
+Sweden,2024,Dibenzo(ah)anthracene in PM2.5,3
+Sweden,2024,Dieldrin,2
+Sweden,2024,EC in PM10,5
+Sweden,2024,EH-TBB,3
+Sweden,2024,Endosulfan sulfate,4
+Sweden,2024,Fe,2
+Sweden,2024,Fluoranthene,12
+Sweden,2024,Fluoranthene in PM10 (aerosol),2
+Sweden,2024,H+,12
+Sweden,2024,H2C=CH-CH2-CH2-CH3,1
+Sweden,2024,H2C=CH-CH2-CH3,1
+Sweden,2024,H2C=CH2,1
+Sweden,2024,H3C-(CH2)3-CH3,1
+Sweden,2024,H3C-CH(CH3)2,1
+Sweden,2024,H3C-CH2-CH(CH3)2,1
+Sweden,2024,H3C-CH2-CH2-CH3,1
+Sweden,2024,H3C-CH2-CH3,1
+Sweden,2024,HBB,3
+Sweden,2024,HBCD,4
+Sweden,2024,HC=CH,1
+Sweden,2024,HCB,8
+Sweden,2024,HCl,1
+Sweden,2024,HNO3,2
+Sweden,2024,HNO3+NO3,8
+Sweden,2024,Heptachlor,2
+Sweden,2024,Hg,7
+Sweden,2024,Hg-reactive,1
+Sweden,2024,Hg0,1
+Sweden,2024,Hg0 + Hg-reactive,4
+Sweden,2024,"Indeno-(1,2,3-cd)pyrene",12
+Sweden,2024,"Indeno-(1,2,3-cd)pyrene in PM",2
+Sweden,2024,"Indeno-(1,2,3-cd)pyrene in PM2",3
+Sweden,2024,Isoproturon,2
+Sweden,2024,K+,88
+Sweden,2024,Kj-N,34
+Sweden,2024,MCCP,4
+Sweden,2024,Mg++,88
+Sweden,2024,Mn,73
+Sweden,2024,Mn in PM10,5
+Sweden,2024,NH3,16
+Sweden,2024,NH3+NH4,8
+Sweden,2024,NH4,3
+Sweden,2024,NH4+,79
+Sweden,2024,NO,15
+Sweden,2024,NO2,255
+Sweden,2024,NO3,3
+Sweden,2024,NO3-,79
+Sweden,2024,NOX as NO2,85
+Sweden,2024,NT,30
+Sweden,2024,Na+,88
+Sweden,2024,Ni,5
+Sweden,2024,Ni in PM10,11
+Sweden,2024,O3,70
+Sweden,2024,OC,1
+Sweden,2024,OC in PM10,5
+Sweden,2024,PBEB,3
+Sweden,2024,PBT,3
+Sweden,2024,PCB-101,8
+Sweden,2024,PCB-118,8
+Sweden,2024,PCB-138,8
+Sweden,2024,PCB-153,8
+Sweden,2024,PCB-180,8
+Sweden,2024,PCB-28,8
+Sweden,2024,PCB-52,8
+Sweden,2024,PFBA,4
+Sweden,2024,PFBS,4
+Sweden,2024,PFDA,4
+Sweden,2024,PFDS,4
+Sweden,2024,PFHpA,4
+Sweden,2024,PFHxA,4
+Sweden,2024,PFHxS,4
+Sweden,2024,PFNA,4
+Sweden,2024,PFOA,5
+Sweden,2024,PFOS,5
+Sweden,2024,PFOSA,4
+Sweden,2024,PFPeA,4
+Sweden,2024,PFUnDA,4
+Sweden,2024,PM1,2
+Sweden,2024,PM10,209
+Sweden,2024,PM2.5,116
+Sweden,2024,Pb,6
+Sweden,2024,Pb in PM10,11
+Sweden,2024,Phenanthrene,12
+Sweden,2024,Phenanthrene in PM10 (aerosol),2
+Sweden,2024,Pyrene,12
+Sweden,2024,Pyrene in PM10 (aerosol),2
+Sweden,2024,SCCP,4
+Sweden,2024,SO2,69
+Sweden,2024,SO4 (H2SO4 aerosols) (SO4--),6
+Sweden,2024,SO4--,79
+Sweden,2024,Syn-DP,3
+Sweden,2024,TCDD,4
+Sweden,2024,TP,51
+Sweden,2024,UFPs,1
+Sweden,2024,V in PM10,5
+Sweden,2024,Vanadium,5
+Sweden,2024,Zn,5
+Sweden,2024,Zn in PM10,5
+Sweden,2024,alpha-Endosulfan,4
+Sweden,2024,alpha-HCH,8
+Sweden,2024,beta-Endosulfan,4
+Sweden,2024,cis-CD,8
+Sweden,2024,cis-H3C-CH=CH-CH3,1
+Sweden,2024,cis-H3C-HC=CH-CH2-CH3,1
+Sweden,2024,gamma-HCH,8
+Sweden,2024,k,58
+Sweden,2024,"m,p-C6H4(CH3)2",4
+Sweden,2024,m-C6H4-(CH3)2,2
+Sweden,2024,o-C6H4-(CH3)2,6
+Sweden,2024,"p,p'-DDD",8
+Sweden,2024,"p,p'-DDE",8
+Sweden,2024,"p,p'-DDT",8
+Sweden,2024,pH,79
+Sweden,2024,precip_amount,90
+Sweden,2024,trans-CD,8
+Sweden,2024,trans-H3C-CH=CH-CH3,1
+Sweden,2024,trans-H3C-HC=CH-CH2-CH3,1
+Sweden,2024,trans-NO,8
+Sweden,2024,α-DBE-DBCH,2
+Sweden,2024,β-DBE-DBCH,2
+Switzerland,2024,As in PM10,12
+Switzerland,2024,BaP in PM10,9
+Switzerland,2024,C6H5-CH3,15
+Switzerland,2024,C6H6,15
+Switzerland,2024,CO,80
+Switzerland,2024,Cd in PM10,29
+Switzerland,2024,NO,210
+Switzerland,2024,NO2,271
+Switzerland,2024,NOX as NO2,265
+Switzerland,2024,Ni in PM10,12
+Switzerland,2024,O3,214
+Switzerland,2024,PM10,201
+Switzerland,2024,PM2.5,65
+Switzerland,2024,Pb in PM10,29
+Switzerland,2024,SO2,132
+Switzerland,2024,THC (NM),20
+Türkiye,2024,As in PM10,357
+Türkiye,2024,BaP in PM10,357
+Türkiye,2024,C6H6,357
+Türkiye,2024,CO,357
+Türkiye,2024,Cd in PM10,357
+Türkiye,2024,NO2,357
+Türkiye,2024,NOX as NO2,357
+Türkiye,2024,Ni in PM10,357
+Türkiye,2024,O3,357
+Türkiye,2024,PM10,357
+Türkiye,2024,PM2.5,357
+Türkiye,2024,Pb in PM10,357
+Türkiye,2024,SO2,357
+Ukraine,2019,CO,7
+Ukraine,2019,NO,7
+Ukraine,2019,NO2,7
+Ukraine,2019,NOX as NO2,7
+Ukraine,2019,O3,7
+Ukraine,2019,PM10,7
+Ukraine,2019,PM2.5,7
+Ukraine,2019,SO2,7
+United Kingdom,2019,As in PM10,1
+United Kingdom,2019,BaP in PM10,1
+United Kingdom,2019,Benzo(a)anthracene in PM10,1
+United Kingdom,2019,"Benzo(b,j)fluorantheneinPM10",1
+United Kingdom,2019,Benzo(k)fluoranthene in PM10,1
+United Kingdom,2019,C6H5-C2H5,1
+United Kingdom,2019,C6H5-CH3,1
+United Kingdom,2019,C6H6,1
+United Kingdom,2019,CH2=CH-CH=CH2,1
+United Kingdom,2019,CO,1
+United Kingdom,2019,Cd in PM10,1
+United Kingdom,2019,Dibenzo(ac+ah)anthracene in PM10,1
+United Kingdom,2019,Dibenzo(ah+ac)anthracene in PM10,1
+United Kingdom,2019,"Indeno-(1,2,3-cd)pyrene in PM",1
+United Kingdom,2019,NO2,3
+United Kingdom,2019,NOX as NO2,3
+United Kingdom,2019,Ni in PM10,1
+United Kingdom,2019,O3,1
+United Kingdom,2019,PM10,2
+United Kingdom,2019,PM2.5,1
+United Kingdom,2019,Pb in PM10,1
+United Kingdom,2019,SO2,1
+United Kingdom,2019,"m,p-C6H4(CH3)2",1
+United Kingdom,2019,o-C6H4-(CH3)2,1
+United Kingdom,2020,(CH3)2-CH-CH2-CH2-CH3,10
+United Kingdom,2020,(CH3)3-C-CH2-CH-(CH3)2,10
+United Kingdom,2020,"1,2,3-C6H3(CH3)3",10
+United Kingdom,2020,"1,2,4-C6H3(CH3)3",10
+United Kingdom,2020,"1,3,5-C6H3(CH3)3",10
+United Kingdom,2020,1-Methyl Naphthalene,6
+United Kingdom,2020,1-Methyl anthracene,6
+United Kingdom,2020,1-Methyl anthracene in PM10,4
+United Kingdom,2020,1-Methyl phenanthrene,6
+United Kingdom,2020,1-methylnaphtalene,4
+United Kingdom,2020,1-methylphenanthrene,4
+United Kingdom,2020,2-Methyl Naphthalene,6
+United Kingdom,2020,2-Methyl anthracene,6
+United Kingdom,2020,2-Methyl phenanthrene,6
+United Kingdom,2020,2-methylanthracene,4
+United Kingdom,2020,2-methylnaphtalene,4
+United Kingdom,2020,2-methylphenanthrene,4
+United Kingdom,2020,4.5-Methylene phenanthrene,6
+United Kingdom,2020,4.5-Methylene phenanthrene in PM10,4
+United Kingdom,2020,5-Methyl Chrysene,6
+United Kingdom,2020,5-Methyl Chrysene in PM10,78
+United Kingdom,2020,9-Methyl anthracene,6
+United Kingdom,2020,9-Methyl anthracene in PM10,4
+United Kingdom,2020,Acenaphthene,10
+United Kingdom,2020,Acenaphthylene,6
+United Kingdom,2020,Acenaphtylene,4
+United Kingdom,2020,Anthanthrene,10
+United Kingdom,2020,Anthanthrene in PM10,72
+United Kingdom,2020,Anthracene,10
+United Kingdom,2020,As,30
+United Kingdom,2020,As in PM10,82
+United Kingdom,2020,BaP,6
+United Kingdom,2020,BaP in PM10,78
+United Kingdom,2020,Benzo(a)anthracene,6
+United Kingdom,2020,Benzo(a)anthracene in PM10,78
+United Kingdom,2020,Benzo(b)fluoranthene,4
+United Kingdom,2020,Benzo(b)fluoranthene in PM10,78
+United Kingdom,2020,"Benzo(b)naphtho(2,1-d)thiophene",6
+United Kingdom,2020,"Benzo(b)naphtho(2,1-d)thiophene in PM10",76
+United Kingdom,2020,Benzo(b+j)fluoranthene,6
+United Kingdom,2020,Benzo(c)phenanthrene,6
+United Kingdom,2020,Benzo(c)phenanthrene in PM10,76
+United Kingdom,2020,Benzo(e)pyrene,10
+United Kingdom,2020,Benzo(e)pyrene in PM10,74
+United Kingdom,2020,Benzo(ghi)perylene,10
+United Kingdom,2020,Benzo(ghi)perylene in PM10,74
+United Kingdom,2020,Benzo(j)fluoranthene,4
+United Kingdom,2020,Benzo(j)fluoranthene in PM10,78
+United Kingdom,2020,Benzo(k)fluoranthene,6
+United Kingdom,2020,Benzo(k)fluoranthene in PM10,78
+United Kingdom,2020,Biphenyl,10
+United Kingdom,2020,Black Carbon,70
+United Kingdom,2020,C2H6,10
+United Kingdom,2020,C6H14,10
+United Kingdom,2020,C6H5-C2H5,10
+United Kingdom,2020,C6H5-CH3,10
+United Kingdom,2020,C6H6,94
+United Kingdom,2020,C7H16,10
+United Kingdom,2020,C8H18,10
+United Kingdom,2020,CH2=CH-C(CH3)=CH2,10
+United Kingdom,2020,CH2=CH-CH3,10
+United Kingdom,2020,CH2=CH-CH=CH2,10
+United Kingdom,2020,CO,28
+United Kingdom,2020,Ca2+ in PM2.5,6
+United Kingdom,2020,Cd,30
+United Kingdom,2020,Cd in PM10,82
+United Kingdom,2020,Cholanthrene,6
+United Kingdom,2020,Cholanthrene in PM10,66
+United Kingdom,2020,Chrysene,10
+United Kingdom,2020,Chrysene in PM10,74
+United Kingdom,2020,Cl- in PM2.5,6
+United Kingdom,2020,Coronene,10
+United Kingdom,2020,Coronene in PM10,72
+United Kingdom,2020,"Cyclopenta(c,d)pyrene",6
+United Kingdom,2020,"Cyclopenta(c,d)pyrene in PM10",74
+United Kingdom,2020,Cyklopenta(cd)pyrene,4
+United Kingdom,2020,Dibenzo(ac)anthracene,4
+United Kingdom,2020,Dibenzo(ac)anthracene in PM10,76
+United Kingdom,2020,Dibenzo(ae)pyrene,10
+United Kingdom,2020,Dibenzo(ae)pyrene in PM10,74
+United Kingdom,2020,Dibenzo(ah)anthracene,4
+United Kingdom,2020,Dibenzo(ah)anthracene in PM10,78
+United Kingdom,2020,Dibenzo(ah)pyrene,10
+United Kingdom,2020,Dibenzo(ah)pyrene in PM10,74
+United Kingdom,2020,Dibenzo(ah+ac)anthracene,6
+United Kingdom,2020,Dibenzo(ai)pyrene,10
+United Kingdom,2020,Dibenzo(ai)pyrene in PM10,74
+United Kingdom,2020,Dibenzo(al)pyrene,6
+United Kingdom,2020,Dibenzo(al)pyrene in PM10,78
+United Kingdom,2020,EC in PM2.5,12
+United Kingdom,2020,Fluoranthene,10
+United Kingdom,2020,Fluorene,10
+United Kingdom,2020,H2C=CH-CH2-CH2-CH3,10
+United Kingdom,2020,H2C=CH-CH2-CH3,10
+United Kingdom,2020,H2C=CH2,10
+United Kingdom,2020,H3C-(CH2)3-CH3,10
+United Kingdom,2020,H3C-CH(CH3)2,10
+United Kingdom,2020,H3C-CH2-CH(CH3)2,10
+United Kingdom,2020,H3C-CH2-CH2-CH3,10
+United Kingdom,2020,H3C-CH2-CH3,10
+United Kingdom,2020,HC=CH,10
+United Kingdom,2020,Hg,24
+United Kingdom,2020,Hg in PM10,58
+United Kingdom,2020,Hg in PM2.5,4
+United Kingdom,2020,Hg-reactive,4
+United Kingdom,2020,Hg0,6
+United Kingdom,2020,Hg0 + Hg-reactive,58
+United Kingdom,2020,"Indeno-(1,2,3-cd)pyrene",6
+United Kingdom,2020,"Indeno-(1,2,3-cd)pyrene in PM",78
+United Kingdom,2020,K+ in PM2.5,6
+United Kingdom,2020,Mg2+ in PM2.5,6
+United Kingdom,2020,NH4+ in PM2.5,6
+United Kingdom,2020,NO,394
+United Kingdom,2020,NO2,668
+United Kingdom,2020,NO3- in PM2.5,6
+United Kingdom,2020,NOX as NO2,668
+United Kingdom,2020,Na+  in PM2.5,6
+United Kingdom,2020,Naphthalene,6
+United Kingdom,2020,Ni,30
+United Kingdom,2020,Ni in PM10,82
+United Kingdom,2020,O3,334
+United Kingdom,2020,OC in PM2.5,12
+United Kingdom,2020,PM10,560
+United Kingdom,2020,PM2.5,562
+United Kingdom,2020,Pb,30
+United Kingdom,2020,Pb in PM10,82
+United Kingdom,2020,Perylene,10
+United Kingdom,2020,Perylene in PM10,72
+United Kingdom,2020,Phenanthrene,10
+United Kingdom,2020,Pyrene,10
+United Kingdom,2020,Retene,4
+United Kingdom,2020,SO2,156
+United Kingdom,2020,SO42- in PM2.5,6
+United Kingdom,2020,cis-H3C-CH=CH-CH3,10
+United Kingdom,2020,"m,p-C6H4(CH3)2",10
+United Kingdom,2020,o-C6H4-(CH3)2,10
+United Kingdom,2020,trans-H3C-CH=CH-CH3,10
+United Kingdom,2020,trans-H3C-HC=CH-CH2-CH3,10
