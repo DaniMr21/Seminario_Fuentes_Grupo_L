@@ -1,7 +1,72 @@
+---
+title: "Impacto de la vigilancia del aire sobre la fertilidad en la población europea"
+author: "Daniel Marina de la Cal, Patricia Ibarrondo Revilla y Nerea Yi Estepar Calvo"
+date: "`r format(Sys.Date())`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: flatly
+    number_sections: true
+---
+
+## Introducción
+
+La fertilidad humana es sensible a condiciones ambientales que afectan tanto a la salud reproductiva como a las decisiones familiares. 
+En particular, la calidad del aire se ha relacionado con alteraciones hormonales, inflamación sistémica y estrés oxidativo que pueden reducir la fecundidad, aumentar el riesgo de pérdida gestacional y acortar la ventana fértil. Más allá de los mecanismos biológicos, el entorno en que las familias planifican también responde a expectativas de salud pública, seguridad ambiental y confianza institucional.
+
+En ese contexto, la **vigilancia de la calidad del aire** (monitorización sistemática, cobertura de estaciones, reporte y disponibilidad de datos) puede operar como un bien público que mejora la salud y reduce la incertidumbre sobre riesgos ambientales. Una red de vigilancia más densa y activa suele acompañar estrategias de control, cumplimiento normativo y comunicación del riesgo, y puede facilitar políticas de reducción de emisiones. 
+El resultado esperado —si estos canales funcionan— es un entorno más saludable y predecible para la crianza, lo que, en teoría, podría favorecer niveles más altos de fertilidad.
+
+## Pregunta e hipótesis
+
+**Pregunta:** ¿Está asociada una mayor vigilancia de la calidad del aire con una mayor fertilidad en la población europea?
+
+**Hipótesis (naïf/observacional):** Más vigilancia del aire implica más fertilidad.  
+Operacionalizamos “vigilancia” mediante el conteo de observaciones de calidad del aire reportadas por país y año; y medimos la fertilidad con la **TFR (Eurostat)**.  
+
+Si la hipótesis es consistente con los datos, esperamos observar una relación **positiva** entre el nivel de vigilancia (más observaciones) y la TFR.
+
+> **Nota:** Esta hipótesis no asume causalidad por sí misma; es un test descriptivo del signo de la asociación.
+
+## Datos y construcción de variables
+
+Trabajamos con dos fuentes principales:
+
+1. **Calidad del aire (`DataExtract.csv`)**:  
+   A partir de los registros originales, limpiamos nombres, homogeneizamos países y contamos observaciones por país–año (`n_obs_aire`).  
+   Con ello construimos resúmenes por país (por ejemplo, `total_obs_aire` y `años_con_cobertura`).
+
+2. **Fertilidad (Eurostat, anual) (`Fertilidad.csv`)**:  
+   Extraemos la **TFR** por país–año, homogeneizamos códigos `geo` a nombres de país y calculamos resúmenes (por ejemplo, `tfr_mean` por país).
+
+### Pipeline de trabajo
+
+1. **Limpieza y homogeneización** de ambas tablas, incluyendo nombres de países.  
+2. **Conteo de vigilancia:** `aire_conteo` (país, año, `n_obs_aire`).  
+3. **Resumen de fertilidad:** `fert_resumen_nombres` (estadísticos por país).  
+4. **Joins:**
+   - `panel_aire_year_con_fert`: panel país–año con resumen de fertilidad adjunto.  
+   - `resumen_aire_fert_pais`: resumen combinado por país, utilizado para el **gráfico de dispersión**.  
+5. **Control de calidad:** detección de países sin coincidencia entre tablas.
+
+
+## Estrategia empírica y lectura de resultados
+
+Como primer **“test de olor”**, graficamos `tfr_mean` (eje *x*) frente a `total_obs_aire` (eje *y*) por país y ajustamos una **recta OLS** con su **banda de confianza**.  
+
+Este gráfico nos permite explorar de forma descriptiva si existe una **asociación positiva** entre la intensidad de vigilancia del aire y la fertilidad promedio en cada país.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(readr)
 library(janitor)
 library(stringr)
+library(scales)
+```
+
+```{r setup, include=FALSE}
 
 #-------------------------------------------------------------------------------
 # Lectura
@@ -218,5 +283,8 @@ resumen_aire_fert_pais %>%
     y = "Observaciones de aire (total)"
   ) +
   theme_minimal()
+
+```
+
 
 
