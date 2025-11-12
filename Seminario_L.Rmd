@@ -10,7 +10,7 @@ output:
     number_sections: true
 ---
 
-## Introducción
+# Introducción
 
 La fertilidad humana es sensible a condiciones ambientales que afectan tanto a la salud reproductiva como a las decisiones familiares. 
 En particular, la calidad del aire se ha relacionado con alteraciones hormonales, inflamación sistémica y estrés oxidativo que pueden reducir la fecundidad, aumentar el riesgo de pérdida gestacional y acortar la ventana fértil. Más allá de los mecanismos biológicos, el entorno en que las familias planifican también responde a expectativas de salud pública, seguridad ambiental y confianza institucional.
@@ -18,7 +18,7 @@ En particular, la calidad del aire se ha relacionado con alteraciones hormonales
 En ese contexto, la **vigilancia de la calidad del aire** (monitorización sistemática, cobertura de estaciones, reporte y disponibilidad de datos) puede operar como un bien público que mejora la salud y reduce la incertidumbre sobre riesgos ambientales. Una red de vigilancia más densa y activa suele acompañar estrategias de control, cumplimiento normativo y comunicación del riesgo, y puede facilitar políticas de reducción de emisiones. 
 El resultado esperado —si estos canales funcionan— es un entorno más saludable y predecible para la crianza, lo que, en teoría, podría favorecer niveles más altos de fertilidad.
 
-## Pregunta e hipótesis
+## Pregunta 1 e hipótesis
 
 **Pregunta:** ¿Está asociada una mayor vigilancia de la calidad del aire con una mayor fertilidad en la población europea?
 
@@ -29,7 +29,7 @@ Si la hipótesis es consistente con los datos, esperamos observar una relación 
 
 > **Nota:** Esta hipótesis no asume causalidad por sí misma; es un test descriptivo del signo de la asociación.
 
-## Datos y construcción de variables
+### Datos y construcción de variables
 
 Trabajamos con dos fuentes principales:
 
@@ -51,7 +51,7 @@ Trabajamos con dos fuentes principales:
 5. **Control de calidad:** detección de países sin coincidencia entre tablas.
 
 
-## Estrategia empírica y lectura de resultados
+### Estrategia empírica y lectura de resultados
 
 Como primer **“test de olor”**, graficamos `tfr_mean` (eje *x*) frente a `total_obs_aire` (eje *y*) por país y ajustamos una **recta OLS** con su **banda de confianza**.  
 
@@ -66,7 +66,7 @@ library(stringr)
 library(scales)
 ```
 
-```{r setup, include=FALSE}
+```{r codigografico1, include = FALSE}
 
 #-------------------------------------------------------------------------------
 # Lectura
@@ -261,13 +261,17 @@ faltan_en_fert <- aire_conteo |> distinct(country) |>
 faltan_en_aire <- fert_resumen_nombres |> distinct(country) |>
   anti_join(aire_conteo |> distinct(country), by = "country")
 
-print(faltan_en_fert)
-print(faltan_en_aire)
+#print(faltan_en_fert)
+#print(faltan_en_aire)
 
 # Muestras rápidas
-print(head(aire_conteo, 10))
-print(head(fert_resumen_nombres, 10))
-print(head(resumen_aire_fert_pais, 10))
+#print(head(aire_conteo, 10))
+#print(head(fert_resumen_nombres, 10))
+#print(head(resumen_aire_fert_pais, 10))
+
+```
+
+```{r grafico1, echo=FALSE, fig.width=8, fig.height=6}
 
 #-------------------------------------------------------------------------------
 #Gráfico 
