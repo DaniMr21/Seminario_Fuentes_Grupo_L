@@ -14,8 +14,7 @@ output:
 <img src="INPUT/IMAGES/portada.png" alt="Gráfico de portada" width="70%">
 </center>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```{r setup, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(readr)
 library(readxl)
@@ -87,28 +86,8 @@ Trabajamos con dos fuentes principales:
 
 2. **Fertilidad (Eurostat, anual) (`Fertilidad.csv`)**:  
    Extraemos la **TFR** por país–año, homogeneizamos códigos `geo` a nombres de país y calculamos resúmenes (por ejemplo, `tfr_mean` por país).
-
-### Pipeline de trabajo
-
-1. **Limpieza y homogeneización** de ambas tablas, incluyendo nombres de países.  
-2. **Conteo de vigilancia:** `aire_conteo` (país, año, `n_obs_aire`).  
-3. **Resumen de fertilidad:** `fert_resumen_nombres` (estadísticos por país).  
-4. **Joins:**
-   - `panel_aire_year_con_fert`: panel país–año con resumen de fertilidad adjunto.  
-   - `resumen_aire_fert_pais`: resumen combinado por país, utilizado para el **gráfico de dispersión**.  
-5. **Control de calidad:** detección de países sin coincidencia entre tablas.
-
-
-### Estrategia empírica y lectura de resultados
-
-Como primer **“test”**, graficamos `tfr_mean` (eje *x*) frente a `total_obs_aire` (eje *y*) por país y ajustamos una **recta OLS** con su **banda de confianza**.  
-
-Este gráfico nos permite explorar de forma descriptiva si existe una **asociación positiva** entre la intensidad de vigilancia del aire y la fertilidad promedio en cada país.
-
-
-```{r codigografico1, include = FALSE}
-
-#-------------------------------------------------------------------------------
+   
+```{r datos obj 1, message = FALSE, warning = FALSE}
 # Lectura
 
 aire <- read_delim(
@@ -121,32 +100,23 @@ fertilidad <- read_delim(
   delim = ",", escape_double = FALSE, trim_ws = TRUE
 )
 
-# (Opcional; no se usa abajo, pero lo leo por si lo necesitas)
-modelos <- read_delim(
-  "INPUT/DATA/Models and objetive.csv",
-  delim = ",", escape_double = FALSE, trim_ws = TRUE
-)
-
-#-------------------------------------------------------------------------------
 # Limpieza básica
 
 aire       <- clean_names(aire)
 fertilidad <- clean_names(fertilidad)
 
+# FERTILIDAD (Eurostat): anual, con códigosque  se pasan a los nombres de los paises
 
-#-------------------------------------------------------------------------------
-# FERTILIDAD (Eurostat): anual con códigos -> nombres país
-
-# Mantener 'geo' como código y luego mapear a 'country'
+# Mantener 'geo' como código y luego mapeamos a 'country'
 fert_codes <- fertilidad |>
   filter(freq == "A") |>
   transmute(
-    geo  = geo,                         # código Eurostat
+    geo  = geo, # código Eurostat
     year = as.integer(time_period),
     tfr  = as.numeric(obs_value)
   )
 
-# Mapeo de códigos Eurostat -> nombre país
+# Mapeo de códigos Eurostat a nombre país
 fert_paises <- fert_codes |>
   mutate(country = case_when(
     geo == "AD" ~ "Andorra",
@@ -160,11 +130,11 @@ fert_paises <- fert_codes |>
     geo == "BY" ~ "Belarus",
     geo == "CH" ~ "Switzerland",
     geo == "CY" ~ "Cyprus",
-    geo == "CZ" ~ "Czechia",                  # usa "Czech Republic" si así sale en 'aire'
+    geo == "CZ" ~ "Czechia",   
     geo == "DE" ~ "Germany",
     geo == "DK" ~ "Denmark",
     geo == "EE" ~ "Estonia",
-    geo == "EL" ~ "Greece",                   # EL = Greece
+    geo == "EL" ~ "Greece",      
     geo == "ES" ~ "Spain",
     geo == "FI" ~ "Finland",
     geo == "FR" ~ "France",
@@ -195,20 +165,32 @@ fert_paises <- fert_codes |>
     geo == "SI" ~ "Slovenia",
     geo == "SK" ~ "Slovakia",
     geo == "SM" ~ "San Marino",
-    geo == "TR" ~ "Türkiye",    # si 'aire' usa "Turkey", abajo lo homogeneizamos
+    geo == "TR" ~ "Türkiye",
     geo == "UA" ~ "Ukraine",
     geo == "UK" ~ "United Kingdom",
     geo == "VA" ~ "Vatican City",
     geo == "XK" ~ "Kosovo",
-    # Agregados (no países) -> fuera del join
+    # Agregados (no países), fuera del join
     geo %in% c("EU27_2020","EU27","EU28","EA19","EFTA") ~ NA_character_
   )) |>
   filter(!is.na(country)) |>
   select(country, year, tfr)
 
-#-------------------------------------------------------------------------------
-# AIRE: conteo por país-año
-# Normalizo nombres y tipos; además, homogeneizo algunos alias típicos
+```
+
+### Pipeline de trabajo
+
+1. **Limpieza y homogeneización** de ambas tablas, incluyendo nombres de países.  
+2. **Conteo de vigilancia:** `aire_conteo` (país, año, `n_obs_aire`).  
+3. **Resumen de fertilidad:** `fert_resumen_nombres` (estadísticos por país).  
+4. **Joins:**
+   - `panel_aire_year_con_fert`: panel país–año con resumen de fertilidad adjunto.  
+   - `resumen_aire_fert_pais`: resumen combinado por país, utilizado para el **gráfico de dispersión**.  
+
+```{r pipeline obj1, message = FALSE, warning = FALSE}
+
+#AIRE: conteo por país-año
+# Normalizamos nombres y tipos; además, homogeneizamos algunos alias típicos
 aire_conteo <- aire |>
   mutate(
     country = str_trim(country),
@@ -226,9 +208,6 @@ aire_conteo <- aire |>
   count(country, year, name = "n_obs_aire") |>
   arrange(country, year)
 
-write_csv(aire_conteo, "OUTPUT/DATA/aire_conteo_country_year.csv")
-
-#-------------------------------------------------------------------------------
 # Resumen de fertilidad por país (nombres ya homogeneizados)
 
 fert_resumen_nombres <- fert_paises |>
@@ -244,14 +223,13 @@ fert_resumen_nombres <- fert_paises |>
   ) |>
   arrange(country)
 
-#-------------------------------------------------------------------------------
-# JOINS SOLICITADOS
+# JOINS
 
-# A) Panel país–año con resumen de fertilidad adjunto (join por country)
+# Panel país–año con resumen de fertilidad adjunto (join por country)
 panel_aire_year_con_fert <- aire_conteo |>
   left_join(fert_resumen_nombres, by = "country")
 
-# B) Resumen por país: agregamos aire y fertilidad
+# Resumen por país: agregamos aire y fertilidad
 aire_resumen_pais <- aire_conteo |>
   group_by(country) |>
   summarise(
@@ -268,7 +246,7 @@ resumen_aire_fert_pais <- aire_resumen_pais |>
   arrange(country)
 
 
-# C) Promedios de fertilidad usando solo años que existen en 'aire_conteo' (solapamiento)
+# Promedios de fertilidad usando solo años que existen en 'aire_conteo' (SOLAPAMIENTO)
 fert_resumen_overlap <- fert_paises |>
   semi_join(aire_conteo |> distinct(country, year), by = c("country","year")) |>
   group_by(country) |>
@@ -283,30 +261,17 @@ fert_resumen_overlap <- fert_paises |>
 resumen_aire_fert_overlap <- aire_resumen_pais |>
   full_join(fert_resumen_overlap, by = "country") |>
   arrange(country)
-
-write_csv(resumen_aire_fert_overlap,
-          "OUTPUT/DATA/resumen_aire_fert_pais_overlap.csv")
-
-# QC de nombres que no machéan
-
-faltan_en_fert <- aire_conteo |> distinct(country) |>
-  anti_join(fert_resumen_nombres |> distinct(country), by = "country")
-faltan_en_aire <- fert_resumen_nombres |> distinct(country) |>
-  anti_join(aire_conteo |> distinct(country), by = "country")
-
-#print(faltan_en_fert)
-#print(faltan_en_aire)
-
-# Muestras rápidas
-#print(head(aire_conteo, 10))
-#print(head(fert_resumen_nombres, 10))
-#print(head(resumen_aire_fert_pais, 10))
-
 ```
 
-```{r grafico1, echo=FALSE, fig.width=8, fig.height=6}
+### Estrategia empírica y lectura de resultados
 
-#-------------------------------------------------------------------------------
+Como primer **“test”**, graficamos `tfr_mean` (eje *x*) frente a `total_obs_aire` (eje *y*) por país y ajustamos una **recta OLS** con su **banda de confianza**.  
+
+Este gráfico nos permite explorar de forma descriptiva si existe una **asociación positiva** entre la intensidad de vigilancia del aire y la fertilidad promedio en cada país.
+
+
+```{r grafico1, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+
 #Gráfico 
 
 resumen_aire_fert_pais%>%
@@ -334,12 +299,7 @@ Con este primer gráfico no podemos afirmar que “más vigilancia implica más 
 
 A continuación vamos a realizar los lest estadísticos de Pearson y Spearman para demostrar esto de manera más objetiva:
 
-```{r test1, echo=FALSE}
-library(lmtest)
-library(sandwich)
-library(broom)
-library(tibble)
-
+```{r test1, message = FALSE, warning = FALSE}
 df_test <- resumen_aire_fert_pais %>%
 filter(!is.na(tfr_mean), !is.na(total_obs_aire)) %>%
 mutate(
@@ -399,6 +359,27 @@ Para esta sección combinamos dos fuentes principales:
 
 2. **Eurostat — Fertilidad (`fert_resumen_nombres`)**  
    - Contiene la TFR media por país, ya homogeneizada en la Parte 1.
+   
+```{r pregunta2_datos, message = FALSE, warning = FALSE}
+# Leer directamente desde la hoja principal
+oms <- read_excel("INPUT/DATA/OMS_Datos.xlsx", sheet = "AAP_2022_city_v9")
+
+# solo Europa
+oms_europa <- oms %>%
+  filter(`WHO Region` == "European Region")
+
+# variable country con nombres armonizados
+oms_europa_limpio <- oms_europa %>%
+  mutate(
+    country = str_trim(`WHO Country Name`),
+    country = recode(
+      country,
+      "Turkey"             = "Türkiye",
+      "Russian Federation" = "Russia",
+      "Republic of Moldova" = "Moldova"
+    )
+  )
+```
 
 Tras armonizar y unir ambas tablas mediante un `left_join()`, obtenemos un panel ciudad–año con valores de NO₂ y fertilidad media por país.  
 A partir de ese panel construimos un **resumen por país** con las siguientes variables:
@@ -410,48 +391,13 @@ A partir de ese panel construimos un **resumen por país** con las siguientes va
 
 Este resumen nos permite trabajar con una unidad clara (el país) y explorar la relación entre contaminación y fertilidad.
 
-### Estrategia empírica
+```{r pregunta2_pipeline, message = FALSE, warning = FALSE}
 
-Para visualizar la relación NO₂–fertilidad utilizamos un **gráfico de burbujas**:
-
-- **Eje X:** concentración media de NO₂ por país.  
-- **Eje Y:** fertilidad media (TFR).  
-- **Tamaño del punto:** número de ciudades monitorizadas (`n_cities`).  
-- **Etiqueta:** nombre del país.  
-- **Recta OLS:** ajustada con banda de confianza (estimación visual del signo de la asociación).
-
-Este enfoque es informativo porque combina:
-- diferencias en contaminación,  
-- diferencias en fertilidad,  
-- y diferencias en la intensidad de monitorización entre países.
-
-### Resultados
-
-```{r pregunta2_codigos, echo=FALSE}
-# Leer directamente desde la hoja principal
-oms <- read_excel("INPUT/DATA/OMS_Datos.xlsx", sheet = "AAP_2022_city_v9")
-
-# 1.solo Europa
-oms_europa <- oms %>%
-  filter(`WHO Region` == "European Region")
-
-# 2.variable 'country' con nombres armonizados
-oms_europa_limpio <- oms_europa %>%
-  mutate(
-    country = str_trim(`WHO Country Name`),
-    country = recode(
-      country,
-      "Turkey"             = "Türkiye",
-      "Russian Federation" = "Russia",
-      "Republic of Moldova" = "Moldova"
-    )
-  )
-
-# 3. JOIN: tabla OMS (ciudad-año) + resumen de fertilidad por país
+# JOIN: tabla OMS ciudad-año + resumen de fertilidad por país
 oms_europa_con_fert <- oms_europa_limpio %>%
   left_join(fert_resumen_nombres, by = "country")
 
-# Opcional: mirar qué países de OMS no tienen fertilidad
+#mirar qué países de OMS no tienen fertilidad
 faltan_fert_oms <- oms_europa_limpio %>%
   distinct(country) %>%
   anti_join(fert_resumen_nombres %>% distinct(country), by = "country")
@@ -469,7 +415,22 @@ pais_no2_fert <- oms_europa_con_fert %>%
 
 ```
 
-```{r grafico2, echo=FALSE, fig.width=8, fig.height=6}
+### Estrategia empírica
+
+Para visualizar la relación NO₂–fertilidad utilizamos un **gráfico de burbujas**:
+
+- **Eje X:** concentración media de NO₂ por país.  
+- **Eje Y:** fertilidad media (TFR).  
+- **Tamaño del punto:** número de ciudades monitorizadas (`n_cities`).  
+- **Etiqueta:** nombre del país.  
+- **Recta OLS:** ajustada con banda de confianza (estimación visual del signo de la asociación).
+
+Este enfoque es informativo porque combina:
+- diferencias en contaminación,  
+- diferencias en fertilidad,  
+- y diferencias en la intensidad de monitorización entre países.
+
+```{r grafico2, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 library(ggplot2)
 library(ggrepel)
 
@@ -491,6 +452,8 @@ ggplot(pais_no2_fert,
   ) +
   theme_minimal()
 ```
+
+### Resultados
 
 El gráfico revela una estructura altamente dispersa:
 
