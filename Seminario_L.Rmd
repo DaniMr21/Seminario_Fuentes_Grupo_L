@@ -14,15 +14,59 @@ output:
 <img src="INPUT/IMAGES/portada.png" alt="Gráfico de portada" width="70%">
 </center>
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(readr)
+library(readxl)
+library(janitor)
+library(stringr)
+library(scales)
+library(lmtest)
+library(sandwich)
+library(broom)
+library(tibble)
+library(ggplot2)
+library(ggrepel)
+```
+
 # Introducción
 
 La fertilidad humana es sensible a condiciones ambientales que afectan tanto a la salud reproductiva como a las decisiones familiares. 
+
 En particular, la calidad del aire se ha relacionado con alteraciones hormonales, inflamación sistémica y estrés oxidativo que pueden reducir la fecundidad, aumentar el riesgo de pérdida gestacional y acortar la ventana fértil. Más allá de los mecanismos biológicos, el entorno en que las familias planifican también responde a expectativas de salud pública, seguridad ambiental y confianza institucional.
 
-En ese contexto, la **vigilancia de la calidad del aire** (monitorización sistemática, cobertura de estaciones, reporte y disponibilidad de datos) puede operar como un bien público que mejora la salud y reduce la incertidumbre sobre riesgos ambientales. Una red de vigilancia más densa y activa suele acompañar estrategias de control, cumplimiento normativo y comunicación del riesgo, y puede facilitar políticas de reducción de emisiones. 
+En este contexto, la **vigilancia de la calidad del aire** (monitorización sistemática, cobertura de estaciones, reporte y disponibilidad de datos) puede operar como un bien público que mejora la salud y reduce la incertidumbre sobre riesgos ambientales. Una red de vigilancia más densa y activa suele acompañar estrategias de control, cumplimiento normativo y comunicación del riesgo, y puede facilitar políticas de reducción de emisiones. 
+
 El resultado esperado —si estos canales funcionan— es un entorno más saludable y predecible para la crianza, lo que, en teoría, podría favorecer niveles más altos de fertilidad.
 
-# Pregunta 1 e hipótesis
+Sin embargo, a nivel agregado (país), se conoce menos acerca de:
+
+- Hasta qué punto la intensidad de la vigilancia del aire se asocia con niveles de fertilidad.
+
+- Si la contaminación atmosférica efectiva (por ejemplo, el NO₂ medio) se relaciona con la fertilidad media de los países europeos.
+
+- Si estas relaciones se mantienen una vez que se consideran posibles fuentes de heterogeneidad, como diferencias de tamaño poblacional, urbanización o intensidad de monitorización.
+
+El presente seminario aborda estas cuestiones desde una perspectiva descriptiva, utilizando datos agregados por país para Europa.
+
+# Objetivo general
+
+Analizar la relación entre la vigilancia y la calidad del aire y la fertilidad media (TFR) en los países europeos.
+
+# Objetivos específicos
+
+**Vigilancia vs fertilidad**  
+¿Existe asociación entre la intensidad de la vigilancia de la calidad del aire y la fertilidad media (TFR) de los países europeos?
+
+**NO₂ vs fertilidad**  
+¿Están los niveles medios de NO₂ en los países europeos relacionados con sus niveles medios de fertilidad (TFR)?
+
+(PONER MAS SEGÚN AVANCEMOS)
+
+# Metodología y resultados:
+
+## Describir la vigilancia de la calidad del aire en Europa
 
 **Pregunta:** ¿Está asociada una mayor vigilancia de la calidad del aire con una mayor fertilidad en la población europea?
 
@@ -31,9 +75,9 @@ Vemos la “vigilancia” mediante el conteo de observaciones de calidad del air
 
 Si la hipótesis es consistente con los datos, esperamos observar una relación **positiva** entre el nivel de vigilancia (más observaciones) y la TFR.
 
-> **Nota:** Esta hipótesis no asume causalidad por sí misma; es un test descriptivo del signo de la asociación.
+> **Nota:** Esta hipótesis no asume causalidad por sí misma; es un test descriptivo de la asociación.
 
-## Datos y construcción de variables
+### Datos y construcción de variables
 
 Trabajamos con dos fuentes principales:
 
@@ -44,7 +88,7 @@ Trabajamos con dos fuentes principales:
 2. **Fertilidad (Eurostat, anual) (`Fertilidad.csv`)**:  
    Extraemos la **TFR** por país–año, homogeneizamos códigos `geo` a nombres de país y calculamos resúmenes (por ejemplo, `tfr_mean` por país).
 
-## Pipeline de trabajo
+### Pipeline de trabajo
 
 1. **Limpieza y homogeneización** de ambas tablas, incluyendo nombres de países.  
 2. **Conteo de vigilancia:** `aire_conteo` (país, año, `n_obs_aire`).  
@@ -55,21 +99,12 @@ Trabajamos con dos fuentes principales:
 5. **Control de calidad:** detección de países sin coincidencia entre tablas.
 
 
-## Estrategia empírica y lectura de resultados
+### Estrategia empírica y lectura de resultados
 
 Como primer **“test”**, graficamos `tfr_mean` (eje *x*) frente a `total_obs_aire` (eje *y*) por país y ajustamos una **recta OLS** con su **banda de confianza**.  
 
 Este gráfico nos permite explorar de forma descriptiva si existe una **asociación positiva** entre la intensidad de vigilancia del aire y la fertilidad promedio en cada país.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-library(tidyverse)
-library(readr)
-library(readxl)
-library(janitor)
-library(stringr)
-library(scales)
-```
 
 ```{r codigografico1, include = FALSE}
 
@@ -112,7 +147,7 @@ fert_codes <- fertilidad |>
   )
 
 # Mapeo de códigos Eurostat -> nombre país
-fert_xwalk <- fert_codes |>
+fert_paises <- fert_codes |>
   mutate(country = case_when(
     geo == "AD" ~ "Andorra",
     geo == "AL" ~ "Albania",
@@ -196,7 +231,7 @@ write_csv(aire_conteo, "OUTPUT/DATA/aire_conteo_country_year.csv")
 #-------------------------------------------------------------------------------
 # Resumen de fertilidad por país (nombres ya homogeneizados)
 
-fert_resumen_nombres <- fert_xwalk |>
+fert_resumen_nombres <- fert_paises |>
   group_by(country) |>
   summarise(
     n_years  = n(),
@@ -209,17 +244,12 @@ fert_resumen_nombres <- fert_xwalk |>
   ) |>
   arrange(country)
 
-write_csv(fert_resumen_nombres, "OUTPUT/DATA/fert_resumen_por_pais.csv")
-
 #-------------------------------------------------------------------------------
 # JOINS SOLICITADOS
 
 # A) Panel país–año con resumen de fertilidad adjunto (join por country)
 panel_aire_year_con_fert <- aire_conteo |>
   left_join(fert_resumen_nombres, by = "country")
-
-write_csv(panel_aire_year_con_fert,
-          "OUTPUT/DATA/panel_aire_year_con_fert_resumen.csv")
 
 # B) Resumen por país: agregamos aire y fertilidad
 aire_resumen_pais <- aire_conteo |>
@@ -237,11 +267,9 @@ resumen_aire_fert_pais <- aire_resumen_pais |>
   full_join(fert_resumen_nombres, by = "country") |>
   arrange(country)
 
-write_csv(resumen_aire_fert_pais,
-          "OUTPUT/DATA/resumen_aire_fert_pais.csv")
 
-# C) Promedios de TFR usando solo años que existen en 'aire_conteo' (solapamiento)
-fert_resumen_overlap <- fert_xwalk |>
+# C) Promedios de fertilidad usando solo años que existen en 'aire_conteo' (solapamiento)
+fert_resumen_overlap <- fert_paises |>
   semi_join(aire_conteo |> distinct(country, year), by = c("country","year")) |>
   group_by(country) |>
   summarise(
@@ -252,11 +280,11 @@ fert_resumen_overlap <- fert_xwalk |>
     .groups = "drop"
   )
 
-resumen_aire_fert_ovlp <- aire_resumen_pais |>
+resumen_aire_fert_overlap <- aire_resumen_pais |>
   full_join(fert_resumen_overlap, by = "country") |>
   arrange(country)
 
-write_csv(resumen_aire_fert_ovlp,
+write_csv(resumen_aire_fert_overlap,
           "OUTPUT/DATA/resumen_aire_fert_pais_overlap.csv")
 
 # QC de nombres que no machéan
@@ -295,12 +323,10 @@ resumen_aire_fert_pais%>%
 
 ```
 
-## Resultados
+### Resultados:
 
-**Señal agregada.**  
 El diagrama de dispersión entre `total_obs_aire` (y) y `tfr_mean` (x) con una recta OLS sugiere que, a grandes rasgos, la asociación es como mucho débil y sensible a *outliers*. Visualmente, la pendiente no parece fuertemente positiva y la banda de confianza cubre valores cercanos a cero en buena parte del rango de `tfr_mean`.
 
-**Efectos de escala.**  
 El eje Y (conteos absolutos) probablemente está afectado por tamaño poblacional, densidad urbana y número de estaciones; no es una “intensidad de vigilancia” comparable *per cápita*.
 
 **Lectura honesta.**  
@@ -350,7 +376,7 @@ Ambos *p-valores* son muy superiores al umbral convencional de 0.05, lo que impl
 
 En términos sencillos, la intensidad de vigilancia del aire no parece explicar las diferencias de fertilidad entre países europeos. Esto sugiere que la hipótesis naïf (“más vigilancia → más fertilidad”) no se sostiene empíricamente en el corte transversal.
 
-# Pregunta 2 e hipótesis
+## Caracterizar la fertilidad media de los países europeos
 
 En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la calidad del aire en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, incluidos riesgos durante el embarazo y potenciales impactos en la salud reproductiva.
 
@@ -362,7 +388,7 @@ Esperamos observar una relación **negativa**: países con mayor NO₂ medio deb
 
 Como antes, esta hipótesis es descriptiva, no causal; buscamos el signo de la asociación en los datos agregados.
 
-## Datos y construcción de variables
+### Datos y construcción de variables
 
 Para esta sección combinamos dos fuentes principales:
 
@@ -384,7 +410,7 @@ A partir de ese panel construimos un **resumen por país** con las siguientes va
 
 Este resumen nos permite trabajar con una unidad clara (el país) y explorar la relación entre contaminación y fertilidad.
 
-## Estrategia empírica
+### Estrategia empírica
 
 Para visualizar la relación NO₂–fertilidad utilizamos un **gráfico de burbujas**:
 
@@ -399,7 +425,7 @@ Este enfoque es informativo porque combina:
 - diferencias en fertilidad,  
 - y diferencias en la intensidad de monitorización entre países.
 
-## Resultados
+### Resultados
 
 ```{r pregunta2_codigos, echo=FALSE}
 # Leer directamente desde la hoja principal
@@ -469,7 +495,7 @@ ggplot(pais_no2_fert,
 El gráfico revela una estructura altamente dispersa:
 
 - Los países con NO₂ alto no se concentran especialmente en la parte baja del eje de fertilidad.  
-- Varios países muy contaminados (p. ej., *Türkiye* o *Italia*) exhiben fertilidades relativamente bajas, pero otros no.  
+- Varios países muy contaminados (*Turquía* o *Italia*) exhiben fertilidades relativamente bajas, pero otros no.  
 - La recta de regresión muestra una pendiente casi plana, con una banda de confianza amplia que incluye valores cercanos a cero en la mayor parte del rango.
 
 En otras palabras:  
@@ -479,3 +505,19 @@ Esto es coherente con la lectura de la Parte 1:
 el vínculo entre contaminación atmosférica y natalidad, si existe, parece débil a nivel agregado y probablemente mediado por múltiples factores (urbanización, edad materna, políticas familiares, estructura económica, densidad poblacional, etc.).
 
 Aunque los efectos biológicos del NO₂ sobre la reproducción han sido documentados en estudios clínicos y epidemiológicos, estos pueden quedar enmascarados por la heterogeneidad interna de cada país y por la diferencia entre contaminación urbana y fertilidad nacional promedio.
+
+# Conclusiones
+
+No poner nada hasta haber terminado todos los objetivos específicos
+
+# Referencias
+
+Eurostat. (s. f.). Fertility statistics (TFR by country and year). Oficina de Estadística de la Unión Europea.
+
+World Health Organization. (2022). Ambient Air Pollution Database (AAP 2022). WHO, Department of Environment, Climate Change and Health.
+
+Carré, J., Gatimel, N., Moreau, J., Parinaud, J., & Léandri, R. (2017). Does air pollution play a role in infertility? A systematic review. Environmental Health, 16(1), 82.
+
+Landrigan, P. J., Fuller, R., Acosta, N. J. R., et al. (2018). The Lancet Commission on pollution and health. The Lancet, 391(10119), 462–512.
+
+WHO. (2021). WHO global air quality guidelines: Particulate matter (PM₂.₅ and PM₁₀), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide. World Health Organization.
