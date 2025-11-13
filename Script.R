@@ -3,6 +3,9 @@ library(readr)
 library(janitor)
 library(stringr)
 
+library(ggplot2)
+library(ggrepel)
+
 #-------------------------------------------------------------------------------
 # Lectura
 
@@ -219,4 +222,70 @@ resumen_aire_fert_pais %>%
   ) +
   theme_minimal()
 
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#PA LA SEGUNDA PREGUNTA
 
+library(readxl)
+
+# Leer directamente desde la hoja principal
+oms <- read_excel("INPUT/DATA/OMS_Datos.xlsx", sheet = "AAP_2022_city_v9")
+
+# 1. Nos aseguramos de tener solo Europa (por si acaso)
+oms_europa <- oms %>%
+  filter(`WHO Region` == "European Region")
+
+# 2. Crear variable 'country' con nombres armonizados
+oms_europa_limpio <- oms_europa %>%
+  mutate(
+    country = str_trim(`WHO Country Name`),
+    country = recode(
+      country,
+      "Turkey"             = "Türkiye",
+      "Russian Federation" = "Russia",
+      "Republic of Moldova" = "Moldova"
+    )
+  )
+
+# 3. JOIN: tabla OMS (ciudad-año) + resumen de fertilidad por país
+oms_europa_con_fert <- oms_europa_limpio %>%
+  left_join(fert_resumen_nombres, by = "country")
+
+# Opcional: mirar qué países de OMS no tienen fertilidad
+faltan_fert_oms <- oms_europa_limpio %>%
+  distinct(country) %>%
+  anti_join(fert_resumen_nombres %>% distinct(country), by = "country")
+
+faltan_fert_oms
+
+pais_no2_fert <- oms_europa_con_fert %>%
+  group_by(country) %>%
+  summarise(
+    no2_mean   = mean(`NO2 (μg/m3)`, na.rm = TRUE),
+    no2_median = median(`NO2 (μg/m3)`, na.rm = TRUE),
+    n_cities   = n_distinct(`City or Locality`),
+    tfr_mean   = first(tfr_mean),   # viene del resumen de fertilidad
+    .groups = "drop"
+  ) %>%
+  filter(!is.na(no2_mean), !is.na(tfr_mean))
+
+library(ggplot2)
+library(ggrepel)
+
+ggplot(pais_no2_fert,
+       aes(x = no2_mean,
+           y = tfr_mean,
+           size = n_cities)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, linetype = "dashed") +
+  geom_text_repel(aes(label = country),
+                  size = 3,
+                  max.overlaps = 30) +
+  scale_size_continuous(name = "Nº de ciudades\nmonitorizadas") +
+  labs(
+    title = "NO₂ medio vs fertilidad media por país europeo",
+    subtitle = "Tamaño del punto = nº de ciudades con datos de NO₂",
+    x = "NO₂ medio (µg/m³, OMS)",
+    y = "TFR medio (Eurostat)"
+  ) +
+  theme_minimal()
