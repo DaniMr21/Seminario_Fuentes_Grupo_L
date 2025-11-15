@@ -61,11 +61,14 @@ Analizar la relación entre la vigilancia y la calidad del aire y la fertilidad 
 **NO₂ vs fertilidad**  
 ¿Están los niveles medios de NO₂ en los países europeos relacionados con sus niveles medios de fertilidad (TFR)?
 
+**CO₂ vs fertilidad**
+¿Existe relación directamente proporcional entre los niveles de dióxido de carbono y la fertilidad?
+
 (PONER MAS SEGÚN AVANCEMOS)
 
 # Metodología y resultados:
 
-## Describir la vigilancia de la calidad del aire en Europa
+## Describir la vigilancia de la calidad del aire en Europa y ver su asociación con la fertilidad
 
 **Pregunta:** ¿Está asociada una mayor vigilancia de la calidad del aire con una mayor fertilidad en la población europea?
 
@@ -336,7 +339,7 @@ Ambos *p-valores* son muy superiores al umbral convencional de 0.05, lo que impl
 
 En términos sencillos, la intensidad de vigilancia del aire no parece explicar las diferencias de fertilidad entre países europeos. Esto sugiere que la hipótesis naïf (“más vigilancia → más fertilidad”) no se sostiene empíricamente en el corte transversal.
 
-## Caracterizar la fertilidad media de los países europeos
+## Caracterizar la fertilidad media de los países europeos y comparación con los niveles de dióxido de nitrógeno.
 
 En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la calidad del aire en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, incluidos riesgos durante el embarazo y potenciales impactos en la salud reproductiva.
 
@@ -468,6 +471,8 @@ Esto es coherente con la lectura de la Parte 1:
 el vínculo entre contaminación atmosférica y natalidad, si existe, parece débil a nivel agregado y probablemente mediado por múltiples factores (urbanización, edad materna, políticas familiares, estructura económica, densidad poblacional, etc.).
 
 Aunque los efectos biológicos del NO₂ sobre la reproducción han sido documentados en estudios clínicos y epidemiológicos, estos pueden quedar enmascarados por la heterogeneidad interna de cada país y por la diferencia entre contaminación urbana y fertilidad nacional promedio.
+
+## Dióxido de Carbono
 
 # Conclusiones
 

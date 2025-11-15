@@ -294,3 +294,178 @@ ggplot(pais_no2_fert,
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #Parte 3
+
+library(tidyverse)
+library(janitor)
+library(jsonlite)
+library(stringr)
+
+# 1. LEER EL JSON COMO DATA FRAME (sin tidyjson, sin spread_all)
+dioxidocarbono_df <- jsonlite::fromJSON(
+  "INPUT/DATA/CO2.json",
+  simplifyDataFrame = TRUE,   # lo aplana a data.frame directamente
+  flatten = TRUE              # por si hay listas anidadas sencillas
+) %>%
+  as_tibble() %>%
+  clean_names()
+
+glimpse(dioxidocarbono_df)   # aquí deberías ver muchas filas y ~13–19 columnas
+
+# 2. TABLA CO2_limpio (país-año)
+CO2_limpio <- dioxidocarbono_df %>%
+  transmute(
+    country_raw = str_trim(country_name),
+    year        = as.integer(year),
+    co2_kt      = as.numeric(co2_emissions_kt)
+  ) %>%
+  mutate(
+    country = recode(
+      country_raw,
+      "Turkey"              = "Türkiye",
+      "Czech Republic"      = "Czechia",
+      "Russian Federation"  = "Russia",
+      "Republic of Moldova" = "Moldova",
+      "UK"                  = "United Kingdom",
+      "Great Britain"       = "United Kingdom"
+    )
+  ) %>%
+  group_by(country, year) %>%
+  summarise(
+    co2_kt = sum(co2_kt, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# 3. PANEL CO2 + FERTILIDAD (país–año)
+CO2_fert_panel <- CO2_limpio %>%
+  inner_join(fert_xwalk, by = c("country", "year"))
+
+# 4. RESUMEN POR PAÍS
+CO2_resumen_pais <- CO2_limpio %>%
+  group_by(country) %>%
+  summarise(
+    n_years_co2   = n_distinct(year),
+    year_min_co2  = min(year, na.rm = TRUE),
+    year_max_co2  = max(year, na.rm = TRUE),
+    co2_kt_mean   = mean(co2_kt, na.rm = TRUE),
+    co2_kt_total  = sum(co2_kt, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+CO2_fert_resumen_pais <- CO2_resumen_pais %>%
+  full_join(fert_resumen_nombres, by = "country") %>%
+  arrange(country)
+
+View(CO2_fert_resumen_pais)
+
+#-----------------grafico
+
+library(forcats)   # para reordenar factores
+
+co2_lolli <- CO2_fert_resumen_pais %>%
+  filter(!is.na(co2_kt_mean),
+         !is.na(tfr_mean))
+
+ggplot(co2_lolli,
+       aes(x = co2_kt_mean,
+           y = fct_reorder(country, co2_kt_mean))) +
+  # palito
+  geom_segment(aes(x = 0,
+                   xend = co2_kt_mean,
+                   y = fct_reorder(country, co2_kt_mean),
+                   yend = fct_reorder(country, co2_kt_mean)),
+               linewidth = 0.6,
+               alpha = 0.6) +
+  # punto, coloreado por TFR
+  geom_point(aes(color = tfr_mean,
+                 size  = tfr_mean),
+             alpha = 0.9) +
+  scale_size_continuous(name = "TFR medio") +
+  scale_color_viridis_c(name = "TFR medio", option = "C") +
+  labs(
+    title    = "Ranking de emisiones medias de CO2 y fertilidad en Europa",
+    subtitle = "Línea = emisiones medias de CO2 (kt) | Color/tamaño = TFR medio",
+    x        = "CO₂ medio (kt, total país)",
+    y        = NULL
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor   = element_blank(),
+    legend.position    = "right",
+    plot.title         = element_text(face = "bold")
+  )
+
+#----- grafico bacano
+
+co2_fert_anim <- CO2_fert_panel %>%
+  filter(!is.na(co2_kt),
+         !is.na(tfr))
+
+reg_stats <- co2_fert_anim %>%
+  group_by(year) %>%
+  summarise(
+    n    = n(),
+    beta = coef(lm(tfr ~ co2_kt))[2],
+    r2   = summary(lm(tfr ~ co2_kt))$r.squared,
+    .groups = "drop"
+  )
+
+
+library(gganimate)
+
+p_anim <- ggplot(co2_fert_anim,
+                 aes(x = co2_kt,
+                     y = tfr)) +
+  # puntos por país
+  geom_point(aes(color = country),
+             alpha = 0.7,
+             size = 2,
+             show.legend = FALSE) +
+  # nombres de algunos países (opcionales: quita si molesta)
+  ggrepel::geom_text_repel(
+    data = ~ dplyr::filter(.x, co2_kt == max(co2_kt) | tfr == max(tfr)),
+    aes(label = country),
+    size = 3,
+    max.overlaps = 30,
+    show.legend = FALSE
+  ) +
+  # recta de regresión por año
+  geom_smooth(method = "lm",
+              se = TRUE,
+              linetype = "dashed",
+              color = "white") +
+  # texto con stats por año (beta, R², n)
+  geom_text(
+    data = reg_stats,
+    aes(x = -Inf, y = Inf,
+        label = sprintf("β₁ = %.3f   R² = %.2f   n = %d", beta, r2, n)),
+    hjust = -0.05,
+    vjust = 1.2,
+    size = 3.2,
+    inherit.aes = FALSE
+  ) +
+  scale_x_continuous(labels = scales::comma) +
+  labs(
+    title = "Relación entre emisiones de CO₂ y fertilidad en Europa",
+    subtitle = "Año: {frame_time}",
+    x = "CO₂ total del país (kt)",
+    y = "Tasa global de fecundidad (TFR)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title       = element_text(face = "bold")
+  ) +
+  transition_time(year) +
+  ease_aes("linear")
+
+# Ver la animación en el viewer
+anim <- animate(p_anim,
+                nframes = 150,
+                fps = 10,
+                renderer = gifski_renderer())
+
+anim
+
+
+
