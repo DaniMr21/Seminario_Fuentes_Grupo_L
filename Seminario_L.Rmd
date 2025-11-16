@@ -30,6 +30,7 @@ library(forcats)
 library(ggplot2)
 library(ggrepel)
 library(gganimate)
+library(EEAaq)
 ```
 
 # Introducción
@@ -67,7 +68,8 @@ Analizar la relación entre la vigilancia y la calidad del aire y la fertilidad 
 **CO₂ vs fertilidad**
 ¿Existe relación directamente proporcional entre los niveles de dióxido de carbono y la fertilidad?
 
-(PONER MAS SEGÚN AVANCEMOS)
+**PM₂.₅ en la vigilancia vs fertilidad**
+Analizar si la proporción de observaciones dedicadas a PM₂.₅ en los sistemas de vigilancia de la calidad del aire de los países europeos se asocia con su fertilidad media (TFR).
 
 # Metodología y resultados:
 
@@ -740,6 +742,200 @@ Además, la fertilidad está fuertemente condicionada por factores demográficos
 
 Por tanto, el tercer objetivo confirma la idea general de los anteriores:
 cuando miramos a nivel país, con indicadores agregados, la relación entre contaminación (o emisiones) y fertilidad en Europa parece ser, como mínimo, muy débil y fuertemente confundida por otras dimensiones estructurales.
+
+## Caracterizar la importancia del PM₂.₅ dentro de la vigilancia del aire y su relación con la fertilidad
+
+En este último objetivo profundizamos en un contaminante concreto, el material particulado fino (PM₂.₅), que se ha asociado con efectos adversos sobre la salud reproductiva, el embarazo y la mortalidad perinatal. A diferencia de los objetivos anteriores centrados en la intensidad global de la vigilancia o en contaminantes específicos como el NO₂ o el CO₂, aquí nos interesa qué peso tiene el PM₂.₅ dentro del esfuerzo total de monitorización de la calidad del aire en cada país.
+
+La lógica es la siguiente: incluso si dos países tienen un volumen similar de observaciones de calidad del aire, pueden diferir en el énfasis que ponen sobre determinados contaminantes. Un país que dedica una mayor proporción de su vigilancia al PM₂.₅ estaría, en principio, más orientado a monitorizar riesgos finos para la salud cardiovascular y respiratoria, con posibles implicaciones para la salud reproductiva y, de forma indirecta, para la planificación familiar.
+
+**Pregunta:**
+¿Existe una relación entre el peso relativo del PM₂.₅ en la vigilancia del aire y la fertilidad media (TFR) de los países europeos?
+
+**Hipótesis:**
+Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efectivos, cabría esperar que los países que dedican una fracción mayor de sus observaciones a este contaminante presenten entornos más saludables o más vigilados, lo que podría asociarse con una fertilidad algo más elevada. De forma descriptiva, planteamos la hipótesis de que una mayor proporción de observaciones de PM₂.₅ se asocia con una TFR media más alta, aunque sin asumir causalidad.
+
+## Partículas finas PM₂.₅
+
+### Datos y construcción de variables
+
+En este objetivo analizamos el lugar que ocupa el contaminante **PM₂.₅** dentro de la monitorización de calidad del aire en Europa.
+
+Partimos de un fichero con registros de calidad del aire (`aire`) que contiene observaciones por país, año y tipo de contaminante. A partir de este conjunto:
+
+Se limpia y normaliza la información para construir una tabla `aire_limpio` con las columnas:
+
+- `country` (nombre del país armonizado),
+- `year` (año en formato numérico),
+- `air_pollutant` (tipo de contaminante),
+- `value` (concentración u observación correspondiente),
+- `is_pm25` (indicador lógico).
+
+Durante el proceso:
+
+- Se homogeneizan los nombres de país (`Turkey → Türkiye`, `Czech Republic → Czechia`, `Russian Federation → Russia`, etc.).
+- Se asegura que `year` esté en formato numérico.
+- Se crea la variable lógica `is_pm25`, que toma valor `1` cuando `air_pollutant` está en `{"PM2.5","PM25","PM2p5"}` y `0` en caso contrario.
+
+Posteriormente, se agregan los datos por país para obtener el resumen `pm25_share_country`, que incluye:
+
+- `n_obs_total:` número total de observaciones de calidad del aire,
+- `n_obs_pm25:` número de observaciones clasificadas como PM₂.₅,
+- `share_pm25:` fracción de observaciones dedicadas a PM₂.₅,
+- `n_years:` número de años con datos disponibles.
+
+Además se construye un panel año–país `pm25_year_panel` con la proporción `share_pm25_year` calculada por `country` y `year`, que permite analizar la evolución temporal.
+
+Finalmente, se realiza un `left_join()` con `fert_resumen_nombres` (resumen de fertilidad) para obtener `pm25_share_tfr`, que contiene, para cada país, `share_pm25` y `tfr_mean`. Para análisis año–año se une `pm25_year_panel` con `fert_paises` para obtener `pm25_fert_panel`
+
+```{r codigo4, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
+# Metadatos de estaciones EEA (dataframe interno)
+stations_eea <- EEAaq_get_dataframe("stations") %>%
+  clean_names() %>%
+  mutate(
+    country_raw = str_trim(country),
+    country = recode(
+      country_raw,
+      "Turkey"              = "Türkiye",
+      "Czech Republic"      = "Czechia",
+      "Russian Federation"  = "Russia",
+      "Republic of Moldova" = "Moldova",
+      "UK"                  = "United Kingdom",
+      "Great Britain"       = "United Kingdom",
+      .default = country_raw
+    )
+  )
+
+# OJO: aquí renombramos la columna rara 'air_quality_station_eo_i_code'
+stations_meta <- stations_eea %>%
+  rename(
+    air_quality_station_eoi_code = air_quality_station_eo_i_code
+  ) %>%
+  select(
+    air_quality_station_eoi_code,
+    country,
+    air_quality_station_area,
+    air_quality_station_type
+  )
+
+pm25_share_country <- aire %>%
+  # Armonizamos país y año igual que en 'aire_conteo'
+  mutate(
+    country = str_trim(country),
+    year    = as.integer(year),
+    country = recode(
+      country,
+      "Turkey"              = "Türkiye",
+      "Czech Republic"      = "Czechia",
+      "Russian Federation"  = "Russia",
+      "Republic of Moldova" = "Moldova",
+      "UK"                  = "United Kingdom",
+      "Great Britain"       = "United Kingdom"
+    ),
+    # Indicador lógico: ¿esta fila es PM2.5?
+    is_pm25 = air_pollutant %in% c("PM2.5", "PM25", "PM2p5")
+  ) %>%
+  group_by(country) %>%
+  summarise(
+    n_obs_total = n(),
+    n_obs_pm25  = sum(is_pm25, na.rm = TRUE),
+    share_pm25  = n_obs_pm25 / n_obs_total,
+    n_years     = n_distinct(year),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(share_pm25))
+
+pm25_share_tfr <- pm25_share_country %>%
+  left_join(fert_resumen_nombres, by = "country") %>%
+  filter(!is.na(tfr_mean), !is.na(share_pm25))
+```
+
+### Estrategia empírica
+
+Para examinar cómo se relacionan el **peso relativo de PM₂.₅** y la **fertilidad media**, utilizamos un **gráfico circular de barras radiales**. Esta visualización permite comparar simultáneamente ambos indicadores de manera intuitiva. El planteamiento es el siguiente:
+
+#### Representación
+
+- **Cada barra corresponde a un país europeo.**
+- **La longitud (radio)** de la barra representa `share_pm25`, es decir, la **proporción de todas las observaciones de calidad del aire que pertenecen a PM₂.₅** en ese país.
+- **El color de la barra** está mapeado a `tfr_mean` (tasa global de fecundidad media).  
+  Cuanto mayor es la fertilidad, **más intenso** es el color asignado según la escala continua elegida.
+- En el **extremo** de cada barra se incorpora una **etiqueta con el porcentaje de PM₂.₅**, facilitando la comparación directa entre países.
+
+#### Construcción del gráfico
+
+1. **Ordenamos los países** de forma descendente por `share_pm25`.  
+   Después, convertimos `country` en un factor con ese orden.  
+   Esto asegura que, al pasar a coordenadas polares, los países aparezcan **ordenados alrededor del círculo** según su peso relativo de PM₂.₅.
+
+2. Creamos un gráfico con `geom_col()` en **coordenadas cartesianas**.
+
+3. Transformamos el gráfico mediante **`coord_polar()`**, convirtiendo las barras en **segmentos radiales** que parten del centro.
+
+
+#### Por qué esta visualización es útil
+
+- Permite **comparar de un vistazo** qué países dedican una mayor proporción de su vigilancia al PM₂.₅.
+- La codificación por color según `tfr_mean` facilita detectar **patrones visuales**:  
+  por ejemplo, si una mayor intensidad de monitorización del PM₂.₅ se asocia visualmente con países de fertilidad alta o baja.
+- Aunque puramente **descriptivo**, el gráfico sirve como **primera aproximación no paramétrica** a la asociación entre ambas variables, sin necesidad de imponer una forma funcional concreta (lineal, cuadrática, etc.).
+
+
+```{r grafico4, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
+# Ordenamos países por share_pm25 y preparamos factor
+pm25_circ <- pm25_share_tfr %>%
+  arrange(desc(share_pm25)) %>%
+  mutate(
+    country = factor(country, levels = country),
+    label_pm = scales::percent(share_pm25, accuracy = 1)
+  )
+
+ggplot(pm25_circ,
+       aes(x = country,
+           y = share_pm25,
+           fill = tfr_mean)) +
+  # barras radiales
+  geom_col(color = "white", width = 0.9, alpha = 0.9) +
+  # pasamos a coordenadas polares
+  coord_polar(start = -pi/2) +
+  # etiquetas de país + % PM2.5 (opcional)
+  geom_text(
+    aes(label = label_pm),
+    position = position_stack(vjust = 1.02),
+    size = 2.5,
+    show.legend = FALSE
+  ) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 10)) +
+  labs(
+    title = "Peso relativo de PM2.5 en la vigilancia del aire por país",
+    subtitle = "Longitud de la barra = proporción de observaciones de PM2.5
+                \nColor = TFR media",
+    x = NULL,
+    y = NULL,
+    fill = "TFR media"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x  = element_text(size = 7, angle = 0, vjust = 0.5),
+    axis.text.y  = element_blank(),
+    axis.ticks   = element_blank(),
+    panel.grid   = element_blank(),
+    plot.title   = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle= element_text(hjust = 0.5),
+    legend.position = "right"
+  )
+```
+
+### Resultados e interpretación
+
+El gráfico circular revela que el **peso relativo del PM₂.₅** en la vigilancia de la calidad del aire es, en términos generales, **bajo y heterogéneo** entre países. La mayoría sitúa entre **un 5 % y un 10 %** de sus observaciones en PM₂.₅, mientras que solo un grupo reducido (entre ellos algunos países del norte o del entorno caucásico) supera claramente ese umbral y alcanza valores en torno al **12–16 %**. En el extremo inferior aparecen varios países con **barras muy cortas**, señal de que el PM₂.₅ representa únicamente una **fracción marginal** de su registro total.
+
+Al observar la **escala de color**, que codifica la `tfr_mean`, no emerge un gradiente coherente que acompañe la longitud de las barras. Entre los países con **mayor share_pm25** no destacan ni valores particularmente altos ni particularmente bajos de fertilidad: sus tasas se concentran en la **zona intermedia** del rango europeo. De forma simétrica, entre los países cuyo peso relativo del PM₂.₅ es más reducido encontramos tanto **TFR comparativamente altas** como **TFR bajas**.
+
+En conjunto, la visualización no sugiere la existencia de un patrón monotónico claro del tipo *“a mayor share de PM₂.₅, mayor (o menor) fertilidad”*. La importancia que cada país otorga a la monitorización del PM₂.₅ parece estar determinada, más bien, por **criterios técnicos, regulatorios o institucionales** propios de sus sistemas de vigilancia, y no por diferencias sistemáticas en comportamiento demográfico.
+
+Así, del mismo modo que en los análisis previos, la **evidencia descriptiva** apunta a que la relación entre el peso relativo del PM₂.₅ en la monitorización del aire y la fertilidad media es **débil** y queda probablemente **absorbida por otros factores** económicos, sociales y demográficos que este indicador agregado no capta.
+
 
 # Conclusiones
 

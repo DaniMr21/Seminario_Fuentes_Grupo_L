@@ -461,5 +461,116 @@ anim <- animate(p_anim,
 
 anim
 
+#------------------------------------------------------------------------------
+# Tarea 4
 
+library(EEAaq)
 
+# Metadatos de estaciones EEA (dataframe interno)
+stations_eea <- EEAaq_get_dataframe("stations") %>%
+  clean_names() %>%
+  mutate(
+    country_raw = str_trim(country),
+    country = recode(
+      country_raw,
+      "Turkey"              = "Türkiye",
+      "Czech Republic"      = "Czechia",
+      "Russian Federation"  = "Russia",
+      "Republic of Moldova" = "Moldova",
+      "UK"                  = "United Kingdom",
+      "Great Britain"       = "United Kingdom",
+      .default = country_raw
+    )
+  )
+
+# OJO: aquí renombramos la columna rara 'air_quality_station_eo_i_code'
+stations_meta <- stations_eea %>%
+  rename(
+    air_quality_station_eoi_code = air_quality_station_eo_i_code
+  ) %>%
+  select(
+    air_quality_station_eoi_code,
+    country,
+    air_quality_station_area,
+    air_quality_station_type
+  )
+
+pm25_share_country <- aire %>%
+  # Armonizamos país y año igual que en 'aire_conteo'
+  mutate(
+    country = str_trim(country),
+    year    = as.integer(year),
+    country = recode(
+      country,
+      "Turkey"              = "Türkiye",
+      "Czech Republic"      = "Czechia",
+      "Russian Federation"  = "Russia",
+      "Republic of Moldova" = "Moldova",
+      "UK"                  = "United Kingdom",
+      "Great Britain"       = "United Kingdom"
+    ),
+    # Indicador lógico: ¿esta fila es PM2.5?
+    is_pm25 = air_pollutant %in% c("PM2.5", "PM25", "PM2p5")
+  ) %>%
+  group_by(country) %>%
+  summarise(
+    n_obs_total = n(),
+    n_obs_pm25  = sum(is_pm25, na.rm = TRUE),
+    share_pm25  = n_obs_pm25 / n_obs_total,
+    n_years     = n_distinct(year),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(share_pm25))
+
+pm25_share_country %>% head()
+
+pm25_share_tfr <- pm25_share_country %>%
+  left_join(fert_resumen_nombres, by = "country") %>%
+  filter(!is.na(tfr_mean), !is.na(share_pm25))
+
+nrow(pm25_share_tfr)      # cuántos países entran en el análisis
+pm25_share_tfr %>% head()
+
+library(ggplot2)
+
+# Ordenamos países por share_pm25 y preparamos factor
+pm25_circ <- pm25_share_tfr %>%
+  arrange(desc(share_pm25)) %>%
+  mutate(
+    country = factor(country, levels = country),
+    label_pm = scales::percent(share_pm25, accuracy = 1)
+  )
+
+ggplot(pm25_circ,
+       aes(x = country,
+           y = share_pm25,
+           fill = tfr_mean)) +
+  # barras radiales
+  geom_col(color = "white", width = 0.9, alpha = 0.9) +
+  # pasamos a coordenadas polares
+  coord_polar(start = -pi/2) +
+  # etiquetas de país + % PM2.5 (opcional)
+  geom_text(
+    aes(label = label_pm),
+    position = position_stack(vjust = 1.02),
+    size = 2.5,
+    show.legend = FALSE
+  ) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 10)) +
+  labs(
+    title = "Peso relativo de PM\u2082.\u2085 en la vigilancia del aire por país",
+    subtitle = "Longitud de la barra = proporción de observaciones de PM\u2082.\u2085\nColor = TFR media",
+    x = NULL,
+    y = NULL,
+    fill = "TFR media"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x  = element_text(size = 7, angle = 0, vjust = 0.5),
+    axis.text.y  = element_blank(),
+    axis.ticks   = element_blank(),
+    panel.grid   = element_blank(),
+    plot.title   = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle= element_text(hjust = 0.5),
+    legend.position = "right"
+  )
