@@ -1,12 +1,11 @@
 ---
-title: "Impacto de la vigilancia del aire sobre la fertilidad en la población europea"
+title: "Impacto de la vigilancia y calidad del aire sobre la fertilidad en la población europea"
 author: "Daniel Marina de la Cal, Patricia Ibarrondo Revilla y Nerea Yi Estepar Calvo"
 date: "`r format(Sys.Date())`"
 output: 
   html_document:
     toc: true
     toc_float: true
-    theme: flatly
     number_sections: true
 ---
 
@@ -939,7 +938,15 @@ Así, del mismo modo que en los análisis previos, la **evidencia descriptiva** 
 
 # Conclusiones
 
-No poner nada hasta haber terminado todos los objetivos específicos
+Los análisis realizados indican que, a escala de país, la relación entre vigilancia de la calidad del aire, niveles de contaminación y fertilidad (TFR) en Europa es, en el mejor de los casos, débil y poco sistemática. El volumen total de observaciones de calidad del aire no muestra una asociación clara con la TFR media: los países que vigilan más no presentan, en promedio, una fertilidad ni claramente más alta ni más baja que los que vigilan menos. Los tests de correlación refuerzan esta idea, con coeficientes muy pequeños y no significativos.
+
+Algo similar ocurre cuando se pasa de la vigilancia a la contaminación efectiva. Ni los niveles medios de NO₂, ni las emisiones de CO₂ —interpretadas como un indicador agregado de tamaño económico e intensidad energética permiten ordenar a los países europeos según su nivel de fertilidad. Los diagramas de dispersión y las rectas de regresión muestran nubes muy dispersas, pendientes próximas a cero y R² bajos, lo que indica que estas variables ambientales explican solo una fracción mínima de la variación en TFR entre países.
+
+El análisis del peso relativo del PM2.5 en la vigilancia tampoco revela patrones robustos: algunos países otorgan a este contaminante una proporción relativamente alta de sus observaciones, mientras que otros apenas lo monitorizan, pero en ambos grupos aparecen TFR bajas, medias y algo más altas. Es decir, dedicar una mayor parte del esfuerzo de vigilancia al PM2.5 no se traduce en niveles de fertilidad claramente diferenciados.
+
+En conjunto, los resultados apuntan a que la variación en la fertilidad europea está dominada por factores demográficos, socioeconómicos e institucionales (estructura de edades, mercado laboral, políticas de conciliación, normas culturales, gasto social, etc.) que este marco descriptivo no modeliza de forma directa. Las variables ambientales consideradas vigilancia, NO₂, CO₂, peso del PM2.5— parecen jugar, a este nivel de agregación, un papel secundario frente a esos determinantes estructurales.
+
+Estas conclusiones deben interpretarse con cautela: se trata de un estudio ecológico y descriptivo, basado en datos agregados por país, sin control exhaustivo por posibles factores de confusión y con indicadores ambientales relativamente gruesos (medias nacionales, totales anuales). La evidencia disponible no niega que la calidad del aire afecte a la salud reproductiva, pero sí sugiere que sus efectos sobre la fecundidad observada a nivel país son difíciles de detectar con este tipo de datos. En este sentido, el trabajo funciona como un punto de partida exploratorio que señala la necesidad de estudios con mayor resolución espacial, datos individuales y diseños longitudinales o quasi-experimentales para comprender con más precisión los vínculos entre contaminación atmosférica y fertilidad.
 
 # Referencias
 
