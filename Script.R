@@ -300,16 +300,12 @@ library(janitor)
 library(jsonlite)
 library(stringr)
 
-# 1. LEER EL JSON COMO DATA FRAME (sin tidyjson, sin spread_all)
-dioxidocarbono_df <- jsonlite::fromJSON(
-  "INPUT/DATA/CO2.json",
+# 1. LEER EL JSON COMO DATA FRAME (sin tidyjson, sin spread_all, porque daba fallos)
+dioxidocarbono_df <- jsonlite::fromJSON("INPUT/DATA/CO2.json",
   simplifyDataFrame = TRUE,   # lo aplana a data.frame directamente
-  flatten = TRUE              # por si hay listas anidadas sencillas
 ) %>%
   as_tibble() %>%
   clean_names()
-
-glimpse(dioxidocarbono_df)   # aquí deberías ver muchas filas y ~13–19 columnas
 
 # 2. TABLA CO2_limpio (país-año)
 CO2_limpio <- dioxidocarbono_df %>%
@@ -355,8 +351,6 @@ CO2_fert_resumen_pais <- CO2_resumen_pais %>%
   full_join(fert_resumen_nombres, by = "country") %>%
   arrange(country)
 
-View(CO2_fert_resumen_pais)
-
 #-----------------grafico
 
 library(forcats)   # para reordenar factores
@@ -384,7 +378,7 @@ ggplot(co2_lolli,
   labs(
     title    = "Ranking de emisiones medias de CO2 y fertilidad en Europa",
     subtitle = "Línea = emisiones medias de CO2 (kt) | Color/tamaño = TFR medio",
-    x        = "CO₂ medio (kt, total país)",
+    x        = "CO2 medio (kt, total país)",
     y        = NULL
   ) +
   theme_minimal(base_size = 11) +
@@ -438,7 +432,7 @@ p_anim <- ggplot(co2_fert_anim,
   geom_text(
     data = reg_stats,
     aes(x = -Inf, y = Inf,
-        label = sprintf("β₁ = %.3f   R² = %.2f   n = %d", beta, r2, n)),
+        label = sprintf("Beta = %.3f   R2 = %.2f   n = %d", beta, r2, n)),
     hjust = -0.05,
     vjust = 1.2,
     size = 3.2,
@@ -448,7 +442,7 @@ p_anim <- ggplot(co2_fert_anim,
   labs(
     title = "Relación entre emisiones de CO₂ y fertilidad en Europa",
     subtitle = "Año: {frame_time}",
-    x = "CO₂ total del país (kt)",
+    x = "CO2 total del país (kt)",
     y = "Tasa global de fecundidad (TFR)"
   ) +
   theme_minimal(base_size = 12) +

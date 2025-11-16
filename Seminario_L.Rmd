@@ -25,8 +25,11 @@ library(lmtest)
 library(sandwich)
 library(broom)
 library(tibble)
+library(jsonlite)
+library(forcats)
 library(ggplot2)
 library(ggrepel)
+library(gganimate)
 ```
 
 # Introducción
@@ -473,6 +476,270 @@ el vínculo entre contaminación atmosférica y natalidad, si existe, parece dé
 Aunque los efectos biológicos del NO₂ sobre la reproducción han sido documentados en estudios clínicos y epidemiológicos, estos pueden quedar enmascarados por la heterogeneidad interna de cada país y por la diferencia entre contaminación urbana y fertilidad nacional promedio.
 
 ## Dióxido de Carbono
+
+### Datos y construcción de variables
+
+En este tercer objetivo analizamos el papel de un contaminante global: el dióxido de carbono (CO₂). 
+
+A diferencia del NO₂, que refleja principalmente la contaminación urbana y la exposición directa de la población, el CO₂ es un gas de efecto invernadero cuya variación entre países está más ligada a su tamaño económico, estructura energética y nivel de industrialización.
+
+Partimos de un fichero en formato JSON (CO2.json) que contiene las emisiones anuales de CO₂ (en kilotoneladas) por país y por año. A partir de este conjunto:
+
+Se limpia y normaliza la información para construir una tabla CO2_limpio con las columnas:
+
+`country` (nombre del país armonizado),
+
+`year` (año),
+
+`co2_kt` (emisiones totales de CO₂ en kilotoneladas).
+
+Posteriormente se agregan los datos por país para obtener el resumen CO2_resumen_pais, que incluye:
+
+`co2_kt_mean:` emisiones medias anuales de CO₂,
+
+`co2_kt_total:` emisiones acumuladas,
+
+junto con el número de años disponibles.
+
+Finalmente, se realiza un `full_join` con `fert_resumen_nombres` , de modo que `CO2_fert_resumen_pais` contiene, para cada país, emisiones medias de CO₂ y TFR media en el mismo periodo de referencia.
+
+Este dataset combinado es la base para los gráficos y análisis de este objetivo.
+
+```{r json CO2, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(janitor)
+library(jsonlite)
+library(stringr)
+
+# 1. LEER EL JSON COMO DATA FRAME (sin tidyjson, sin spread_all, porque daba fallos)
+dioxidocarbono_df <- jsonlite::fromJSON("INPUT/DATA/CO2.json",
+  simplifyDataFrame = TRUE,   # lo aplana a data.frame directamente
+) %>%
+  as_tibble() %>%
+  clean_names()
+
+# 2. TABLA CO2_limpio (país-año)
+CO2_limpio <- dioxidocarbono_df %>%
+  transmute(
+    country_raw = str_trim(country_name),
+    year        = as.integer(year),
+    co2_kt      = as.numeric(co2_emissions_kt)
+  ) %>%
+  mutate(
+    country = recode(
+      country_raw,
+      "Turkey"              = "Türkiye",
+      "Czech Republic"      = "Czechia",
+      "Russian Federation"  = "Russia",
+      "Republic of Moldova" = "Moldova",
+      "UK"                  = "United Kingdom",
+      "Great Britain"       = "United Kingdom"
+    )
+  ) %>%
+  group_by(country, year) %>%
+  summarise(
+    co2_kt = sum(co2_kt, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# 3. PANEL CO2 + FERTILIDAD (país–año)
+CO2_fert_panel <- CO2_limpio %>%
+  inner_join(fert_paises, by = c("country", "year"))
+
+# 4. RESUMEN POR PAÍS
+CO2_resumen_pais <- CO2_limpio %>%
+  group_by(country) %>%
+  summarise(
+    n_years_co2   = n_distinct(year),
+    year_min_co2  = min(year, na.rm = TRUE),
+    year_max_co2  = max(year, na.rm = TRUE),
+    co2_kt_mean   = mean(co2_kt, na.rm = TRUE),
+    co2_kt_total  = sum(co2_kt, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+CO2_fert_resumen_pais <- CO2_resumen_pais %>%
+  full_join(fert_resumen_nombres, by = "country") %>%
+  arrange(country)
+```
+
+### Estrategia empírica
+
+El análisis se estructura en dos pasos complementarios:
+
+**Gráfico de ranking tipo “lollipop” (Gráfico 3.1)**
+
+Ordena a los países por sus emisiones medias de CO₂ (co2_kt_mean).
+
+La longitud de la barra horizontal indica el nivel de emisiones.
+
+El color y el tamaño del punto representan la TFR media: tonos más cálidos y puntos más grandes indican mayor fertilidad.
+
+Este gráfico permite visualizar si los grandes emisores tienden a concentrarse en niveles de fertilidad sistemáticamente distintos del resto.
+
+```{r grafico3.1, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+co2_lolli <- CO2_fert_resumen_pais %>%
+  filter(!is.na(co2_kt_mean),
+         !is.na(tfr_mean))
+
+ggplot(co2_lolli,
+       aes(x = co2_kt_mean,
+           y = fct_reorder(country, co2_kt_mean))) +
+  # palito
+  geom_segment(aes(x = 0,
+                   xend = co2_kt_mean,
+                   y = fct_reorder(country, co2_kt_mean),
+                   yend = fct_reorder(country, co2_kt_mean)),
+               linewidth = 0.6,
+               alpha = 0.6) +
+  # punto, coloreado por TFR
+  geom_point(aes(color = tfr_mean,
+                 size  = tfr_mean),
+             alpha = 0.9) +
+  scale_size_continuous(name = "TFR medio") +
+  scale_color_viridis_c(name = "TFR medio", option = "C") +
+  labs(
+    title    = "Ranking de emisiones medias de CO2 y fertilidad en Europa",
+    subtitle = "Línea = emisiones medias de CO2 (kt) | Color/tamaño = TFR medio",
+    x        = "CO2 medio (kt, total país)",
+    y        = NULL
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor   = element_blank(),
+    legend.position    = "right",
+    plot.title         = element_text(face = "bold")
+  )
+
+```
+
+**Gráfico animado CO₂–TFR por año (Gráfico 3.2)**
+
+Cada fotograma muestra un diagrama de dispersión entre `co2_kt` y ``tfr` para un año concreto.
+
+Se ajusta una recta de regresión lineal por año, con su banda de confianza.
+
+Se añaden, en la esquina de la animación, el número de países incluidos y los coeficientes estimados (pendiente y R²).
+
+Esta animación permite ver si la relación CO₂–TFR cambia con el tiempo y si, en algún periodo concreto, aparece una tendencia clara (positiva o negativa).
+
+```{r grafico3.2, fig.width=8, fig.height=8, message = FALSE, warning = FALSE}
+co2_fert_anim <- CO2_fert_panel %>%
+  filter(!is.na(co2_kt),
+         !is.na(tfr))
+
+reg_stats <- co2_fert_anim %>%
+  group_by(year) %>%
+  summarise(
+    n    = n(),
+    beta = coef(lm(tfr ~ co2_kt))[2],
+    r2   = summary(lm(tfr ~ co2_kt))$r.squared,
+    .groups = "drop"
+  )
+
+
+library(gganimate)
+
+p_anim <- ggplot(co2_fert_anim,
+                 aes(x = co2_kt,
+                     y = tfr)) +
+  # puntos por país
+  geom_point(aes(color = country),
+             alpha = 0.7,
+             size = 2,
+             show.legend = FALSE) +
+  # nombres de algunos países (opcionales: quita si molesta)
+  ggrepel::geom_text_repel(
+    data = ~ dplyr::filter(.x, co2_kt == max(co2_kt) | tfr == max(tfr)),
+    aes(label = country),
+    size = 3,
+    max.overlaps = 30,
+    show.legend = FALSE
+  ) +
+  # recta de regresión por año
+  geom_smooth(method = "lm",
+              se = TRUE,
+              linetype = "dashed",
+              color = "deeppink") +
+  # texto con stats por año (beta, R², n)
+  geom_text(
+    data = reg_stats,
+    aes(x = -Inf, y = Inf,
+        label = sprintf("Beta = %.3f   R2 = %.2f   n = %d", beta, r2, n)),
+    hjust = -0.05,
+    vjust = 1.2,
+    size = 3.2,
+    inherit.aes = FALSE
+  ) +
+  scale_x_continuous(labels = scales::comma) +
+  labs(
+    title = "Relación entre emisiones de CO₂ y fertilidad en Europa",
+    subtitle = "Año: {frame_time}",
+    x = "CO2 total del país (kt)",
+    y = "Tasa global de fecundidad (TFR)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title       = element_text(face = "bold")
+  ) +
+  transition_time(year) +
+  ease_aes("linear")
+
+# Ver la animación en el viewer
+anim <- animate(p_anim,
+                nframes = 150,
+                fps = 10,
+                renderer = gifski_renderer())
+
+anim
+```
+
+### Resultados
+
+#### Resultados del ranking de CO₂ (Gráfico 3.1)
+
+El gráfico de “lollipop” muestra que:
+
+Los países con mayores emisiones medias de CO₂ (por ejemplo, economías más grandes o con mix energético intensivo en combustibles fósiles) no presentan niveles de fertilidad claramente diferenciados del resto.
+
+Entre los países de la parte alta del ranking observamos TFR medias en un rango relativamente estrecho (en torno a 1.3–1.7 hijos por mujer), similares a las del resto de Europa.
+
+Algunos países con emisiones muy bajas (como Malta o Albania) tampoco destacan por una fertilidad especialmente alta; al contrario, se sitúan en la parte baja o media del rango de TFR.
+
+En conjunto, el ranking sugiere que **no existe un patrón monotónico evidente del tipo “a más CO₂, menos (o más) fertilidad”**. La posición en el ranking de emisiones parece estar explicada sobre todo por factores estructurales (tamaño económico, industria, energía), mientras que la fertilidad se mueve en un margen relativamente estrecho sin alinearse claramente con esas diferencias.
+
+#### Resultados del gráfico animado CO₂–TFR (Gráfico 3.2)
+
+La animación año a año refuerza esta impresión:
+
+En cada fotograma, los puntos (países) se distribuyen de forma bastante difusa sobre el plano CO₂–TFR, sin que se forme una nube claramente ascendente o descendente.
+
+Las rectas de regresión que se ajustan por año suelen tener pendientes pequeñas y, visualmente, la banda de confianza es amplia y abarca valores cercanos a una pendiente nula.
+
+Los coeficientes de determinación (R²) que se muestran en la animación son bajos en la mayoría de años, lo que indica que las emisiones de CO₂ explican sólo una fracción muy limitada de la variación en fertilidad entre países.
+
+Tampoco se aprecia un cambio cualitativo de la relación a lo largo del tiempo: no hay un periodo donde la asociación se vuelva claramente más fuerte o cambie de signo de forma clara.
+
+En términos prácticos, la lectura estadística es que, en los datos agregados país–año, las emisiones totales de CO₂ no guardan una relación robusta con la TFR:
+
+- **Países muy emisores pueden tener fertilidad baja, media o relativamente alta.**
+
+- **Países con bajas emisiones pueden situarse también en cualquier punto dentro del rango de TFR observado.**
+
+#### Interpretación
+
+Estos resultados son coherentes con la naturaleza del indicador:
+
+El CO₂ es un contaminante global, cuyo volumen anual refleja principalmente tamaño económico, estructura productiva e intensidad energética, más que la exposición individual de la población a contaminantes locales.
+
+Los mecanismos biológicos que podrían afectar a la fertilidad suelen estar más vinculados a exposiciones locales (NO₂, PM₂.₅, ozono, etc.) que a las emisiones totales de CO₂ a escala nacional.
+
+Además, la fertilidad está fuertemente condicionada por factores demográficos y socioeconómicos (edad a la maternidad, mercado laboral, políticas de conciliación, normas culturales), que pueden enmascarar cualquier efecto asociado a un indicador tan agregado como las emisiones de CO₂.
+
+Por tanto, el tercer objetivo confirma la idea general de los anteriores:
+cuando miramos a nivel país, con indicadores agregados, la relación entre contaminación (o emisiones) y fertilidad en Europa parece ser, como mínimo, muy débil y fuertemente confundida por otras dimensiones estructurales.
 
 # Conclusiones
 
