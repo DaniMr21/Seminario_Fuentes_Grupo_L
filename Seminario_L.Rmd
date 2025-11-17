@@ -40,15 +40,12 @@ En particular, la calidad del aire se ha relacionado con alteraciones hormonales
 
 En este contexto, la **vigilancia de la calidad del aire** (monitorización sistemática, cobertura de estaciones, reporte y disponibilidad de datos) puede operar como un bien público que mejora la salud y reduce la incertidumbre sobre riesgos ambientales. Una red de vigilancia más densa y activa suele acompañar estrategias de control, cumplimiento normativo y comunicación del riesgo, y puede facilitar políticas de reducción de emisiones. 
 
-El resultado esperado —si estos canales funcionan— es un entorno más saludable y predecible para la crianza, lo que, en teoría, podría favorecer niveles más altos de fertilidad.
+El resultado esperado (si estos canales funcionan) es un entorno más saludable y predecible para la crianza, lo que, en teoría, podría favorecer niveles más altos de fertilidad.
 
 Sin embargo, a nivel agregado (país), se conoce menos acerca de:
 
 - Hasta qué punto la intensidad de la vigilancia del aire se asocia con niveles de fertilidad.
-
-- Si la contaminación atmosférica efectiva (por ejemplo, el NO₂ medio) se relaciona con la fertilidad media de los países europeos.
-
-- Si estas relaciones se mantienen una vez que se consideran posibles fuentes de heterogeneidad, como diferencias de tamaño poblacional, urbanización o intensidad de monitorización.
+- Si la contaminación atmosférica (por ejemplo, con el NO₂ o el CO₂) se relaciona con la fertilidad media de los países europeos.
 
 El presente seminario aborda estas cuestiones desde una perspectiva descriptiva, utilizando datos agregados por país para Europa.
 
@@ -64,11 +61,11 @@ Analizar la relación entre la vigilancia y la calidad del aire y la fertilidad 
 **NO₂ vs fertilidad**  
 ¿Están los niveles medios de NO₂ en los países europeos relacionados con sus niveles medios de fertilidad (TFR)?
 
-**CO₂ vs fertilidad**
-¿Existe relación directamente proporcional entre los niveles de dióxido de carbono y la fertilidad?
+**CO₂ vs fertilidad**  
+¿Existe una relación directamente proporcional entre los niveles de dióxido de carbono (CO₂) y la fertilidad?
 
-**PM₂.₅ en la vigilancia vs fertilidad**
-Analizar si la proporción de observaciones dedicadas a PM₂.₅ en los sistemas de vigilancia de la calidad del aire de los países europeos se asocia con su fertilidad media (TFR).
+**PM₂.₅ en la vigilancia vs fertilidad**  
+¿Se asocia la proporción de observaciones dedicadas a PM₂.₅ en los sistemas de vigilancia de la calidad del aire de los países europeos con su fertilidad media (TFR)?
 
 # Metodología y resultados:
 
@@ -88,14 +85,15 @@ Si la hipótesis es consistente con los datos, esperamos observar una relación 
 Trabajamos con dos fuentes principales:
 
 1. **Calidad del aire (`DataExtract.csv`)**:  
-   A partir de los registros originales, limpiamos nombres, homogeneizamos países y contamos observaciones por país–año (`n_obs_aire`).  
-   Con ello construimos resúmenes por país (por ejemplo, `total_obs_aire` y `años_con_cobertura`).
+   A partir de los registros originales de AQ e-Reporting (EEA), limpiamos nombres, homogeneizamos países y contamos observaciones por país–año (`n_obs_aire`).  
+   Con ello construimos resúmenes por país (por ejemplo, `total_obs_aire` y `n_anios_aire`).
 
 2. **Fertilidad (Eurostat, anual) (`Fertilidad.csv`)**:  
-   Extraemos la **TFR** por país–año, homogeneizamos códigos `geo` a nombres de país y calculamos resúmenes (por ejemplo, `tfr_mean` por país).
+   Extraemos la **TFR** por país–año, homogeneizamos los códigos `geo` a nombres de país (`pais`) y calculamos resúmenes (por ejemplo, `tfr_media` por país).
+
    
 ```{r datos obj 1, message = FALSE, warning = FALSE}
-# Lectura
+#Lectura y limpieza básica
 
 aire <- read_delim(
   "INPUT/DATA/DataExtract.csv",
@@ -107,245 +105,256 @@ fertilidad <- read_delim(
   delim = ",", escape_double = FALSE, trim_ws = TRUE
 )
 
-# Limpieza básica
+aire       <- aire %>% clean_names()
+fertilidad <- fertilidad %>% clean_names()
 
-aire       <- clean_names(aire)
-fertilidad <- clean_names(fertilidad)
+#Tabla de mapeo de códigos de país (Eurostat -> nombre)
 
-# FERTILIDAD (Eurostat): anual, con códigosque  se pasan a los nombres de los paises
-
-# Mantener 'geo' como código y luego mapeamos a 'country'
-fert_codes <- fertilidad |>
-  filter(freq == "A") |>
-  transmute(
-    geo  = geo, # código Eurostat
-    year = as.integer(time_period),
-    tfr  = as.numeric(obs_value)
-  )
-
-# Mapeo de códigos Eurostat a nombre país
-fert_paises <- fert_codes |>
-  mutate(country = case_when(
-    geo == "AD" ~ "Andorra",
-    geo == "AL" ~ "Albania",
-    geo == "AM" ~ "Armenia",
-    geo == "AT" ~ "Austria",
-    geo == "AZ" ~ "Azerbaijan",
-    geo == "BA" ~ "Bosnia and Herzegovina",
-    geo == "BE" ~ "Belgium",
-    geo == "BG" ~ "Bulgaria",
-    geo == "BY" ~ "Belarus",
-    geo == "CH" ~ "Switzerland",
-    geo == "CY" ~ "Cyprus",
-    geo == "CZ" ~ "Czechia",   
-    geo == "DE" ~ "Germany",
-    geo == "DK" ~ "Denmark",
-    geo == "EE" ~ "Estonia",
-    geo == "EL" ~ "Greece",      
-    geo == "ES" ~ "Spain",
-    geo == "FI" ~ "Finland",
-    geo == "FR" ~ "France",
-    geo == "GE" ~ "Georgia",
-    geo == "GI" ~ "Gibraltar",
-    geo == "HR" ~ "Croatia",
-    geo == "HU" ~ "Hungary",
-    geo == "IE" ~ "Ireland",
-    geo == "IS" ~ "Iceland",
-    geo == "IT" ~ "Italy",
-    geo == "LI" ~ "Liechtenstein",
-    geo == "LT" ~ "Lithuania",
-    geo == "LU" ~ "Luxembourg",
-    geo == "LV" ~ "Latvia",
-    geo == "MC" ~ "Monaco",
-    geo == "MD" ~ "Moldova",
-    geo == "ME" ~ "Montenegro",
-    geo == "MK" ~ "North Macedonia",
-    geo == "MT" ~ "Malta",
-    geo == "NL" ~ "Netherlands",
-    geo == "NO" ~ "Norway",
-    geo == "PL" ~ "Poland",
-    geo == "PT" ~ "Portugal",
-    geo == "RO" ~ "Romania",
-    geo == "RS" ~ "Serbia",
-    geo == "RU" ~ "Russia",
-    geo == "SE" ~ "Sweden",
-    geo == "SI" ~ "Slovenia",
-    geo == "SK" ~ "Slovakia",
-    geo == "SM" ~ "San Marino",
-    geo == "TR" ~ "Türkiye",
-    geo == "UA" ~ "Ukraine",
-    geo == "UK" ~ "United Kingdom",
-    geo == "VA" ~ "Vatican City",
-    geo == "XK" ~ "Kosovo",
-    # Agregados (no países), fuera del join
-    geo %in% c("EU27_2020","EU27","EU28","EA19","EFTA") ~ NA_character_
-  )) |>
-  filter(!is.na(country)) |>
-  select(country, year, tfr)
+mapa_paises <- tibble::tribble(
+  ~geo,        ~pais,
+  "AD", "Andorra",
+  "AL", "Albania",
+  "AM", "Armenia",
+  "AT", "Austria",
+  "AZ", "Azerbaijan",
+  "BA", "Bosnia and Herzegovina",
+  "BE", "Belgium",
+  "BG", "Bulgaria",
+  "BY", "Belarus",
+  "CH", "Switzerland",
+  "CY", "Cyprus",
+  "CZ", "Czechia",
+  "DE", "Germany",
+  "DK", "Denmark",
+  "EE", "Estonia",
+  "EL", "Greece",
+  "ES", "Spain",
+  "FI", "Finland",
+  "FR", "France",
+  "GE", "Georgia",
+  "GI", "Gibraltar",
+  "HR", "Croatia",
+  "HU", "Hungary",
+  "IE", "Ireland",
+  "IS", "Iceland",
+  "IT", "Italy",
+  "LI", "Liechtenstein",
+  "LT", "Lithuania",
+  "LU", "Luxembourg",
+  "LV", "Latvia",
+  "MC", "Monaco",
+  "MD", "Moldova",
+  "ME", "Montenegro",
+  "MK", "North Macedonia",
+  "MT", "Malta",
+  "NL", "Netherlands",
+  "NO", "Norway",
+  "PL", "Poland",
+  "PT", "Portugal",
+  "RO", "Romania",
+  "RS", "Serbia",
+  "RU", "Russia",
+  "SE", "Sweden",
+  "SI", "Slovenia",
+  "SK", "Slovakia",
+  "SM", "San Marino",
+  "TR", "Türkiye",
+  "UA", "Ukraine",
+  "UK", "United Kingdom",
+  "VA", "Vatican City",
+  "XK", "Kosovo"
+  # Agregados tipo "EU27_2020", etc. no se incluyen
+)
 
 ```
 
 ### Pipeline de trabajo
 
-1. **Limpieza y homogeneización** de ambas tablas, incluyendo nombres de países.  
-2. **Conteo de vigilancia:** `aire_conteo` (país, año, `n_obs_aire`).  
-3. **Resumen de fertilidad:** `fert_resumen_nombres` (estadísticos por país).  
-4. **Joins:**
-   - `panel_aire_year_con_fert`: panel país–año con resumen de fertilidad adjunto.  
-   - `resumen_aire_fert_pais`: resumen combinado por país, utilizado para el **gráfico de dispersión**.  
+1. **Limpieza y homogeneización** de ambas tablas (`aire` y `fertilidad`), incluyendo estandarización de nombres de país (`pais`) y conversión de años (`anio`).
+
+2. **Conteo de vigilancia:** construcción de `aire_conteo`, que contiene para cada país–año el número de observaciones de calidad del aire registradas (`n_obs_aire`).
+
+3. **Resumen de fertilidad:** creación de `fert_resumen_nombres`, que incluye los principales estadísticos por país (por ejemplo, `tfr_media`, `anio_min`, `anio_max` y `n_anios`).
+
+4. **Uniones (joins):**
+   - `panel_aire_anio_con_fert`: panel país–año donde cada observación de vigilancia se combina con el resumen de fertilidad correspondiente.  
+   - `resumen_aire_fert_pais`: resumen combinado por país, utilizado para el **gráfico de dispersión** y los **tests de correlación**.  
 
 ```{r pipeline obj1, message = FALSE, warning = FALSE}
 
-#AIRE: conteo por país-año
-# Normalizamos nombres y tipos; además, homogeneizamos algunos alias típicos
-aire_conteo <- aire |>
-  mutate(
-    country = str_trim(country),
-    year    = as.integer(year),
-    # Homogeneización de alias frecuentes (solo se aplica si existen)
-    country = recode(country,
-                     "Turkey" = "Türkiye",
-                     "Czech Republic" = "Czechia",
-                     "Russian Federation" = "Russia",
-                     "Republic of Moldova" = "Moldova",
-                     "UK" = "United Kingdom",
-                     "Great Britain" = "United Kingdom"
-    )
-  ) |>
-  count(country, year, name = "n_obs_aire") |>
-  arrange(country, year)
+#Resumir fertilidad por país
+resumir_fertilidad <- function(df) {
+  df %>%
+    group_by(pais) %>%
+    summarise(
+      n_anios    = n(),
+      anio_min   = min(anio, na.rm = TRUE),
+      anio_max   = max(anio, na.rm = TRUE),
+      tfr_media  = mean(tfr, na.rm = TRUE),
+      tfr_min    = min(tfr, na.rm = TRUE),
+      tfr_max    = max(tfr, na.rm = TRUE),
+      .groups    = "drop"
+    ) %>%
+    arrange(pais)
+}
+# Limpiar y resumir vigilancia de aire (conteo país-año)
 
-# Resumen de fertilidad por país (nombres ya homogeneizados)
+limpiar_y_contar_aire <- function(aire_raw) {
+  aire_raw %>%
+    mutate(
+      pais = str_trim(country),
+      anio = as.integer(year),
+      # Homogeneización de alias frecuentes
+      pais = recode(
+        pais,
+        "Turkey"              = "Türkiye",
+        "Czech Republic"      = "Czechia",
+        "Russian Federation"  = "Russia",
+        "Republic of Moldova" = "Moldova",
+        "UK"                  = "United Kingdom",
+        "Great Britain"       = "United Kingdom"
+      )
+    ) %>%
+    count(pais, anio, name = "n_obs_aire") %>%
+    arrange(pais, anio)
+}
 
-fert_resumen_nombres <- fert_paises |>
-  group_by(country) |>
-  summarise(
-    n_years  = n(),
-    year_min = min(year, na.rm = TRUE),
-    year_max = max(year, na.rm = TRUE),
-    tfr_mean = mean(tfr, na.rm = TRUE),
-    tfr_min  = min(tfr, na.rm = TRUE),
-    tfr_max  = max(tfr, na.rm = TRUE),
-    .groups = "drop"
-  ) |>
-  arrange(country)
+# Unir resumen de aire y fertilidad por país
+unir_aire_y_fertilidad <- function(df_aire, df_fert) {
+  df_aire %>%
+    full_join(df_fert, by = "pais") %>%
+    arrange(pais)
+}
 
-# JOINS
+#Construcción de datos de fertilidad (Eurostat)
 
-# Panel país–año con resumen de fertilidad adjunto (join por country)
-panel_aire_year_con_fert <- aire_conteo |>
-  left_join(fert_resumen_nombres, by = "country")
-
-# Resumen por país: agregamos aire y fertilidad
-aire_resumen_pais <- aire_conteo |>
-  group_by(country) |>
-  summarise(
-    n_years_aire     = n_distinct(year),
-    year_min_aire    = min(year, na.rm = TRUE),
-    year_max_aire    = max(year, na.rm = TRUE),
-    total_obs_aire   = sum(n_obs_aire, na.rm = TRUE),
-    avg_obs_por_year = mean(n_obs_aire, na.rm = TRUE),
-    .groups = "drop"
+fert_codigos <- fertilidad %>%
+  filter(freq == "A") %>%
+  transmute(
+    geo  = geo, # código Eurostat
+    anio = as.integer(time_period),
+    tfr  = as.numeric(obs_value)
   )
 
-resumen_aire_fert_pais <- aire_resumen_pais |>
-  full_join(fert_resumen_nombres, by = "country") |>
-  arrange(country)
+fert_paises <- fert_codigos %>%
+  left_join(mapa_paises, by = "geo") %>%
+  filter(!is.na(pais)) %>%
+  select(pais, anio, tfr)
 
+# Resumen general de fertilidad (todos los años disponibles)
+fert_resumen_nombres <- resumir_fertilidad(fert_paises)
 
-# Promedios de fertilidad usando solo años que existen en 'aire_conteo' (SOLAPAMIENTO)
-fert_resumen_overlap <- fert_paises |>
-  semi_join(aire_conteo |> distinct(country, year), by = c("country","year")) |>
-  group_by(country) |>
+#Construcción de datos de aire (vigilancia)
+
+aire_conteo <- limpiar_y_contar_aire(aire)
+
+# Resumen de vigilancia de aire por país
+aire_resumen_pais <- aire_conteo %>%
+  group_by(pais) %>%
   summarise(
-    n_years_ovlp  = n(),
-    year_min_ovlp = min(year, na.rm = TRUE),
-    year_max_ovlp = max(year, na.rm = TRUE),
-    tfr_mean_ovlp = mean(tfr, na.rm = TRUE),
-    .groups = "drop"
+    n_anios_aire        = n_distinct(anio),
+    anio_min_aire       = min(anio, na.rm = TRUE),
+    anio_max_aire       = max(anio, na.rm = TRUE),
+    total_obs_aire      = sum(n_obs_aire, na.rm = TRUE),
+    media_obs_por_anio  = mean(n_obs_aire, na.rm = TRUE),
+    .groups             = "drop"
   )
 
-resumen_aire_fert_overlap <- aire_resumen_pais |>
-  full_join(fert_resumen_overlap, by = "country") |>
-  arrange(country)
+#Resumen combinado por país (todos los años de fertilidad)
+resumen_aire_fert_pais <- unir_aire_y_fertilidad(
+  df_aire = aire_resumen_pais,
+  df_fert = fert_resumen_nombres
+)
+
+#Resumen de fertilidad solo en años con datos de aire (solapamiento)
+fert_resumen_solape <- fert_paises %>%
+  semi_join(
+    aire_conteo %>% distinct(pais, anio),
+    by = c("pais", "anio")
+  ) %>%
+  resumir_fertilidad()
+
+resumen_aire_fert_solape <- unir_aire_y_fertilidad(
+  df_aire = aire_resumen_pais,
+  df_fert = fert_resumen_solape
+)
+
 ```
 
 ### Estrategia empírica y lectura de resultados
 
-Como primer **“test”**, graficamos `tfr_mean` (eje *x*) frente a `total_obs_aire` (eje *y*) por país y ajustamos una **recta OLS** con su **banda de confianza**.  
+Como primer **“test”**, graficamos `tfr_media` (eje *x*) frente a `total_obs_aire` (eje *y*) por país y ajustamos una **recta OLS** con su **banda de confianza**.  
 
-Este gráfico nos permite explorar de forma descriptiva si existe una **asociación positiva** entre la intensidad de vigilancia del aire y la fertilidad promedio en cada país.
+Este gráfico nos permite explorar de forma descriptiva si existe una **asociación positiva** entre la intensidad de vigilancia del aire y la fertilidad promedio (TFR) en cada país.
 
 
 ```{r grafico1, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 
-#Gráfico 
+datos_validos <- resumen_aire_fert_pais %>%
+  filter(!is.na(tfr_media), !is.na(total_obs_aire))
 
-resumen_aire_fert_pais%>%
-  filter(!is.na(tfr_mean), !is.na(total_obs_aire)) %>%
-  ggplot(aes(x = tfr_mean, y = total_obs_aire)) +
+datos_validos %>%
+  ggplot(aes(x = tfr_media, y = total_obs_aire)) +
   geom_point(alpha = 0.7) +
   geom_smooth(method = "lm", se = TRUE) +
   labs(
-    title = "Observaciones de aire vs TFR medio (por país)",
+    title = "Observaciones de calidad del aire vs TFR medio (por país)",
     x = "TFR medio",
-    y = "Observaciones de aire (total)"
-  ) +
-  theme_minimal()
-
+    y = "Observaciones de calidad del aire (total)"
+  )
 ```
 
 ### Resultados:
 
-El diagrama de dispersión entre `total_obs_aire` (y) y `tfr_mean` (x) con una recta OLS sugiere que, a grandes rasgos, la asociación es como mucho débil y sensible a *outliers*. Visualmente, la pendiente no parece fuertemente positiva y la banda de confianza cubre valores cercanos a cero en buena parte del rango de `tfr_mean`.
+El diagrama de dispersión entre `total_obs_aire` (y) y `tfr_media` (x), junto con una recta OLS, sugiere que, a grandes rasgos, la asociación es como mucho débil y sensible a *outliers*. Visualmente, la pendiente no parece claramente positiva y la banda de confianza cubre valores cercanos a cero en buena parte del rango de `tfr_media`.
 
-El eje Y (conteos absolutos) probablemente está afectado por tamaño poblacional, densidad urbana y número de estaciones; no es una “intensidad de vigilancia” comparable *per cápita*.
+El eje Y (conteos absolutos) probablemente está afectado por el tamaño poblacional, la densidad urbana y el número de estaciones; no es una medida de “intensidad de vigilancia” comparable *per cápita*.
 
 **Lectura honesta.**  
-Con este primer gráfico no podemos afirmar que “más vigilancia implica más fertilidad”. Si existe relación, no es grande y podría estar mediada por terceros factores (riqueza, contaminación, urbanización, gasto sanitario, políticas familiares, etc.).
+Con este primer gráfico no podemos afirmar que “más vigilancia implica más fertilidad”. Si existe relación, no parece grande y podría estar mediada por terceros factores (riqueza, contaminación, urbanización, gasto sanitario, políticas familiares, etc.).
 
-A continuación vamos a realizar los lest estadísticos de Pearson y Spearman para demostrar esto de manera más objetiva:
+A continuación realizamos los **tests estadísticos** de Pearson y Spearman para evaluar esta relación de manera más objetiva:
 
 ```{r test1, message = FALSE, warning = FALSE}
-df_test <- resumen_aire_fert_pais %>%
-filter(!is.na(tfr_mean), !is.na(total_obs_aire)) %>%
-mutate(
-y_log = log1p(total_obs_aire) # estabiliza varianza ante colas largas
+
+df_test <- datos_validos %>%
+  mutate(
+    y_log = log1p(total_obs_aire)  # estabiliza la varianza ante colas largas
+  )
+
+cor_pearson  <- cor.test(df_test$tfr_media, df_test$y_log, method = "pearson")
+cor_spearman <- cor.test(df_test$tfr_media, df_test$y_log, method = "spearman", exact = FALSE)
+
+resumen_tests <- tibble(
+  indicador = c(
+    "Correlación Pearson (r)", "p-valor Pearson",
+    "Correlación Spearman (rho)", "p-valor Spearman"
+  ),
+  valor = c(
+    round(unname(cor_pearson$estimate), 3),
+    signif(cor_pearson$p.value, 3),
+    round(unname(cor_spearman$estimate), 3),
+    signif(cor_spearman$p.value, 3)
+  )
 )
 
-#Correlaciones
-
-cor_pearson <- cor.test(df_test$tfr_mean, df_test$y_log, method = "pearson")
-cor_spearman <- cor.test(df_test$tfr_mean, df_test$y_log, method = "spearman", exact = FALSE)
-
-# Empaquetado de resultados clave
-
-resumen <- tibble(
-indicador = c("Correlación Pearson (r)", "p-valor Pearson",
-"Correlación Spearman (rho)", "p-valor Spearman"),
-valor = c(
-round(unname(cor_pearson$estimate), 3),
-signif(cor_pearson$p.value, 3),
-round(unname(cor_spearman$estimate), 3),
-signif(cor_spearman$p.value, 3)))
-
-knitr::kable(resumen, caption = "Tests estadísticos")
+knitr::kable(resumen_tests, caption = "Tests estadísticos de asociación entre TFR medio y vigilancia del aire")
 
 ```
 
-Los resultados del test confirman la lectura visual del gráfico:
+Los resultados de los tests confirman la lectura visual del gráfico:
 
-**Correlación de Pearson (r = 0.017, p = 0.92)** -> no existe relación lineal entre la fertilidad media y el nivel total de observaciones de calidad del aire.  
+**Correlación de Pearson (r = 0.017, p = 0.92)** → no se aprecia relación lineal entre la fertilidad media y el nivel total de observaciones de calidad del aire.
 
-**Correlación de Spearman (ρ = 0.026, p = 0.877)** -> tampoco se observa relación monótona, es decir, los países con más vigilancia no presentan  mayor ni menor fertilidad.  
+**Correlación de Spearman (ρ = 0.026, p = 0.877)** → tampoco se observa una relación monótona; es decir, los países con más vigilancia no presentan sistemáticamente mayor ni menor fertilidad.
 
-Ambos *p-valores* son muy superiores al umbral convencional de 0.05, lo que implica que no hay evidencia estadísticamente significativa de asociación entre ambas variables.  
+Ambos *p-valores* son muy superiores al umbral convencional de 0.05, lo que implica que no hay evidencia estadísticamente significativa de asociación entre ambas variables.
 
-En términos sencillos, la intensidad de vigilancia del aire no parece explicar las diferencias de fertilidad entre países europeos. Esto sugiere que la hipótesis naïf (“más vigilancia → más fertilidad”) no se sostiene empíricamente en el corte transversal.
+En términos sencillos, la intensidad de vigilancia del aire no parece explicar las diferencias de fertilidad entre países europeos. Esto sugiere que la hipótesis naïf (“más vigilancia → más fertilidad”) no se sostiene empíricamente en este corte transversal.
 
-## Caracterizar la fertilidad media de los países europeos y comparación con los niveles de dióxido de nitrógeno.
+## Caracterizar la fertilidad media de los países europeos y comparación con los niveles de dióxido de nitrógeno
 
-En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la calidad del aire en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, incluidos riesgos durante el embarazo y potenciales impactos en la salud reproductiva.
+En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la **calidad del aire** en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, incluidos riesgos durante el embarazo y potenciales impactos en la salud reproductiva.
 
 **Pregunta:**  
 ¿Existe una relación entre los niveles medios de NO₂ en cada país europeo y su fertilidad media?
@@ -362,63 +371,64 @@ Para esta sección combinamos dos fuentes principales:
 1. **OMS — AAP 2022 (`OMS_Datos.xlsx`)**  
    - Filtramos únicamente los países pertenecientes a la *European Region*.  
    - Extraemos los valores de NO₂ por ciudad (`NO2 (μg/m3)`).  
-   - Armonizamos los nombres de país (e.g., *Turkey → Türkiye*, *Russian Federation → Russia*).
+   - Armonizamos los nombres de país en la variable `pais` (por ejemplo, *Turkey → Türkiye*, *Russian Federation → Russia*, *Republic of Moldova → Moldova*).
 
 2. **Eurostat — Fertilidad (`fert_resumen_nombres`)**  
-   - Contiene la TFR media por país, ya homogeneizada en la Parte 1.
-   
+   - Contiene la TFR media por país (`tfr_media`), ya homogeneizada en la Parte 1 con la misma codificación de `pais`.
+
 ```{r pregunta2_datos, message = FALSE, warning = FALSE}
 # Leer directamente desde la hoja principal
 oms <- read_excel("INPUT/DATA/OMS_Datos.xlsx", sheet = "AAP_2022_city_v9")
 
-# solo Europa
+# Solo países de la región europea de la OMS
 oms_europa <- oms %>%
   filter(`WHO Region` == "European Region")
 
-# variable country con nombres armonizados
+# Variable 'pais' con nombres armonizados
 oms_europa_limpio <- oms_europa %>%
   mutate(
-    country = str_trim(`WHO Country Name`),
-    country = recode(
-      country,
-      "Turkey"             = "Türkiye",
-      "Russian Federation" = "Russia",
+    pais = str_trim(`WHO Country Name`),
+    pais = recode(
+      pais,
+      "Turkey"              = "Türkiye",
+      "Russian Federation"  = "Russia",
       "Republic of Moldova" = "Moldova"
     )
   )
 ```
 
-Tras armonizar y unir ambas tablas mediante un `left_join()`, obtenemos un panel ciudad–año con valores de NO₂ y fertilidad media por país.  
+Tras armonizar y unir ambas tablas mediante un `left_join()`, obtenemos un panel ciudad–país con valores de NO₂ y la fertilidad media asociada a cada país.  
 A partir de ese panel construimos un **resumen por país** con las siguientes variables:
 
-- `no2_mean`: media del NO₂ por país.  
-- `no2_median`: mediana de NO₂.  
-- `n_cities`: número de ciudades o localidades monitorizadas.  
-- `tfr_mean`: fertilidad media (Eurostat).  
+- `no2_media`: media del NO₂ por país.  
+- `no2_mediana`: mediana del NO₂.  
+- `n_ciudades`: número de ciudades o localidades monitorizadas.  
+- `tfr_media`: fertilidad media (Eurostat).  
 
 Este resumen nos permite trabajar con una unidad clara (el país) y explorar la relación entre contaminación y fertilidad.
 
 ```{r pregunta2_pipeline, message = FALSE, warning = FALSE}
 
-# JOIN: tabla OMS ciudad-año + resumen de fertilidad por país
+# JOIN: tabla OMS ciudad-país + resumen de fertilidad por país
 oms_europa_con_fert <- oms_europa_limpio %>%
-  left_join(fert_resumen_nombres, by = "country")
+  left_join(fert_resumen_nombres, by = "pais")
 
-#mirar qué países de OMS no tienen fertilidad
+# Comprobar qué países de OMS no tienen fertilidad disponible
 faltan_fert_oms <- oms_europa_limpio %>%
-  distinct(country) %>%
-  anti_join(fert_resumen_nombres %>% distinct(country), by = "country")
+  distinct(pais) %>%
+  anti_join(fert_resumen_nombres %>% distinct(pais), by = "pais")
 
+# Resumen por país
 pais_no2_fert <- oms_europa_con_fert %>%
-  group_by(country) %>%
+  group_by(pais) %>%
   summarise(
-    no2_mean   = mean(`NO2 (μg/m3)`, na.rm = TRUE),
-    no2_median = median(`NO2 (μg/m3)`, na.rm = TRUE),
-    n_cities   = n_distinct(`City or Locality`),
-    tfr_mean   = first(tfr_mean),   # viene del resumen de fertilidad
+    no2_media   = mean(`NO2 (μg/m3)`, na.rm = TRUE),
+    no2_mediana = median(`NO2 (μg/m3)`, na.rm = TRUE),
+    n_ciudades  = n_distinct(`City or Locality`),
+    tfr_media   = first(tfr_media),   # viene del resumen de fertilidad (ya homog.)
     .groups = "drop"
   ) %>%
-  filter(!is.na(no2_mean), !is.na(tfr_mean))
+  filter(!is.na(no2_media), !is.na(tfr_media))
 
 ```
 
@@ -426,10 +436,10 @@ pais_no2_fert <- oms_europa_con_fert %>%
 
 Para visualizar la relación NO₂–fertilidad utilizamos un **gráfico de burbujas**:
 
-- **Eje X:** concentración media de NO₂ por país.  
-- **Eje Y:** fertilidad media (TFR).  
-- **Tamaño del punto:** número de ciudades monitorizadas (`n_cities`).  
-- **Etiqueta:** nombre del país.  
+- **Eje X:** concentración media de NO₂ por país (`no2_media`).  
+- **Eje Y:** fertilidad media (TFR, `tfr_media`).  
+- **Tamaño del punto:** número de ciudades monitorizadas (`n_ciudades`).  
+- **Etiqueta:** nombre del país (`pais`).  
 - **Recta OLS:** ajustada con banda de confianza (estimación visual del signo de la asociación).
 
 Este enfoque es informativo porque combina:
@@ -441,25 +451,30 @@ Este enfoque es informativo porque combina:
 library(ggplot2)
 library(ggrepel)
 
-ggplot(pais_no2_fert,
-       aes(x = no2_mean,
-           y = tfr_mean,
-           size = n_cities)) +
+ggplot(
+  pais_no2_fert,
+  aes(
+    x    = no2_media,
+    y    = tfr_media,
+    size = n_ciudades
+  )
+) +
   geom_point(alpha = 0.7) +
   geom_smooth(method = "lm", se = TRUE, linetype = "dashed") +
-  geom_text_repel(aes(label = country),
-                  size = 3,
-                  max.overlaps = 30) +
+  geom_text_repel(
+    aes(label = pais),
+    size        = 3,
+    max.overlaps = 30
+  ) +
   scale_size_continuous(name = "Nº de ciudades\nmonitorizadas") +
   labs(
-    title = "NO2 medio vs fertilidad media por país europeo",
+    title    = "NO₂ medio vs fertilidad media por país europeo",
     subtitle = "Tamaño del punto = nº de ciudades con datos de NO₂",
-    x = "NO2 medio (µg/m^3, OMS)",
-    y = "TFR medio (Eurostat)"
+    x        = "NO₂ medio (µg/m³, OMS)",
+    y        = "TFR media (Eurostat)"
   ) +
   theme_minimal()
 ```
-
 ### Resultados
 
 El gráfico revela una estructura altamente dispersa:
@@ -476,7 +491,7 @@ el vínculo entre contaminación atmosférica y natalidad, si existe, parece dé
 
 Aunque los efectos biológicos del NO₂ sobre la reproducción han sido documentados en estudios clínicos y epidemiológicos, estos pueden quedar enmascarados por la heterogeneidad interna de cada país y por la diferencia entre contaminación urbana y fertilidad nacional promedio.
 
-## Dióxido de Carbono
+## Dióxido de carbono
 
 ### Datos y construcción de variables
 
@@ -484,51 +499,43 @@ En este tercer objetivo analizamos el papel de un contaminante global: el dióxi
 
 A diferencia del NO₂, que refleja principalmente la contaminación urbana y la exposición directa de la población, el CO₂ es un gas de efecto invernadero cuya variación entre países está más ligada a su tamaño económico, estructura energética y nivel de industrialización.
 
-Partimos de un fichero en formato JSON (CO2.json) que contiene las emisiones anuales de CO₂ (en kilotoneladas) por país y por año. A partir de este conjunto:
+Partimos de un fichero en formato JSON (`CO2.json`) que contiene las emisiones anuales de CO₂ (en kilotoneladas) por país y por año. A partir de este conjunto:
 
-Se limpia y normaliza la información para construir una tabla CO2_limpio con las columnas:
+Se limpia y normaliza la información para construir una tabla `co2_limpio` con las columnas:
 
-`country` (nombre del país armonizado),
+- `pais` (nombre del país armonizado),  
+- `anio` (año),  
+- `co2_kt` (emisiones totales de CO₂ en kilotoneladas).
 
-`year` (año),
+Posteriormente se agregan los datos por país para obtener el resumen `co2_resumen_pais`, que incluye:
 
-`co2_kt` (emisiones totales de CO₂ en kilotoneladas).
+- `co2_kt_media`: emisiones medias anuales de CO₂,  
+- `co2_kt_total`: emisiones acumuladas,  
+- junto con el número de años disponibles (`n_anios_co2`, `anio_min_co2`, `anio_max_co2`).
 
-Posteriormente se agregan los datos por país para obtener el resumen CO2_resumen_pais, que incluye:
-
-`co2_kt_mean:` emisiones medias anuales de CO₂,
-
-`co2_kt_total:` emisiones acumuladas,
-
-junto con el número de años disponibles.
-
-Finalmente, se realiza un `full_join` con `fert_resumen_nombres` , de modo que `CO2_fert_resumen_pais` contiene, para cada país, emisiones medias de CO₂ y TFR media en el mismo periodo de referencia.
+Finalmente, se realiza un `full_join` con `fert_resumen_nombres`, de modo que `co2_fert_resumen_pais` contiene, para cada país, las emisiones medias de CO₂ y la TFR media en el mismo periodo de referencia.
 
 Este dataset combinado es la base para los gráficos y análisis de este objetivo.
 
 ```{r json CO2, message = FALSE, warning = FALSE}
-library(tidyverse)
-library(janitor)
-library(jsonlite)
-library(stringr)
-
-# 1. LEER EL JSON COMO DATA FRAME (sin tidyjson, sin spread_all, porque daba fallos)
-dioxidocarbono_df <- jsonlite::fromJSON("INPUT/DATA/CO2.json",
-  simplifyDataFrame = TRUE,   # lo aplana a data.frame directamente
+# Leemos el JSON como Dataframe, no se por qué pero daba errores sino
+dioxidocarbono_df <- jsonlite::fromJSON(
+  "INPUT/DATA/CO2.json",
+  simplifyDataFrame = TRUE  # lo aplana a data.frame directamente
 ) %>%
   as_tibble() %>%
   clean_names()
 
-# 2. TABLA CO2_limpio (país-año)
-CO2_limpio <- dioxidocarbono_df %>%
+#TABLA co2_limpio (país-año)
+co2_limpio <- dioxidocarbono_df %>%
   transmute(
-    country_raw = str_trim(country_name),
-    year        = as.integer(year),
-    co2_kt      = as.numeric(co2_emissions_kt)
+    pais_raw = str_trim(country_name),
+    anio     = as.integer(year),
+    co2_kt   = as.numeric(co2_emissions_kt)
   ) %>%
   mutate(
-    country = recode(
-      country_raw,
+    pais = recode(
+      pais_raw,
       "Turkey"              = "Türkiye",
       "Czech Republic"      = "Czechia",
       "Russian Federation"  = "Russia",
@@ -537,72 +544,82 @@ CO2_limpio <- dioxidocarbono_df %>%
       "Great Britain"       = "United Kingdom"
     )
   ) %>%
-  group_by(country, year) %>%
+  group_by(pais, anio) %>%
   summarise(
     co2_kt = sum(co2_kt, na.rm = TRUE),
     .groups = "drop"
   )
 
-# 3. PANEL CO2 + FERTILIDAD (país–año)
-CO2_fert_panel <- CO2_limpio %>%
-  inner_join(fert_paises, by = c("country", "year"))
+#PANEL CO2 + FERTILIDAD (país–año)
+co2_fert_panel <- co2_limpio %>%
+  inner_join(fert_paises, by = c("pais", "anio"))
 
-# 4. RESUMEN POR PAÍS
-CO2_resumen_pais <- CO2_limpio %>%
-  group_by(country) %>%
+# RESUMEN POR PAÍS
+co2_resumen_pais <- co2_limpio %>%
+  group_by(pais) %>%
   summarise(
-    n_years_co2   = n_distinct(year),
-    year_min_co2  = min(year, na.rm = TRUE),
-    year_max_co2  = max(year, na.rm = TRUE),
-    co2_kt_mean   = mean(co2_kt, na.rm = TRUE),
-    co2_kt_total  = sum(co2_kt, na.rm = TRUE),
+    n_anios_co2  = n_distinct(anio),
+    anio_min_co2 = min(anio, na.rm = TRUE),
+    anio_max_co2 = max(anio, na.rm = TRUE),
+    co2_kt_media = mean(co2_kt, na.rm = TRUE),
+    co2_kt_total = sum(co2_kt, na.rm = TRUE),
     .groups = "drop"
   )
 
-CO2_fert_resumen_pais <- CO2_resumen_pais %>%
-  full_join(fert_resumen_nombres, by = "country") %>%
-  arrange(country)
+co2_fert_resumen_pais <- co2_resumen_pais %>%
+  full_join(fert_resumen_nombres, by = "pais") %>%
+  arrange(pais)
 ```
 
 ### Estrategia empírica
 
 El análisis se estructura en dos pasos complementarios:
 
-**Gráfico de ranking tipo “lollipop” (Gráfico 3.1)**
+**Gráfico de ranking tipo “lollipop” (Gráfico 3.1)**  
 
-Ordena a los países por sus emisiones medias de CO₂ (co2_kt_mean).
-
-La longitud de la barra horizontal indica el nivel de emisiones.
-
-El color y el tamaño del punto representan la TFR media: tonos más cálidos y puntos más grandes indican mayor fertilidad.
+- Ordena a los países por sus emisiones medias de CO₂ (`co2_kt_media`).  
+- La longitud de la barra horizontal indica el nivel de emisiones.  
+- El color y el tamaño del punto representan la TFR media (`tfr_media`): valores más altos se muestran con puntos más grandes y colores más intensos.  
 
 Este gráfico permite visualizar si los grandes emisores tienden a concentrarse en niveles de fertilidad sistemáticamente distintos del resto.
 
 ```{r grafico3.1, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
-co2_lolli <- CO2_fert_resumen_pais %>%
-  filter(!is.na(co2_kt_mean),
-         !is.na(tfr_mean))
+co2_lolli <- co2_fert_resumen_pais %>%
+  filter(!is.na(co2_kt_media),
+         !is.na(tfr_media))
 
-ggplot(co2_lolli,
-       aes(x = co2_kt_mean,
-           y = fct_reorder(country, co2_kt_mean))) +
+ggplot(
+  co2_lolli,
+  aes(
+    x = co2_kt_media,
+    y = fct_reorder(pais, co2_kt_media)
+  )
+) +
   # palito
-  geom_segment(aes(x = 0,
-                   xend = co2_kt_mean,
-                   y = fct_reorder(country, co2_kt_mean),
-                   yend = fct_reorder(country, co2_kt_mean)),
-               linewidth = 0.6,
-               alpha = 0.6) +
+  geom_segment(
+    aes(
+      x    = 0,
+      xend = co2_kt_media,
+      y    = fct_reorder(pais, co2_kt_media),
+      yend = fct_reorder(pais, co2_kt_media)
+    ),
+    linewidth = 0.6,
+    alpha     = 0.6
+  ) +
   # punto, coloreado por TFR
-  geom_point(aes(color = tfr_mean,
-                 size  = tfr_mean),
-             alpha = 0.9) +
-  scale_size_continuous(name = "TFR medio") +
-  scale_color_viridis_c(name = "TFR medio", option = "C") +
+  geom_point(
+    aes(
+      color = tfr_media,
+      size  = tfr_media
+    ),
+    alpha = 0.9
+  ) +
+  scale_size_continuous(name = "TFR media") +
+  scale_color_viridis_c(name = "TFR media", option = "C") +
   labs(
-    title    = "Ranking de emisiones medias de CO2 y fertilidad en Europa",
-    subtitle = "Línea = emisiones medias de CO2 (kt) | Color/tamaño = TFR medio",
-    x        = "CO2 medio (kt, total país)",
+    title    = "Ranking de emisiones medias de CO₂ y fertilidad en Europa",
+    subtitle = "Línea = emisiones medias de CO₂ (kt) | Color/tamaño = TFR media",
+    x        = "CO₂ medio (kt, total país)",
     y        = NULL
   ) +
   theme_minimal(base_size = 11) +
@@ -615,9 +632,9 @@ ggplot(co2_lolli,
 
 ```
 
-**Gráfico animado CO₂–TFR por año (Gráfico 3.2)**
+**Gráfico animado CO₂–TFR por año (Gráfico 3.2)**  
 
-Cada fotograma muestra un diagrama de dispersión entre `co2_kt` y ``tfr` para un año concreto.
+Cada fotograma muestra un diagrama de dispersión entre `co2_kt` y `tfr` para un año concreto.
 
 Se ajusta una recta de regresión lineal por año, con su banda de confianza.
 
@@ -626,12 +643,13 @@ Se añaden, en la esquina de la animación, el número de países incluidos y lo
 Esta animación permite ver si la relación CO₂–TFR cambia con el tiempo y si, en algún periodo concreto, aparece una tendencia clara (positiva o negativa).
 
 ```{r grafico3.2, fig.width=8, fig.height=8, message = FALSE, warning = FALSE}
-co2_fert_anim <- CO2_fert_panel %>%
+
+co2_fert_anim <- co2_fert_panel %>%
   filter(!is.na(co2_kt),
          !is.na(tfr))
 
 reg_stats <- co2_fert_anim %>%
-  group_by(year) %>%
+  group_by(anio) %>%
   summarise(
     n    = n(),
     beta = coef(lm(tfr ~ co2_kt))[2],
@@ -639,60 +657,75 @@ reg_stats <- co2_fert_anim %>%
     .groups = "drop"
   )
 
-
 library(gganimate)
 
-p_anim <- ggplot(co2_fert_anim,
-                 aes(x = co2_kt,
-                     y = tfr)) +
+p_anim <- ggplot(
+  co2_fert_anim,
+  aes(
+    x = co2_kt,
+    y = tfr
+  )
+) +
   # puntos por país
-  geom_point(aes(color = country),
-             alpha = 0.7,
-             size = 2,
-             show.legend = FALSE) +
-  # nombres de algunos países (opcionales: quita si molesta)
-  ggrepel::geom_text_repel(
-    data = ~ dplyr::filter(.x, co2_kt == max(co2_kt) | tfr == max(tfr)),
-    aes(label = country),
-    size = 3,
-    max.overlaps = 30,
+  geom_point(
+    aes(color = pais),
+    alpha = 0.7,
+    size  = 2,
     show.legend = FALSE
   ) +
+  # nombres de algunos países
+  ggrepel::geom_text_repel(
+    data = ~ dplyr::filter(
+      .x,
+      co2_kt == max(co2_kt) | tfr == max(tfr)
+    ),
+    aes(label = pais),
+    size         = 3,
+    max.overlaps = 30,
+    show.legend  = FALSE
+  ) +
   # recta de regresión por año
-  geom_smooth(method = "lm",
-              se = TRUE,
-              linetype = "dashed",
-              color = "deeppink") +
+  geom_smooth(
+    method  = "lm",
+    se      = TRUE,
+    linetype = "dashed",
+    color   = "deeppink"
+  ) +
   # texto con stats por año (beta, R², n)
   geom_text(
     data = reg_stats,
-    aes(x = -Inf, y = Inf,
-        label = sprintf("Beta = %.3f   R2 = %.2f   n = %d", beta, r2, n)),
-    hjust = -0.05,
-    vjust = 1.2,
-    size = 3.2,
-    inherit.aes = FALSE
+    aes(
+      x     = -Inf,
+      y     = Inf,
+      label = sprintf("Beta = %.3f   R² = %.2f   n = %d", beta, r2, n)
+    ),
+    hjust        = -0.05,
+    vjust        = 1.2,
+    size         = 3.2,
+    inherit.aes  = FALSE
   ) +
   scale_x_continuous(labels = scales::comma) +
   labs(
-    title = "Relación entre emisiones de CO₂ y fertilidad en Europa",
+    title    = "Relación entre emisiones de CO₂ y fertilidad en Europa",
     subtitle = "Año: {frame_time}",
-    x = "CO2 total del país (kt)",
-    y = "Tasa global de fecundidad (TFR)"
+    x        = "CO₂ total del país (kt)",
+    y        = "Tasa global de fecundidad (TFR)"
   ) +
   theme_minimal(base_size = 12) +
   theme(
     panel.grid.minor = element_blank(),
     plot.title       = element_text(face = "bold")
   ) +
-  transition_time(year) +
+  transition_time(anio) +
   ease_aes("linear")
 
 # Ver la animación en el viewer
-anim <- animate(p_anim,
-                nframes = 150,
-                fps = 10,
-                renderer = gifski_renderer())
+anim <- animate(
+  p_anim,
+  nframes  = 150,
+  fps      = 10,
+  renderer = gifski_renderer()
+)
 
 anim
 ```
@@ -703,11 +736,11 @@ anim
 
 El gráfico de “lollipop” muestra que:
 
-Los países con mayores emisiones medias de CO₂ (por ejemplo, economías más grandes o con mix energético intensivo en combustibles fósiles) no presentan niveles de fertilidad claramente diferenciados del resto.
+- Los países con mayores emisiones medias de CO₂ (por ejemplo, economías más grandes o con un mix energético intensivo en combustibles fósiles) **no presentan niveles de fertilidad claramente diferenciados** del resto.
 
-Entre los países de la parte alta del ranking observamos TFR medias en un rango relativamente estrecho (en torno a 1.3–1.7 hijos por mujer), similares a las del resto de Europa.
+- Entre los países de la parte alta del ranking observamos TFR medias en un rango relativamente estrecho (en torno a 1.3–1.7 hijos por mujer), similares a las del resto de Europa.
 
-Algunos países con emisiones muy bajas (como Malta o Albania) tampoco destacan por una fertilidad especialmente alta; al contrario, se sitúan en la parte baja o media del rango de TFR.
+- Algunos países con emisiones muy bajas (como Malta o Albania) tampoco destacan por una fertilidad especialmente alta; al contrario, se sitúan en la parte baja o media del rango de TFR.
 
 En conjunto, el ranking sugiere que **no existe un patrón monotónico evidente del tipo “a más CO₂, menos (o más) fertilidad”**. La posición en el ranking de emisiones parece estar explicada sobre todo por factores estructurales (tamaño económico, industria, energía), mientras que la fertilidad se mueve en un margen relativamente estrecho sin alinearse claramente con esas diferencias.
 
@@ -715,32 +748,32 @@ En conjunto, el ranking sugiere que **no existe un patrón monotónico evidente 
 
 La animación año a año refuerza esta impresión:
 
-En cada fotograma, los puntos (países) se distribuyen de forma bastante difusa sobre el plano CO₂–TFR, sin que se forme una nube claramente ascendente o descendente.
+- En cada fotograma, los puntos (países) se distribuyen de forma bastante difusa sobre el plano CO₂–TFR, sin que se forme una nube claramente ascendente o descendente.
 
-Las rectas de regresión que se ajustan por año suelen tener pendientes pequeñas y, visualmente, la banda de confianza es amplia y abarca valores cercanos a una pendiente nula.
+- Las rectas de regresión que se ajustan por año suelen tener pendientes pequeñas y, visualmente, la banda de confianza es amplia y abarca valores cercanos a una pendiente nula.
 
-Los coeficientes de determinación (R²) que se muestran en la animación son bajos en la mayoría de años, lo que indica que las emisiones de CO₂ explican sólo una fracción muy limitada de la variación en fertilidad entre países.
+- Los coeficientes de determinación (R²) que se muestran en la animación son bajos en la mayoría de años, lo que indica que las emisiones de CO₂ explican sólo una fracción muy limitada de la variación en fertilidad entre países.
 
 Tampoco se aprecia un cambio cualitativo de la relación a lo largo del tiempo: no hay un periodo donde la asociación se vuelva claramente más fuerte o cambie de signo de forma clara.
 
 En términos prácticos, la lectura estadística es que, en los datos agregados país–año, las emisiones totales de CO₂ no guardan una relación robusta con la TFR:
 
 - **Países muy emisores pueden tener fertilidad baja, media o relativamente alta.**
-
 - **Países con bajas emisiones pueden situarse también en cualquier punto dentro del rango de TFR observado.**
 
 #### Interpretación
 
 Estos resultados son coherentes con la naturaleza del indicador:
 
-El CO₂ es un contaminante global, cuyo volumen anual refleja principalmente tamaño económico, estructura productiva e intensidad energética, más que la exposición individual de la población a contaminantes locales.
+- El CO₂ es un contaminante global, cuyo volumen anual refleja principalmente tamaño económico, estructura productiva e intensidad energética, más que la exposición individual de la población a contaminantes locales.
 
-Los mecanismos biológicos que podrían afectar a la fertilidad suelen estar más vinculados a exposiciones locales (NO₂, PM₂.₅, ozono, etc.) que a las emisiones totales de CO₂ a escala nacional.
+- Los mecanismos biológicos que podrían afectar a la fertilidad suelen estar más vinculados a exposiciones locales (NO₂, PM₂.₅, ozono, etc.) que a las emisiones totales de CO₂ a escala nacional.
 
-Además, la fertilidad está fuertemente condicionada por factores demográficos y socioeconómicos (edad a la maternidad, mercado laboral, políticas de conciliación, normas culturales), que pueden enmascarar cualquier efecto asociado a un indicador tan agregado como las emisiones de CO₂.
+- Además, la fertilidad está fuertemente condicionada por factores demográficos y socioeconómicos (edad a la maternidad, mercado laboral, políticas de conciliación, normas culturales), que pueden enmascarar cualquier efecto asociado a un indicador tan agregado como las emisiones de CO₂.
 
-Por tanto, el tercer objetivo confirma la idea general de los anteriores:
+Por tanto, el tercer objetivo **confirma la idea general de los anteriores**:  
 cuando miramos a nivel país, con indicadores agregados, la relación entre contaminación (o emisiones) y fertilidad en Europa parece ser, como mínimo, muy débil y fuertemente confundida por otras dimensiones estructurales.
+
 
 ## Caracterizar la importancia del PM₂.₅ dentro de la vigilancia del aire y su relación con la fertilidad
 
@@ -760,70 +793,57 @@ Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efe
 
 En este objetivo analizamos el lugar que ocupa el contaminante **PM₂.₅** dentro de la monitorización de calidad del aire en Europa.
 
-Partimos de un fichero con registros de calidad del aire (`aire`) que contiene observaciones por país, año y tipo de contaminante. A partir de este conjunto:
+Partimos del fichero de registros de calidad del aire (`aire`), que contiene observaciones por país, año y tipo de contaminante. A partir de este conjunto:
 
-Se limpia y normaliza la información para construir una tabla `aire_limpio` con las columnas:
+- Se armonizan los nombres de país (`pais`) igual que en los objetivos anteriores.  
+- Se convierten los años a formato numérico (`anio`).  
+- Se crea la variable lógica `es_pm25`, que toma valor `TRUE` cuando el contaminante corresponde a PM₂.₅ (incluyendo variantes como `"PM2.5"`, `"PM25"`, `"PM2p5"`).  
 
-- `country` (nombre del país armonizado),
-- `year` (año en formato numérico),
-- `air_pollutant` (tipo de contaminante),
-- `value` (concentración u observación correspondiente),
-- `is_pm25` (indicador lógico).
+Con esta base construimos el resumen por país `pm25_share_pais`, que contiene:
 
-Durante el proceso:
+- `n_obs_total`: número total de observaciones,  
+- `n_obs_pm25`: observaciones PM₂.₅,  
+- `prop_pm25`: proporción de observaciones dedicadas a PM₂.₅,  
+- `n_anios`: número de años con observaciones.
 
-- Se homogeneizan los nombres de país (`Turkey → Türkiye`, `Czech Republic → Czechia`, `Russian Federation → Russia`, etc.).
-- Se asegura que `year` esté en formato numérico.
-- Se crea la variable lógica `is_pm25`, que toma valor `1` cuando `air_pollutant` está en `{"PM2.5","PM25","PM2p5"}` y `0` en caso contrario.
+Después unimos este resumen con `fert_resumen_nombres` para obtener `pm25_share_tfr`, que contiene tanto la proporción de PM₂.₅ como la fertilidad media (`tfr_media`) por país.
 
-Posteriormente, se agregan los datos por país para obtener el resumen `pm25_share_country`, que incluye:
-
-- `n_obs_total:` número total de observaciones de calidad del aire,
-- `n_obs_pm25:` número de observaciones clasificadas como PM₂.₅,
-- `share_pm25:` fracción de observaciones dedicadas a PM₂.₅,
-- `n_years:` número de años con datos disponibles.
-
-Además se construye un panel año–país `pm25_year_panel` con la proporción `share_pm25_year` calculada por `country` y `year`, que permite analizar la evolución temporal.
-
-Finalmente, se realiza un `left_join()` con `fert_resumen_nombres` (resumen de fertilidad) para obtener `pm25_share_tfr`, que contiene, para cada país, `share_pm25` y `tfr_mean`. Para análisis año–año se une `pm25_year_panel` con `fert_paises` para obtener `pm25_fert_panel`
 
 ```{r codigo4, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
 # Metadatos de estaciones EEA (dataframe interno)
 stations_eea <- EEAaq_get_dataframe("stations") %>%
   clean_names() %>%
   mutate(
-    country_raw = str_trim(country),
-    country = recode(
-      country_raw,
+    pais_raw = str_trim(country),
+    pais = recode(
+      pais_raw,
       "Turkey"              = "Türkiye",
       "Czech Republic"      = "Czechia",
       "Russian Federation"  = "Russia",
       "Republic of Moldova" = "Moldova",
       "UK"                  = "United Kingdom",
       "Great Britain"       = "United Kingdom",
-      .default = country_raw
+      .default = pais_raw
     )
   )
 
-# OJO: aquí renombramos la columna rara 'air_quality_station_eo_i_code'
+# Renombramos columna problemática
 stations_meta <- stations_eea %>%
-  rename(
-    air_quality_station_eoi_code = air_quality_station_eo_i_code
-  ) %>%
+  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
   select(
     air_quality_station_eoi_code,
-    country,
+    pais,
     air_quality_station_area,
     air_quality_station_type
   )
 
-pm25_share_country <- aire %>%
-  # Armonizamos país y año igual que en 'aire_conteo'
+# CÁLCULO DE PROPORCIÓN DE PM2.5 POR PAÍS
+pm25_share_pais <- aire %>%
   mutate(
-    country = str_trim(country),
-    year    = as.integer(year),
-    country = recode(
-      country,
+    pais = str_trim(country),
+    anio = as.integer(year),
+    pais = recode(
+      pais,
       "Turkey"              = "Türkiye",
       "Czech Republic"      = "Czechia",
       "Russian Federation"  = "Russia",
@@ -831,22 +851,24 @@ pm25_share_country <- aire %>%
       "UK"                  = "United Kingdom",
       "Great Britain"       = "United Kingdom"
     ),
-    # Indicador lógico: ¿esta fila es PM2.5?
-    is_pm25 = air_pollutant %in% c("PM2.5", "PM25", "PM2p5")
+    # Indicador PM2.5
+    es_pm25 = air_pollutant %in% c("PM2.5", "PM25", "PM2p5")
   ) %>%
-  group_by(country) %>%
+  group_by(pais) %>%
   summarise(
     n_obs_total = n(),
-    n_obs_pm25  = sum(is_pm25, na.rm = TRUE),
-    share_pm25  = n_obs_pm25 / n_obs_total,
-    n_years     = n_distinct(year),
-    .groups = "drop"
+    n_obs_pm25  = sum(es_pm25, na.rm = TRUE),
+    prop_pm25   = n_obs_pm25 / n_obs_total,
+    n_anios     = n_distinct(anio),
+    .groups     = "drop"
   ) %>%
-  arrange(desc(share_pm25))
+  arrange(desc(prop_pm25))
 
-pm25_share_tfr <- pm25_share_country %>%
-  left_join(fert_resumen_nombres, by = "country") %>%
-  filter(!is.na(tfr_mean), !is.na(share_pm25))
+#UNIÓN PM2.5 + TFR
+pm25_share_tfr <- pm25_share_pais %>%
+  left_join(fert_resumen_nombres, by = "pais") %>%
+  filter(!is.na(tfr_media), !is.na(prop_pm25))
+
 ```
 
 ### Estrategia empírica
@@ -856,71 +878,74 @@ Para examinar cómo se relacionan el **peso relativo de PM₂.₅** y la **ferti
 #### Representación
 
 - **Cada barra corresponde a un país europeo.**
-- **La longitud (radio)** de la barra representa `share_pm25`, es decir, la **proporción de todas las observaciones de calidad del aire que pertenecen a PM₂.₅** en ese país.
-- **El color de la barra** está mapeado a `tfr_mean` (tasa global de fecundidad media).  
+- **La longitud (radio)** de la barra representa `prop_pm25`, es decir, la **proporción de todas las observaciones de calidad del aire que pertenecen a PM₂.₅** en ese país.
+- **El color de la barra** está mapeado a `tfr_media` (tasa global de fecundidad media).  
   Cuanto mayor es la fertilidad, **más intenso** es el color asignado según la escala continua elegida.
 - En el **extremo** de cada barra se incorpora una **etiqueta con el porcentaje de PM₂.₅**, facilitando la comparación directa entre países.
 
 #### Construcción del gráfico
 
-1. **Ordenamos los países** de forma descendente por `share_pm25`.  
-   Después, convertimos `country` en un factor con ese orden.  
+1. **Ordenamos los países** de forma descendente por `prop_pm25`.  
+   Después, convertimos `pais` en un factor con ese orden.  
    Esto asegura que, al pasar a coordenadas polares, los países aparezcan **ordenados alrededor del círculo** según su peso relativo de PM₂.₅.
 
 2. Creamos un gráfico con `geom_col()` en **coordenadas cartesianas**.
 
 3. Transformamos el gráfico mediante **`coord_polar()`**, convirtiendo las barras en **segmentos radiales** que parten del centro.
 
-
 #### Por qué esta visualización es útil
 
 - Permite **comparar de un vistazo** qué países dedican una mayor proporción de su vigilancia al PM₂.₅.
-- La codificación por color según `tfr_mean` facilita detectar **patrones visuales**:  
+- La codificación por color según `tfr_media` facilita detectar **patrones visuales**:  
   por ejemplo, si una mayor intensidad de monitorización del PM₂.₅ se asocia visualmente con países de fertilidad alta o baja.
 - Aunque puramente **descriptivo**, el gráfico sirve como **primera aproximación no paramétrica** a la asociación entre ambas variables, sin necesidad de imponer una forma funcional concreta (lineal, cuadrática, etc.).
 
 
+
 ```{r grafico4, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
-# Ordenamos países por share_pm25 y preparamos factor
+# Ordenamos países por prop_pm25 y preparamos factor
 pm25_circ <- pm25_share_tfr %>%
-  arrange(desc(share_pm25)) %>%
+  arrange(desc(prop_pm25)) %>%
   mutate(
-    country = factor(country, levels = country),
-    label_pm = scales::percent(share_pm25, accuracy = 1)
+    pais      = factor(pais, levels = pais),
+    label_pm  = scales::percent(prop_pm25, accuracy = 1)
   )
 
-ggplot(pm25_circ,
-       aes(x = country,
-           y = share_pm25,
-           fill = tfr_mean)) +
+ggplot(
+  pm25_circ,
+  aes(
+    x    = pais,
+    y    = prop_pm25,
+    fill = tfr_media
+  )
+) +
   # barras radiales
   geom_col(color = "white", width = 0.9, alpha = 0.9) +
   # pasamos a coordenadas polares
   coord_polar(start = -pi/2) +
-  # etiquetas de país + % PM2.5 (opcional)
+  # etiquetas con % PM2.5
   geom_text(
     aes(label = label_pm),
-    position = position_stack(vjust = 1.02),
-    size = 2.5,
+    position   = position_stack(vjust = 1.02),
+    size       = 2.5,
     show.legend = FALSE
   ) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 10)) +
   labs(
-    title = "Peso relativo de PM2.5 en la vigilancia del aire por país",
-    subtitle = "Longitud de la barra = proporción de observaciones de PM2.5
-                \nColor = TFR media",
-    x = NULL,
-    y = NULL,
-    fill = "TFR media"
+    title    = "Peso relativo de PM₂.₅ en la vigilancia del aire por país",
+    subtitle = "Longitud de la barra = proporción de observaciones de PM₂.₅\nColor = TFR media",
+    x        = NULL,
+    y        = NULL,
+    fill     = "TFR media"
   ) +
   theme_minimal() +
   theme(
-    axis.text.x  = element_text(size = 7, angle = 0, vjust = 0.5),
-    axis.text.y  = element_blank(),
-    axis.ticks   = element_blank(),
-    panel.grid   = element_blank(),
-    plot.title   = element_text(face = "bold", hjust = 0.5),
-    plot.subtitle= element_text(hjust = 0.5),
+    axis.text.x   = element_text(size = 7, angle = 0, vjust = 0.5),
+    axis.text.y   = element_blank(),
+    axis.ticks    = element_blank(),
+    panel.grid    = element_blank(),
+    plot.title    = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
     legend.position = "right"
   )
 ```
@@ -929,28 +954,32 @@ ggplot(pm25_circ,
 
 El gráfico circular revela que el **peso relativo del PM₂.₅** en la vigilancia de la calidad del aire es, en términos generales, **bajo y heterogéneo** entre países. La mayoría sitúa entre **un 5 % y un 10 %** de sus observaciones en PM₂.₅, mientras que solo un grupo reducido (entre ellos algunos países del norte o del entorno caucásico) supera claramente ese umbral y alcanza valores en torno al **12–16 %**. En el extremo inferior aparecen varios países con **barras muy cortas**, señal de que el PM₂.₅ representa únicamente una **fracción marginal** de su registro total.
 
-Al observar la **escala de color**, que codifica la `tfr_mean`, no emerge un gradiente coherente que acompañe la longitud de las barras. Entre los países con **mayor share_pm25** no destacan ni valores particularmente altos ni particularmente bajos de fertilidad: sus tasas se concentran en la **zona intermedia** del rango europeo. De forma simétrica, entre los países cuyo peso relativo del PM₂.₅ es más reducido encontramos tanto **TFR comparativamente altas** como **TFR bajas**.
+Al observar la **escala de color**, que codifica la `tfr_media`, no emerge un gradiente coherente que acompañe la longitud de las barras. Entre los países con **mayor `prop_pm25`** no destacan ni valores particularmente altos ni particularmente bajos de fertilidad: sus tasas se concentran en la **zona intermedia** del rango europeo. De forma simétrica, entre los países cuyo peso relativo del PM₂.₅ es más reducido encontramos tanto **TFR comparativamente altas** como **TFR bajas**.
 
-En conjunto, la visualización no sugiere la existencia de un patrón monotónico claro del tipo *“a mayor share de PM₂.₅, mayor (o menor) fertilidad”*. La importancia que cada país otorga a la monitorización del PM₂.₅ parece estar determinada, más bien, por **criterios técnicos, regulatorios o institucionales** propios de sus sistemas de vigilancia, y no por diferencias sistemáticas en comportamiento demográfico.
+En conjunto, la visualización no sugiere la existencia de un patrón monotónico claro del tipo *«a mayor peso relativo de PM₂.₅, mayor (o menor) fertilidad»*. La importancia que cada país otorga a la monitorización del PM₂.₅ parece estar determinada, más bien, por **criterios técnicos, regulatorios o institucionales** propios de sus sistemas de vigilancia, y no por diferencias sistemáticas en comportamiento demográfico.
 
 Así, del mismo modo que en los análisis previos, la **evidencia descriptiva** apunta a que la relación entre el peso relativo del PM₂.₅ en la monitorización del aire y la fertilidad media es **débil** y queda probablemente **absorbida por otros factores** económicos, sociales y demográficos que este indicador agregado no capta.
 
 
 # Conclusiones
 
-Los análisis realizados indican que, a escala de país, la relación entre vigilancia de la calidad del aire, niveles de contaminación y fertilidad (TFR) en Europa es, en el mejor de los casos, débil y poco sistemática. El volumen total de observaciones de calidad del aire no muestra una asociación clara con la TFR media: los países que vigilan más no presentan, en promedio, una fertilidad ni claramente más alta ni más baja que los que vigilan menos. Los tests de correlación refuerzan esta idea, con coeficientes muy pequeños y no significativos.
+Los análisis realizados indican que, a escala de país, la relación entre vigilancia de la calidad del aire, niveles de contaminación y fertilidad (TFR) en Europa es, en el mejor de los casos, **débil y poco sistemática**. El volumen total de observaciones de calidad del aire no muestra una asociación clara con la TFR media: los países que vigilan más no presentan, en promedio, una fertilidad ni claramente más alta ni más baja que los que vigilan menos. Los tests de correlación refuerzan esta idea, con coeficientes muy pequeños y no significativos.
 
-Algo similar ocurre cuando se pasa de la vigilancia a la contaminación efectiva. Ni los niveles medios de NO₂, ni las emisiones de CO₂ —interpretadas como un indicador agregado de tamaño económico e intensidad energética permiten ordenar a los países europeos según su nivel de fertilidad. Los diagramas de dispersión y las rectas de regresión muestran nubes muy dispersas, pendientes próximas a cero y R² bajos, lo que indica que estas variables ambientales explican solo una fracción mínima de la variación en TFR entre países.
+Algo similar ocurre cuando se pasa de la vigilancia a la contaminación efectiva. Ni los niveles medios de NO₂ ni las emisiones de CO₂ —interpretadas como un indicador agregado de tamaño económico e intensidad energética— permiten ordenar a los países europeos según su nivel de fertilidad. Los diagramas de dispersión y las rectas de regresión muestran nubes muy dispersas, pendientes próximas a cero y R² bajos, lo que indica que estas variables ambientales explican solo una fracción mínima de la variación en TFR entre países.
 
-El análisis del peso relativo del PM2.5 en la vigilancia tampoco revela patrones robustos: algunos países otorgan a este contaminante una proporción relativamente alta de sus observaciones, mientras que otros apenas lo monitorizan, pero en ambos grupos aparecen TFR bajas, medias y algo más altas. Es decir, dedicar una mayor parte del esfuerzo de vigilancia al PM2.5 no se traduce en niveles de fertilidad claramente diferenciados.
+El análisis del peso relativo del PM₂.₅ en la vigilancia tampoco revela patrones robustos: algunos países otorgan a este contaminante una proporción relativamente alta de sus observaciones, mientras que otros apenas lo monitorizan, pero en ambos grupos aparecen TFR bajas, medias y algo más altas. Es decir, dedicar una mayor parte del esfuerzo de vigilancia al PM₂.₅ no se traduce en niveles de fertilidad claramente diferenciados.
 
-En conjunto, los resultados apuntan a que la variación en la fertilidad europea está dominada por factores demográficos, socioeconómicos e institucionales (estructura de edades, mercado laboral, políticas de conciliación, normas culturales, gasto social, etc.) que este marco descriptivo no modeliza de forma directa. Las variables ambientales consideradas vigilancia, NO₂, CO₂, peso del PM2.5— parecen jugar, a este nivel de agregación, un papel secundario frente a esos determinantes estructurales.
+En conjunto, los resultados apuntan a que la variación en la fertilidad europea está dominada por factores demográficos, socioeconómicos e institucionales (estructura de edades, mercado laboral, políticas de conciliación, normas culturales, gasto social, etc.) que este marco descriptivo no modeliza de forma directa. Las variables ambientales consideradas —vigilancia, NO₂, CO₂, peso del PM₂.₅— parecen jugar, a este nivel de agregación, un papel secundario frente a esos determinantes estructurales.
 
-Estas conclusiones deben interpretarse con cautela: se trata de un estudio ecológico y descriptivo, basado en datos agregados por país, sin control exhaustivo por posibles factores de confusión y con indicadores ambientales relativamente gruesos (medias nacionales, totales anuales). La evidencia disponible no niega que la calidad del aire afecte a la salud reproductiva, pero sí sugiere que sus efectos sobre la fecundidad observada a nivel país son difíciles de detectar con este tipo de datos. En este sentido, el trabajo funciona como un punto de partida exploratorio que señala la necesidad de estudios con mayor resolución espacial, datos individuales y diseños longitudinales o quasi-experimentales para comprender con más precisión los vínculos entre contaminación atmosférica y fertilidad.
+Estas conclusiones deben interpretarse con cautela: se trata de un estudio ecológico y descriptivo, basado en datos agregados por país, sin control exhaustivo por posibles factores de confusión y con indicadores ambientales relativamente gruesos (medias nacionales, totales anuales). La evidencia disponible no niega que la calidad del aire afecte a la salud reproductiva, pero sí sugiere que sus efectos sobre la fecundidad observada a nivel país son difíciles de detectar con este tipo de datos. En este sentido, el trabajo funciona como un **punto de partida exploratorio** que señala la necesidad de estudios con mayor resolución espacial, datos individuales y diseños longitudinales o quasi-experimentales para comprender con más precisión los vínculos entre contaminación atmosférica y fertilidad.
 
 # Referencias
 
 Eurostat. (s. f.). Fertility statistics (TFR by country and year). Oficina de Estadística de la Unión Europea.
+
+Air Quality e-Reporting (AQ e-Reporting). (2022, August 5). https://www.eea.europa.eu/en/datahub/datahubitem-view/3b390c9c-f321-490a-b25a-ae93b2ed80c1
+
+Emisiones globales de CO2. (2025, August 18). https://data.unesco.org/explore/dataset/co2001/information/?flg=es-es
 
 World Health Organization. (2022). Ambient Air Pollution Database (AAP 2022). WHO, Department of Environment, Climate Change and Health.
 
