@@ -967,6 +967,8 @@ En conjunto, los resultados apuntan a que la variación en la fertilidad europea
 
 Estas conclusiones deben interpretarse con cautela: se trata de un estudio ecológico y descriptivo, basado en datos agregados por país, sin control exhaustivo por posibles factores de confusión y con indicadores ambientales relativamente gruesos (medias nacionales, totales anuales). La evidencia disponible no niega que la calidad del aire afecte a la salud reproductiva, pero sí sugiere que sus efectos sobre la fecundidad observada a nivel país son difíciles de detectar con este tipo de datos. En este sentido, el trabajo funciona como un **punto de partida exploratorio** que señala la necesidad de estudios con mayor resolución espacial, datos individuales y diseños longitudinales o quasi-experimentales para comprender con más precisión los vínculos entre contaminación atmosférica y fertilidad.
 
+Holi
+
 # Referencias
 
 Eurostat. (s. f.). Fertility statistics (TFR by country and year). Oficina de Estadística de la Unión Europea.
