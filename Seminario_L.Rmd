@@ -297,11 +297,12 @@ datos_validos %>%
   ggplot(aes(x = tfr_media, y = total_obs_aire)) +
   geom_point(alpha = 0.7) +
   geom_smooth(method = "lm", se = TRUE) +
+  theme_minimal() +
   labs(
     title = "Observaciones de calidad del aire vs TFR medio (por país)",
     x = "TFR medio",
     y = "Observaciones de calidad del aire (total)"
-  )
+  ) 
 ```
 
 ### Resultados:
@@ -475,6 +476,7 @@ ggplot(
   ) +
   theme_minimal()
 ```
+
 ### Resultados
 
 El gráfico revela una estructura altamente dispersa:
@@ -622,13 +624,7 @@ ggplot(
     x        = "CO₂ medio (kt, total país)",
     y        = NULL
   ) +
-  theme_minimal(base_size = 11) +
-  theme(
-    panel.grid.major.y = element_blank(),
-    panel.grid.minor   = element_blank(),
-    legend.position    = "right",
-    plot.title         = element_text(face = "bold")
-  )
+  theme_minimal() 
 
 ```
 
