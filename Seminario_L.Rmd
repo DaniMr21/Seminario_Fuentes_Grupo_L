@@ -177,7 +177,7 @@ mapa_paises <- tibble::tribble(
 3. **Resumen de fertilidad:** creación de `fert_resumen_nombres`, que incluye los principales estadísticos por país (por ejemplo, `tfr_media`, `anio_min`, `anio_max` y `n_anios`).
 
 4. **Uniones (joins):**
-   - `panel_aire_anio_con_fert`: panel país–año donde cada observación de vigilancia se combina con el resumen de fertilidad correspondiente.  
+   - `resumen_aire_fert_solape`: resumen combinado por país usando solo los años en los que hay datos de aire.  
    - `resumen_aire_fert_pais`: resumen combinado por país, utilizado para el **gráfico de dispersión** y los **tests de correlación**.  
 
 ```{r pipeline obj1, message = FALSE, warning = FALSE}
@@ -786,8 +786,6 @@ La lógica es la siguiente: incluso si dos países tienen un volumen similar de 
 
 **Hipótesis:**
 Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efectivos, cabría esperar que los países que dedican una fracción mayor de sus observaciones a este contaminante presenten entornos más saludables o más vigilados, lo que podría asociarse con una fertilidad algo más elevada. De forma descriptiva, planteamos la hipótesis de que una mayor proporción de observaciones de PM₂.₅ se asocia con una TFR media más alta, aunque sin asumir causalidad.
-
-## Partículas finas PM₂.₅
 
 ### Datos y construcción de variables
 
