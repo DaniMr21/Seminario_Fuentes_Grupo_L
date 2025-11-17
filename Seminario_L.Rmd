@@ -197,24 +197,29 @@ resumir_fertilidad <- function(df) {
     ) %>%
     arrange(pais)
 }
-# Limpiar y resumir vigilancia de aire (conteo país-año)
 
+recode_pais <- function(x) {
+  x <- str_trim(x)
+  dplyr::recode(
+    x,
+    "Turkey"              = "Türkiye",
+    "Czech Republic"      = "Czechia",
+    "Russian Federation"  = "Russia",
+    "Republic of Moldova" = "Moldova",
+    "UK"                  = "United Kingdom",
+    "Great Britain"       = "United Kingdom",
+    .default = x
+  )
+}
+
+# Limpiar y resumir vigilancia de aire (conteo país-año)
 limpiar_y_contar_aire <- function(aire_raw) {
   aire_raw %>%
     mutate(
       pais = str_trim(country),
       anio = as.integer(year),
       # Homogeneización de alias frecuentes
-      pais = recode(
-        pais,
-        "Turkey"              = "Türkiye",
-        "Czech Republic"      = "Czechia",
-        "Russian Federation"  = "Russia",
-        "Republic of Moldova" = "Moldova",
-        "UK"                  = "United Kingdom",
-        "Great Britain"       = "United Kingdom"
-      )
-    ) %>%
+      pais = recode_pais(country)) %>%
     count(pais, anio, name = "n_obs_aire") %>%
     arrange(pais, anio)
 }
@@ -387,15 +392,7 @@ oms_europa <- oms %>%
 
 # Variable 'pais' con nombres armonizados
 oms_europa_limpio <- oms_europa %>%
-  mutate(
-    pais = str_trim(`WHO Country Name`),
-    pais = recode(
-      pais,
-      "Turkey"              = "Türkiye",
-      "Russian Federation"  = "Russia",
-      "Republic of Moldova" = "Moldova"
-    )
-  )
+  mutate(pais = recode_pais(`WHO Country Name`))
 ```
 
 Tras armonizar y unir ambas tablas mediante un `left_join()`, obtenemos un panel ciudad–país con valores de NO₂ y la fertilidad media asociada a cada país.  
@@ -531,27 +528,15 @@ dioxidocarbono_df <- jsonlite::fromJSON(
 #TABLA co2_limpio (país-año)
 co2_limpio <- dioxidocarbono_df %>%
   transmute(
-    pais_raw = str_trim(country_name),
-    anio     = as.integer(year),
-    co2_kt   = as.numeric(co2_emissions_kt)
-  ) %>%
-  mutate(
-    pais = recode(
-      pais_raw,
-      "Turkey"              = "Türkiye",
-      "Czech Republic"      = "Czechia",
-      "Russian Federation"  = "Russia",
-      "Republic of Moldova" = "Moldova",
-      "UK"                  = "United Kingdom",
-      "Great Britain"       = "United Kingdom"
-    )
+    pais = recode_pais(country_name),
+    anio = as.integer(year),
+    co2_kt = as.numeric(co2_emissions_kt)
   ) %>%
   group_by(pais, anio) %>%
   summarise(
     co2_kt = sum(co2_kt, na.rm = TRUE),
     .groups = "drop"
   )
-
 #PANEL CO2 + FERTILIDAD (país–año)
 co2_fert_panel <- co2_limpio %>%
   inner_join(fert_paises, by = c("pais", "anio"))
@@ -619,9 +604,9 @@ ggplot(
   scale_size_continuous(name = "TFR media") +
   scale_color_viridis_c(name = "TFR media", option = "C") +
   labs(
-    title    = "Ranking de emisiones medias de CO₂ y fertilidad en Europa",
-    subtitle = "Línea = emisiones medias de CO₂ (kt) | Color/tamaño = TFR media",
-    x        = "CO₂ medio (kt, total país)",
+    title    = "Ranking de emisiones medias de CO2 y fertilidad en Europa",
+    subtitle = "Línea = emisiones medias de CO2 (kt) | Color/tamaño = TFR media",
+    x        = "CO2 medio (kt, total país)",
     y        = NULL
   ) +
   theme_minimal() 
@@ -693,7 +678,7 @@ p_anim <- ggplot(
     aes(
       x     = -Inf,
       y     = Inf,
-      label = sprintf("Beta = %.3f   R² = %.2f   n = %d", beta, r2, n)
+      label = sprintf("Beta = %.3f   R2 = %.2f   n = %d", beta, r2, n)
     ),
     hjust        = -0.05,
     vjust        = 1.2,
@@ -704,7 +689,7 @@ p_anim <- ggplot(
   labs(
     title    = "Relación entre emisiones de CO₂ y fertilidad en Europa",
     subtitle = "Año: {frame_time}",
-    x        = "CO₂ total del país (kt)",
+    x        = "CO2 total del país (kt)",
     y        = "Tasa global de fecundidad (TFR)"
   ) +
   theme_minimal(base_size = 12) +
@@ -809,16 +794,7 @@ stations_eea <- EEAaq_get_dataframe("stations") %>%
   clean_names() %>%
   mutate(
     pais_raw = str_trim(country),
-    pais = recode(
-      pais_raw,
-      "Turkey"              = "Türkiye",
-      "Czech Republic"      = "Czechia",
-      "Russian Federation"  = "Russia",
-      "Republic of Moldova" = "Moldova",
-      "UK"                  = "United Kingdom",
-      "Great Britain"       = "United Kingdom",
-      .default = pais_raw
-    )
+    pais = recode_pais(country)
   )
 
 # Renombramos columna problemática
@@ -834,18 +810,8 @@ stations_meta <- stations_eea %>%
 # CÁLCULO DE PROPORCIÓN DE PM2.5 POR PAÍS
 pm25_share_pais <- aire %>%
   mutate(
-    pais = str_trim(country),
+    pais = recode_pais(country),
     anio = as.integer(year),
-    pais = recode(
-      pais,
-      "Turkey"              = "Türkiye",
-      "Czech Republic"      = "Czechia",
-      "Russian Federation"  = "Russia",
-      "Republic of Moldova" = "Moldova",
-      "UK"                  = "United Kingdom",
-      "Great Britain"       = "United Kingdom"
-    ),
-    # Indicador PM2.5
     es_pm25 = air_pollutant %in% c("PM2.5", "PM25", "PM2p5")
   ) %>%
   group_by(pais) %>%
@@ -857,6 +823,7 @@ pm25_share_pais <- aire %>%
     .groups     = "drop"
   ) %>%
   arrange(desc(prop_pm25))
+
 
 #UNIÓN PM2.5 + TFR
 pm25_share_tfr <- pm25_share_pais %>%
@@ -926,8 +893,8 @@ ggplot(
   ) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 10)) +
   labs(
-    title    = "Peso relativo de PM₂.₅ en la vigilancia del aire por país",
-    subtitle = "Longitud de la barra = proporción de observaciones de PM₂.₅\nColor = TFR media",
+    title    = "Peso relativo de PM2.5 en la vigilancia del aire por país",
+    subtitle = "Longitud de la barra = proporción de observaciones de PM2.5\nColor = TFR media",
     x        = NULL,
     y        = NULL,
     fill     = "TFR media"
