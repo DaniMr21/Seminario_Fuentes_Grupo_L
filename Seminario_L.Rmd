@@ -74,7 +74,7 @@ Analizar la relación entre la vigilancia y la calidad del aire y la fertilidad 
 **Pregunta:** ¿Está asociada una mayor vigilancia de la calidad del aire con una mayor fertilidad en la población europea?
 
 **Hipótesis:** Más vigilancia del aire implica más fertilidad.  
-Vemos la “vigilancia” mediante el conteo de observaciones de calidad del aire reportadas por país y año; y medimos la fertilidad con la **TFR (Eurostat)**.  
+Vemos la “vigilancia” mediante el conteo de observaciones de calidad del aire reportadas por país y año, y medimos la fertilidad con la **TFR (Eurostat)**.  
 
 Si la hipótesis es consistente con los datos, esperamos observar una relación **positiva** entre el nivel de vigilancia (más observaciones) y la TFR.
 
@@ -170,7 +170,7 @@ mapa_paises <- tibble::tribble(
 
 ### Pipeline de trabajo
 
-1. **Limpieza y homogeneización** de ambas tablas (`aire` y `fertilidad`), incluyendo estandarización de nombres de país (`pais`) y conversión de años (`anio`).
+1. **Limpieza y homogeneización** de ambas tablas (`aire` y `fertilidad`), incluyendo la estandarización de nombres de país (`pais`) y la conversión de años (`anio`).
 
 2. **Conteo de vigilancia:** construcción de `aire_conteo`, que contiene para cada país–año el número de observaciones de calidad del aire registradas (`n_obs_aire`).
 
@@ -178,7 +178,7 @@ mapa_paises <- tibble::tribble(
 
 4. **Uniones (joins):**
    - `resumen_aire_fert_solape`: resumen combinado por país usando solo los años en los que hay datos de aire.  
-   - `resumen_aire_fert_pais`: resumen combinado por país, utilizado para el **gráfico de dispersión** y los **tests de correlación**.  
+   - `resumen_aire_fert_pais`: resumen combinado por país utilizado para el **gráfico de dispersión** y los **tests de correlación**.  
 
 ```{r pipeline obj1, message = FALSE, warning = FALSE}
 
@@ -312,14 +312,14 @@ datos_validos %>%
 
 ### Resultados:
 
-El diagrama de dispersión entre `total_obs_aire` (y) y `tfr_media` (x), junto con una recta OLS, sugiere que, a grandes rasgos, la asociación es como mucho débil y sensible a *outliers*. Visualmente, la pendiente no parece claramente positiva y la banda de confianza cubre valores cercanos a cero en buena parte del rango de `tfr_media`.
+El diagrama de dispersión entre `total_obs_aire` (y) y `tfr_media` (x), junto con una recta OLS, sugiere que, a grandes rasgos, la asociación es débil y sensible a *outliers*. Visualmente, la pendiente no parece claramente positiva y la banda de confianza cubre valores cercanos a cero en buena parte del rango de `tfr_media`.
 
 El eje Y (conteos absolutos) probablemente está afectado por el tamaño poblacional, la densidad urbana y el número de estaciones; no es una medida de “intensidad de vigilancia” comparable *per cápita*.
 
 **Lectura honesta.**  
 Con este primer gráfico no podemos afirmar que “más vigilancia implica más fertilidad”. Si existe relación, no parece grande y podría estar mediada por terceros factores (riqueza, contaminación, urbanización, gasto sanitario, políticas familiares, etc.).
 
-A continuación realizamos los **tests estadísticos** de Pearson y Spearman para evaluar esta relación de manera más objetiva:
+A continuación, realizamos los **tests estadísticos** de Pearson y Spearman para evaluar esta relación de manera más objetiva:
 
 ```{r test1, message = FALSE, warning = FALSE}
 
@@ -352,23 +352,21 @@ Los resultados de los tests confirman la lectura visual del gráfico:
 
 **Correlación de Pearson (r = 0.017, p = 0.92)** → no se aprecia relación lineal entre la fertilidad media y el nivel total de observaciones de calidad del aire.
 
-**Correlación de Spearman (ρ = 0.026, p = 0.877)** → tampoco se observa una relación monótona; es decir, los países con más vigilancia no presentan sistemáticamente mayor ni menor fertilidad.
+**Correlación de Spearman (ρ = 0.026, p = 0.877)** → tampoco se observa una relación monótona, es decir, los países con más vigilancia no presentan sistemáticamente mayor ni menor fertilidad.
 
 Ambos *p-valores* son muy superiores al umbral convencional de 0.05, lo que implica que no hay evidencia estadísticamente significativa de asociación entre ambas variables.
 
-En términos sencillos, la intensidad de vigilancia del aire no parece explicar las diferencias de fertilidad entre países europeos. Esto sugiere que la hipótesis naïf (“más vigilancia → más fertilidad”) no se sostiene empíricamente en este corte transversal.
+De manera más simplificada, la intensidad de vigilancia del aire no parece explicar las diferencias de fertilidad entre países europeos. Esto sugiere que la hipótesis naïf (“más vigilancia → más fertilidad”) no se sostiene empíricamente en este corte transversal.
 
 ## Caracterizar la fertilidad media de los países europeos y comparación con los niveles de dióxido de nitrógeno
 
-En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la **calidad del aire** en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, incluidos riesgos durante el embarazo y potenciales impactos en la salud reproductiva.
+En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la **calidad del aire** en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, incluyendo riesgos durante el embarazo y potenciales impactos en la salud reproductiva.
 
-**Pregunta:**  
-¿Existe una relación entre los niveles medios de NO₂ en cada país europeo y su fertilidad media?
+**Pregunta:** ¿Existe una relación entre los niveles medios de NO₂ en cada país europeo y su fertilidad media?
 
-**Hipótesis:**  
-Esperamos observar una relación **negativa**: países con mayor NO₂ medio deberían presentar, en promedio, niveles más bajos de fertilidad.  
+**Hipótesis:** Esperamos observar una relación **negativa**, es decir, que países con mayor NO₂ medio deberían presentar, en promedio, niveles más bajos de fertilidad.  
 
-Como antes, esta hipótesis es descriptiva, no causal; buscamos el signo de la asociación en los datos agregados.
+Como en el caso anterior, esta hipótesis es descriptiva, no causal; buscamos el signo de la asociación en los datos agregados.
 
 ### Datos y construcción de variables
 
@@ -395,8 +393,8 @@ oms_europa_limpio <- oms_europa %>%
   mutate(pais = recode_pais(`WHO Country Name`))
 ```
 
-Tras armonizar y unir ambas tablas mediante un `left_join()`, obtenemos un panel ciudad–país con valores de NO₂ y la fertilidad media asociada a cada país.  
-A partir de ese panel construimos un **resumen por país** con las siguientes variables:
+Tras armonizar y unir ambas tablas mediante `left_join()`, obtenemos un panel ciudad–país con valores de NO₂ y la fertilidad media asociada a cada país.  
+A partir de éste, construimos un **resumen por país** con las siguientes variables:
 
 - `no2_media`: media del NO₂ por país.  
 - `no2_mediana`: mediana del NO₂.  
@@ -482,11 +480,9 @@ El gráfico revela una estructura altamente dispersa:
 - Varios países muy contaminados (*Turquía* o *Italia*) exhiben fertilidades relativamente bajas, pero otros no.  
 - La recta de regresión muestra una pendiente casi plana, con una banda de confianza amplia que incluye valores cercanos a cero en la mayor parte del rango.
 
-En otras palabras:  
-no se aprecia evidencia de que mayores niveles medios de NO₂ estén sistemáticamente asociados con menores niveles de fertilidad en Europa.
+En otras palabras, no se aprecia evidencia de que mayores niveles medios de NO₂ estén sistemáticamente asociados con menores niveles de fertilidad en Europa.
 
-Esto es coherente con la lectura de la Parte 1:  
-el vínculo entre contaminación atmosférica y natalidad, si existe, parece débil a nivel agregado y probablemente mediado por múltiples factores (urbanización, edad materna, políticas familiares, estructura económica, densidad poblacional, etc.).
+Esto es coherente con la lectura de la Parte 1, pues el vínculo entre contaminación atmosférica y natalidad, de existir, parece ser débil a nivel agregado y, probablemente, mediado por múltiples factores (urbanización, edad materna, políticas familiares, estructura económica, densidad poblacional, etc.).
 
 Aunque los efectos biológicos del NO₂ sobre la reproducción han sido documentados en estudios clínicos y epidemiológicos, estos pueden quedar enmascarados por la heterogeneidad interna de cada país y por la diferencia entre contaminación urbana y fertilidad nacional promedio.
 
@@ -506,7 +502,7 @@ Se limpia y normaliza la información para construir una tabla `co2_limpio` con 
 - `anio` (año),  
 - `co2_kt` (emisiones totales de CO₂ en kilotoneladas).
 
-Posteriormente se agregan los datos por país para obtener el resumen `co2_resumen_pais`, que incluye:
+Posteriormente, se agregan los datos por país para obtener el resumen `co2_resumen_pais`, que incluye:
 
 - `co2_kt_media`: emisiones medias anuales de CO₂,  
 - `co2_kt_total`: emisiones acumuladas,  
@@ -619,7 +615,7 @@ Cada fotograma muestra un diagrama de dispersión entre `co2_kt` y `tfr` para un
 
 Se ajusta una recta de regresión lineal por año, con su banda de confianza.
 
-Se añaden, en la esquina de la animación, el número de países incluidos y los coeficientes estimados (pendiente y R²).
+En la esquina de la animación se añaden el número de países incluidos y los coeficientes estimados (pendiente y R²).
 
 Esta animación permite ver si la relación CO₂–TFR cambia con el tiempo y si, en algún periodo concreto, aparece una tendencia clara (positiva o negativa).
 
@@ -758,15 +754,13 @@ cuando miramos a nivel país, con indicadores agregados, la relación entre cont
 
 ## Caracterizar la importancia del PM₂.₅ dentro de la vigilancia del aire y su relación con la fertilidad
 
-En este último objetivo profundizamos en un contaminante concreto, el material particulado fino (PM₂.₅), que se ha asociado con efectos adversos sobre la salud reproductiva, el embarazo y la mortalidad perinatal. A diferencia de los objetivos anteriores centrados en la intensidad global de la vigilancia o en contaminantes específicos como el NO₂ o el CO₂, aquí nos interesa qué peso tiene el PM₂.₅ dentro del esfuerzo total de monitorización de la calidad del aire en cada país.
+En este último objetivo profundizamos en un contaminante concreto, el material particulado fino (PM₂.₅), que se ha asociado con efectos adversos sobre la salud reproductiva, el embarazo y la mortalidad perinatal. A diferencia de los objetivos anteriores, centrados en la intensidad global de la vigilancia o en contaminantes específicos como el NO₂ o el CO₂, aquí nos interesa qué peso tiene el PM₂.₅ dentro del esfuerzo total de monitorización de la calidad del aire en cada país. Este indicador mide el tamaño de las partículas en el aire, tomando en cuenta aquellas de 2,5 micrómetros o menos; cuanto más pequeñas son estas partículas, más profundo llegan a los pulmones. Es claro que personas con  patologías respiratorias sufrirán más la presencia de un PM₂.₅ alto, aunque a largo plazo toda la población se acaba viendo afectada por ellas.
 
 La lógica es la siguiente: incluso si dos países tienen un volumen similar de observaciones de calidad del aire, pueden diferir en el énfasis que ponen sobre determinados contaminantes. Un país que dedica una mayor proporción de su vigilancia al PM₂.₅ estaría, en principio, más orientado a monitorizar riesgos finos para la salud cardiovascular y respiratoria, con posibles implicaciones para la salud reproductiva y, de forma indirecta, para la planificación familiar.
 
-**Pregunta:**
-¿Existe una relación entre el peso relativo del PM₂.₅ en la vigilancia del aire y la fertilidad media (TFR) de los países europeos?
+**Pregunta:** ¿Existe una relación entre el peso relativo del PM₂.₅ en la vigilancia del aire y la fertilidad media (TFR) de los países europeos?
 
-**Hipótesis:**
-Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efectivos, cabría esperar que los países que dedican una fracción mayor de sus observaciones a este contaminante presenten entornos más saludables o más vigilados, lo que podría asociarse con una fertilidad algo más elevada. De forma descriptiva, planteamos la hipótesis de que una mayor proporción de observaciones de PM₂.₅ se asocia con una TFR media más alta, aunque sin asumir causalidad.
+**Hipótesis:** Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efectivos, cabría esperar que los países que dedican una fracción mayor de sus observaciones a este contaminante presenten entornos más saludables o más vigilados, lo que podría asociarse con una fertilidad algo más elevada. De forma descriptiva, planteamos la hipótesis de que una mayor proporción de observaciones de PM₂.₅ se asocia con una TFR media más alta, aunque sin asumir causalidad.
 
 ### Datos y construcción de variables
 
@@ -774,7 +768,7 @@ En este objetivo analizamos el lugar que ocupa el contaminante **PM₂.₅** den
 
 Partimos del fichero de registros de calidad del aire (`aire`), que contiene observaciones por país, año y tipo de contaminante. A partir de este conjunto:
 
-- Se armonizan los nombres de país (`pais`) igual que en los objetivos anteriores.  
+- Se armonizan los nombres de país (`pais`), al igual que en los objetivos anteriores.  
 - Se convierten los años a formato numérico (`anio`).  
 - Se crea la variable lógica `es_pm25`, que toma valor `TRUE` cuando el contaminante corresponde a PM₂.₅ (incluyendo variantes como `"PM2.5"`, `"PM25"`, `"PM2p5"`).  
 
@@ -928,11 +922,11 @@ Los análisis realizados indican que, a escala de país, la relación entre vigi
 
 Algo similar ocurre cuando se pasa de la vigilancia a la contaminación efectiva. Ni los niveles medios de NO₂ ni las emisiones de CO₂ —interpretadas como un indicador agregado de tamaño económico e intensidad energética— permiten ordenar a los países europeos según su nivel de fertilidad. Los diagramas de dispersión y las rectas de regresión muestran nubes muy dispersas, pendientes próximas a cero y R² bajos, lo que indica que estas variables ambientales explican solo una fracción mínima de la variación en TFR entre países.
 
-El análisis del peso relativo del PM₂.₅ en la vigilancia tampoco revela patrones robustos: algunos países otorgan a este contaminante una proporción relativamente alta de sus observaciones, mientras que otros apenas lo monitorizan, pero en ambos grupos aparecen TFR bajas, medias y algo más altas. Es decir, dedicar una mayor parte del esfuerzo de vigilancia al PM₂.₅ no se traduce en niveles de fertilidad claramente diferenciados.
+El análisis del peso relativo del PM₂.₅ en la vigilancia tampoco revela patrones robustos: algunos países otorgan a este contaminante una proporción relativamente alta de sus observaciones, mientras que otros apenas lo monitorizan, pero en ambos grupos aparecen TFR bajas, medias y algo más altas. En definitiva, dedicar una mayor parte del esfuerzo de vigilancia al PM₂.₅ no se traduce en niveles de fertilidad claramente diferenciados.
 
 En conjunto, los resultados apuntan a que la variación en la fertilidad europea está dominada por factores demográficos, socioeconómicos e institucionales (estructura de edades, mercado laboral, políticas de conciliación, normas culturales, gasto social, etc.) que este marco descriptivo no modeliza de forma directa. Las variables ambientales consideradas —vigilancia, NO₂, CO₂, peso del PM₂.₅— parecen jugar, a este nivel de agregación, un papel secundario frente a esos determinantes estructurales.
 
-Estas conclusiones deben interpretarse con cautela: se trata de un estudio ecológico y descriptivo, basado en datos agregados por país, sin control exhaustivo por posibles factores de confusión y con indicadores ambientales relativamente gruesos (medias nacionales, totales anuales). La evidencia disponible no niega que la calidad del aire afecte a la salud reproductiva, pero sí sugiere que sus efectos sobre la fecundidad observada a nivel país son difíciles de detectar con este tipo de datos. En este sentido, el trabajo funciona como un **punto de partida exploratorio** que señala la necesidad de estudios con mayor resolución espacial, datos individuales y diseños longitudinales o quasi-experimentales para comprender con más precisión los vínculos entre contaminación atmosférica y fertilidad.
+Estas conclusiones deben interpretarse con cautela: se trata de un estudio ecológico y descriptivo, basado en datos agregados por país, sin control exhaustivo por posibles factores de confusión y con indicadores ambientales relativamente gruesos (medias nacionales, totales anuales). La evidencia disponible no niega que la calidad del aire afecte a la salud reproductiva, pero sí sugiere que sus efectos sobre la fecundidad observada a nivel de país son difíciles de detectar con este tipo de datos. En este sentido, el trabajo funciona como un **punto de partida exploratorio** que señala la necesidad de estudios con mayor resolución espacial, datos individuales y diseños longitudinales o cuasi experimentales para comprender con más precisión los vínculos entre contaminación atmosférica y fertilidad.
 
 # Referencias
 
