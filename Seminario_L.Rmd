@@ -45,13 +45,13 @@ El resultado esperado (si estos canales funcionan) es un entorno más saludable 
 Sin embargo, a nivel agregado (país), se conoce menos acerca de:
 
 - Hasta qué punto la intensidad de la vigilancia del aire se asocia con niveles de fertilidad.
-- Si la contaminación atmosférica (por ejemplo, con el NO₂ o el CO₂) se relaciona con la fertilidad media de los países europeos.
+- Si la contaminación atmosférica (por ejemplo, con NO₂ o CO₂) se relaciona con la fertilidad media de los países europeos.
 
 El presente seminario aborda estas cuestiones desde una perspectiva descriptiva, utilizando datos agregados por país para Europa.
 
 # Objetivo general
 
-Analizar la relación entre la vigilancia y la calidad del aire y la fertilidad media (TFR) en los países europeos.
+Analizar la vigilancia y medición de la calidad del aire en relación con la fertilidad media (TFR) en los países europeos.
 
 # Objetivos específicos
 
@@ -59,7 +59,7 @@ Analizar la relación entre la vigilancia y la calidad del aire y la fertilidad 
 ¿Existe asociación entre la intensidad de la vigilancia de la calidad del aire y la fertilidad media (TFR) de los países europeos?
 
 **NO₂ vs fertilidad**  
-¿Están los niveles medios de NO₂ en los países europeos relacionados con sus niveles medios de fertilidad (TFR)?
+¿Están los niveles medios de NO₂ en los países europeos relacionados con sus niveles medios de fertilidad (TFR)? Si es así, ¿de dónde proviene dicho NO₂?
 
 **CO₂ vs fertilidad**  
 ¿Existe una relación directamente proporcional entre los niveles de dióxido de carbono (CO₂) y la fertilidad?
@@ -486,7 +486,7 @@ Esto es coherente con la lectura de la Parte 1, pues el vínculo entre contamina
 
 Aunque los efectos biológicos del NO₂ sobre la reproducción han sido documentados en estudios clínicos y epidemiológicos, estos pueden quedar enmascarados por la heterogeneidad interna de cada país y por la diferencia entre contaminación urbana y fertilidad nacional promedio.
 
-## Dióxido de carbono
+## Descubrir si la relación entre el dióxido de carbono y la fertilidad es directamente proporcional
 
 ### Datos y construcción de variables
 
