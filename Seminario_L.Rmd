@@ -71,9 +71,11 @@ Analizar la vigilancia y medición de la calidad del aire en relación con la fe
 
 ## Describir la vigilancia de la calidad del aire en Europa y ver su asociación con la fertilidad
 
-**Pregunta:** ¿Está asociada una mayor vigilancia de la calidad del aire con una mayor fertilidad en la población europea?
+**Pregunta:**
+¿Está asociada una mayor vigilancia de la calidad del aire con una mayor fertilidad en la población europea?
 
-**Hipótesis:** Más vigilancia del aire implica más fertilidad.  
+**Hipótesis:**
+Más vigilancia del aire implica más fertilidad.  
 Vemos la “vigilancia” mediante el conteo de observaciones de calidad del aire reportadas por país y año, y medimos la fertilidad con la **TFR (Eurostat)**.  
 
 Si la hipótesis es consistente con los datos, esperamos observar una relación **positiva** entre el nivel de vigilancia (más observaciones) y la TFR.
@@ -362,9 +364,11 @@ De manera más simplificada, la intensidad de vigilancia del aire no parece expl
 
 En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la **calidad del aire** en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, incluyendo riesgos durante el embarazo y potenciales impactos en la salud reproductiva.
 
-**Pregunta:** ¿Existe una relación entre los niveles medios de NO₂ en cada país europeo y su fertilidad media?
+**Pregunta:**
+¿Existe una relación entre los niveles medios de NO₂ en cada país europeo y su fertilidad media? ¿De dónde proviene dicho NO₂?
 
-**Hipótesis:** Esperamos observar una relación **negativa**, es decir, que países con mayor NO₂ medio deberían presentar, en promedio, niveles más bajos de fertilidad.  
+**Hipótesis:**
+Esperamos observar una relación **negativa**, es decir, que países con mayor NO₂ medio deberían presentar, en promedio, niveles más bajos de fertilidad. Además, suponemos que la mayor parte del gas procederá de las estaciones de vigilancia de la calidad del aire de tráfico.
 
 Como en el caso anterior, esta hipótesis es descriptiva, no causal; buscamos el signo de la asociación en los datos agregados.
 
@@ -758,9 +762,11 @@ En este último objetivo profundizamos en un contaminante concreto, el material 
 
 La lógica es la siguiente: incluso si dos países tienen un volumen similar de observaciones de calidad del aire, pueden diferir en el énfasis que ponen sobre determinados contaminantes. Un país que dedica una mayor proporción de su vigilancia al PM₂.₅ estaría, en principio, más orientado a monitorizar riesgos finos para la salud cardiovascular y respiratoria, con posibles implicaciones para la salud reproductiva y, de forma indirecta, para la planificación familiar.
 
-**Pregunta:** ¿Existe una relación entre el peso relativo del PM₂.₅ en la vigilancia del aire y la fertilidad media (TFR) de los países europeos?
+**Pregunta:**
+¿Existe una relación entre el peso relativo del PM₂.₅ en la vigilancia del aire y la fertilidad media (TFR) de los países europeos?
 
-**Hipótesis:** Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efectivos, cabría esperar que los países que dedican una fracción mayor de sus observaciones a este contaminante presenten entornos más saludables o más vigilados, lo que podría asociarse con una fertilidad algo más elevada. De forma descriptiva, planteamos la hipótesis de que una mayor proporción de observaciones de PM₂.₅ se asocia con una TFR media más alta, aunque sin asumir causalidad.
+**Hipótesis:**
+Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efectivos, cabría esperar que los países que dedican una fracción mayor de sus observaciones a este contaminante presenten entornos más saludables o más vigilados, lo que podría asociarse con una fertilidad algo más elevada. De forma descriptiva, planteamos la hipótesis de que una mayor proporción de observaciones de PM₂.₅ se asocia con una TFR media más alta, aunque sin asumir causalidad.
 
 ### Datos y construcción de variables
 
