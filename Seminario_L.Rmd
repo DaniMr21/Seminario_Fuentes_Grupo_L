@@ -8,10 +8,11 @@ output:
     toc_float: true
     number_sections: true
 ---
-
-<center>
+<br>
+<center> 
 <img src="INPUT/IMAGES/portada.png" alt="Gráfico de portada" width="70%">
 </center>
+<br><br>
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tidyverse)
@@ -30,6 +31,7 @@ library(ggplot2)
 library(ggrepel)
 library(gganimate)
 library(EEAaq)
+library(gifski)
 ```
 
 # Introducción
@@ -72,30 +74,26 @@ Analizar la vigilancia y medición de la calidad del aire en relación con la fe
 ## Describir la vigilancia de la calidad del aire en Europa y ver su asociación con la fertilidad
 
 **Pregunta:**
-¿Está asociada una mayor vigilancia de la calidad del aire con una mayor fertilidad en la población europea?
-
-**Hipótesis:**
-Más vigilancia del aire implica más fertilidad.  
-Vemos la “vigilancia” mediante el conteo de observaciones de calidad del aire reportadas por país y año, y medimos la fertilidad con la **TFR (Eurostat)**.  
+¿Existe una asociación entre la intensidad de vigilancia de la calidad del aire y la fertilidad en Europa?
+ 
+**Hipótesis inicial:**
+Se espera que una mayor vigilancia del aire implique una mayor fertilidad. Por ello, esperamos que los países con más observaciones de calidad del aire tengan una TFR ligeramente superior, aunque **esta relación no implica causalidad directa**; es un test descriptivo de la asociación.  
 
 Si la hipótesis es consistente con los datos, esperamos observar una relación **positiva** entre el nivel de vigilancia (más observaciones) y la TFR.
 
-> **Nota:** Esta hipótesis no asume causalidad por sí misma; es un test descriptivo de la asociación.
+> **Nota:** La vigilancia se mide como el **número de observaciones registradas por país y año** en el sistema de AQ e-Reporting (EEA). La fertilidad se mide mediante la **TFR media anual** por país (Eurostat).
 
-### Datos y construcción de variables
+### Lectura y limpieza de Datos Base
 
-Trabajamos con dos fuentes principales:
+Trabajamos con dos fuentes principales de datos: 
 
-1. **Calidad del aire (`DataExtract.csv`)**:  
-   A partir de los registros originales de AQ e-Reporting (EEA), limpiamos nombres, homogeneizamos países y contamos observaciones por país–año (`n_obs_aire`).  
-   Con ello construimos resúmenes por país (por ejemplo, `total_obs_aire` y `n_anios_aire`).
+1. **Calidad del aire**: obtenida mediante `EEAaq::aq_annual_data()` o CSV original (`DataExtract.csv`)  
 
-2. **Fertilidad (Eurostat, anual) (`Fertilidad.csv`)**:  
-   Extraemos la **TFR** por país–año, homogeneizamos los códigos `geo` a nombres de país (`pais`) y calculamos resúmenes (por ejemplo, `tfr_media` por país).
-
+2. **Fertilidad:** obtenida de Eurostat (`Fertilidad.csv`)
+Se leen los archivos, se realiza una limpieza inicial de columnas y se transforma el formato de los datos de Eurostat (códigos geo) al formato de nombres de país homogéneos (pais) para permitir la unión con los datos de vigilancia.
    
-```{r datos obj 1, message = FALSE, warning = FALSE}
-#Lectura y limpieza básica
+```{r datos obj 1, message=FALSE, warning=FALSE}
+# 1. Lectura de datos y limpieza básica
 
 aire <- read_delim(
   "INPUT/DATA/DataExtract.csv",
@@ -110,9 +108,9 @@ fertilidad <- read_delim(
 aire       <- aire %>% clean_names()
 fertilidad <- fertilidad %>% clean_names()
 
-#Tabla de mapeo de códigos de país (Eurostat -> nombre)
+# 2. Tabla de mapeo de códigos de país (Eurostat -> nombre)
 
-mapa_paises <- tibble::tribble(
+mapa_paises_df <- tibble::tribble(
   ~geo,        ~pais,
   "AD", "Andorra",
   "AL", "Albania",
@@ -170,36 +168,22 @@ mapa_paises <- tibble::tribble(
 
 ```
 
-### Pipeline de trabajo
+### Homogeneización de países y resumen de datos de fertilidad y aire
+Se preparan los datos para los análisis posteriores unificando los nombres de los países entre distintas fuentes, de manera que los datasets de fertilidad y calidad del aire sean comparables. Se realizan varias tareas:
 
-1. **Limpieza y homogeneización** de ambas tablas (`aire` y `fertilidad`), incluyendo la estandarización de nombres de país (`pais`) y la conversión de años (`anio`).
+1. **Homogeneización de nombres de países:** Se recodifican alias o variantes de nombres para asegurar consistencia entre datasets.
 
-2. **Conteo de vigilancia:** construcción de `aire_conteo`, que contiene para cada país–año el número de observaciones de calidad del aire registradas (`n_obs_aire`).
+2. **Resumen de fertilidad:** Se calcula la TFR media y el número de años con datos disponibles para cada país.
 
-3. **Resumen de fertilidad:** creación de `fert_resumen_nombres`, que incluye los principales estadísticos por país (por ejemplo, `tfr_media`, `anio_min`, `anio_max` y `n_anios`).
+3. **Conteo de observaciones de aire:** Se contabilizan las observaciones de PM2.5 por país y año, aplicando la homogeneización de nombres.
 
-4. **Uniones (joins):**
-   - `resumen_aire_fert_solape`: resumen combinado por país usando solo los años en los que hay datos de aire.  
-   - `resumen_aire_fert_pais`: resumen combinado por país utilizado para el **gráfico de dispersión** y los **tests de correlación**.  
+4. **Unión de datos:** Se combinan los resúmenes de fertilidad y de observaciones de aire por país, obteniendo un dataset base que servirá para posteriores normalizaciones y análisis.
+
+Este paso es clave para que los análisis estadísticos posteriores puedan comparar correctamente la vigilancia de la calidad del aire con la fertilidad a nivel país, evitando inconsistencias debidas a diferencias de nombres o códigos de país.
 
 ```{r pipeline obj1, message = FALSE, warning = FALSE}
 
-#Resumir fertilidad por país
-resumir_fertilidad <- function(df) {
-  df %>%
-    group_by(pais) %>%
-    summarise(
-      n_anios    = n(),
-      anio_min   = min(anio, na.rm = TRUE),
-      anio_max   = max(anio, na.rm = TRUE),
-      tfr_media  = mean(tfr, na.rm = TRUE),
-      tfr_min    = min(tfr, na.rm = TRUE),
-      tfr_max    = max(tfr, na.rm = TRUE),
-      .groups    = "drop"
-    ) %>%
-    arrange(pais)
-}
-
+# Homogeneizar alias de países
 recode_pais <- function(x) {
   x <- str_trim(x)
   dplyr::recode(
@@ -214,151 +198,311 @@ recode_pais <- function(x) {
   )
 }
 
-# Limpiar y resumir vigilancia de aire (conteo país-año)
+# Calcular la TFR media y número de años observados por país
+resumir_fertilidad <- function(df) {
+  df %>%
+    group_by(pais) %>%
+    summarise(
+      n_anios    = n(),
+      tfr_media  = mean(tfr, na.rm = TRUE),
+      .groups    = "drop"
+    ) %>%
+    arrange(pais)
+}
+
+# Conteo de observaciones de aire por país-año y homogeneización de nombres
 limpiar_y_contar_aire <- function(aire_raw) {
   aire_raw %>%
     mutate(
       pais = str_trim(country),
       anio = as.integer(year),
-      # Homogeneización de alias frecuentes
-      pais = recode_pais(country)) %>%
+      # Aplicar homogeneización
+      pais = recode_pais(country)) %>% 
     count(pais, anio, name = "n_obs_aire") %>%
     arrange(pais, anio)
 }
 
-# Unir resumen de aire y fertilidad por país
-unir_aire_y_fertilidad <- function(df_aire, df_fert) {
-  df_aire %>%
-    full_join(df_fert, by = "pais") %>%
-    arrange(pais)
-}
-
-#Construcción de datos de fertilidad (Eurostat)
-
+# Filtrar y transformar los datos de Eurostat de código a nombre de país
 fert_codigos <- fertilidad %>%
   filter(freq == "A") %>%
-  transmute(
-    geo  = geo, # código Eurostat
-    anio = as.integer(time_period),
-    tfr  = as.numeric(obs_value)
-  )
+  transmute(geo = geo, anio = as.integer(time_period), tfr = as.numeric(obs_value))
 
 fert_paises <- fert_codigos %>%
-  left_join(mapa_paises, by = "geo") %>%
+  left_join(mapa_paises_df, by = "geo") %>%
   filter(!is.na(pais)) %>%
   select(pais, anio, tfr)
 
-# Resumen general de fertilidad (todos los años disponibles)
+# Resumen: TFR Media por país
 fert_resumen_nombres <- resumir_fertilidad(fert_paises)
 
-#Construcción de datos de aire (vigilancia)
-
+# Conteo de observaciones por país-año (Frecuencia de Vigilancia)
 aire_conteo <- limpiar_y_contar_aire(aire)
 
-# Resumen de vigilancia de aire por país
+# Resumen: Total de Observaciones por país (para normalización)
 aire_resumen_pais <- aire_conteo %>%
   group_by(pais) %>%
   summarise(
-    n_anios_aire        = n_distinct(anio),
-    anio_min_aire       = min(anio, na.rm = TRUE),
-    anio_max_aire       = max(anio, na.rm = TRUE),
     total_obs_aire      = sum(n_obs_aire, na.rm = TRUE),
-    media_obs_por_anio  = mean(n_obs_aire, na.rm = TRUE),
     .groups             = "drop"
   )
 
-#Resumen combinado por país (todos los años de fertilidad)
-resumen_aire_fert_pais <- unir_aire_y_fertilidad(
-  df_aire = aire_resumen_pais,
-  df_fert = fert_resumen_nombres
-)
-
-#Resumen de fertilidad solo en años con datos de aire (solapamiento)
-fert_resumen_solape <- fert_paises %>%
-  semi_join(
-    aire_conteo %>% distinct(pais, anio),
-    by = c("pais", "anio")
-  ) %>%
-  resumir_fertilidad()
-
-resumen_aire_fert_solape <- unir_aire_y_fertilidad(
-  df_aire = aire_resumen_pais,
-  df_fert = fert_resumen_solape
-)
+# Resumen base combinado (para posterior normalización)
+resumen_aire_fert_pais <- aire_resumen_pais %>%
+  full_join(fert_resumen_nombres, by = "pais") %>%
+  arrange(pais)
 
 ```
 
-### Estrategia empírica y lectura de resultados
+### Normalización y Construcción de la Variable de Vigilancia
 
-Como primer **“test”**, graficamos `tfr_media` (eje *x*) frente a `total_obs_aire` (eje *y*) por país y ajustamos una **recta OLS** con su **banda de confianza**.  
+Para obtener una medida de vigilancia comparable entre países, es crucial normalizar por el tamaño poblacional. El proceso se realiza en dos fases:
 
-Este gráfico nos permite explorar de forma descriptiva si existe una **asociación positiva** entre la intensidad de vigilancia del aire y la fertilidad promedio (TFR) en cada país.
+1. **Integración de la Infraestructura de Vigilancia:** Se accede a los metadatos de las estaciones de la Agencia Europea de Medio Ambiente (EEA) a través del paquete EEAaq, obteniendo el número de estaciones activas por país (`n_estaciones_activas`), que es una medida de la infraestructura de monitorización.
 
+2. **Cálculo de Métricas Normalizadas:** Se unen los datos de población (Población_Eurostat_GIND) a las métricas de vigilancia. Finalmente, se crean las dos variables principales:
 
-```{r grafico1, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+- Estaciones por millón de habitantes (`estaciones_por_millon`).
 
-datos_validos <- resumen_aire_fert_pais %>%
-  filter(!is.na(tfr_media), !is.na(total_obs_aire))
+- Observaciones por millón de habitantes (`Log-transformadas`) (`obs_por_millon_log`), siendo esta última la variable predictora clave (X) en el modelo de regresión.
 
-datos_validos %>%
-  ggplot(aes(x = tfr_media, y = total_obs_aire)) +
-  geom_point(alpha = 0.7) +
-  geom_smooth(method = "lm", se = TRUE) +
-  theme_minimal() +
-  labs(
-    title = "Observaciones de calidad del aire vs TFR medio (por país)",
-    x = "TFR medio",
-    y = "Observaciones de calidad del aire (total)"
-  ) 
-```
+El dataframe resultante, `df_vigilancia_tfr`, contendrá las métricas robustas de TFR y Vigilancia, listas para el análisis estadístico y la visualización.
 
-### Resultados:
+```{r Normalizacion obj1, message = FALSE, warning = FALSE}
 
-El diagrama de dispersión entre `total_obs_aire` (y) y `tfr_media` (x), junto con una recta OLS, sugiere que, a grandes rasgos, la asociación es débil y sensible a *outliers*. Visualmente, la pendiente no parece claramente positiva y la banda de confianza cubre valores cercanos a cero en buena parte del rango de `tfr_media`.
-
-El eje Y (conteos absolutos) probablemente está afectado por el tamaño poblacional, la densidad urbana y el número de estaciones; no es una medida de “intensidad de vigilancia” comparable *per cápita*.
-
-**Lectura honesta.**  
-Con este primer gráfico no podemos afirmar que “más vigilancia implica más fertilidad”. Si existe relación, no parece grande y podría estar mediada por terceros factores (riqueza, contaminación, urbanización, gasto sanitario, políticas familiares, etc.).
-
-A continuación, realizamos los **tests estadísticos** de Pearson y Spearman para evaluar esta relación de manera más objetiva:
-
-```{r test1, message = FALSE, warning = FALSE}
-
-df_test <- datos_validos %>%
+# Obtener metadatos de estaciones de la EEA (dataframe interno de EEAaq)
+vigilancia_infraestructura <- EEAaq_get_dataframe("stations") %>%
+  clean_names() %>%
   mutate(
-    y_log = log1p(total_obs_aire)  # estabiliza la varianza ante colas largas
+    pais = recode_pais(country)
+  ) %>%
+  # Contar estaciones únicas (infraestructura) por país
+  group_by(pais) %>%
+  summarise(
+    n_estaciones_activas = n_distinct(air_quality_station_eo_i_code),
+    .groups = "drop"
   )
 
-cor_pearson  <- cor.test(df_test$tfr_media, df_test$y_log, method = "pearson")
-cor_spearman <- cor.test(df_test$tfr_media, df_test$y_log, method = "spearman", exact = FALSE)
+# Carga de Datos de Población Reales (Usando el CSV de Eurostat DEMO_GIND) 
 
-resumen_tests <- tibble(
-  indicador = c(
-    "Correlación Pearson (r)", "p-valor Pearson",
-    "Correlación Spearman (rho)", "p-valor Spearman"
-  ),
-  valor = c(
-    round(unname(cor_pearson$estimate), 3),
-    signif(cor_pearson$p.value, 3),
-    round(unname(cor_spearman$estimate), 3),
-    signif(cor_spearman$p.value, 3)
-  )
-)
+poblacion_raw <- read_delim(
+  "INPUT/DATA/Poblacion_Eurostat_GIND.csv",
+  delim = ",", escape_double = FALSE, trim_ws = TRUE
+) %>%
+  clean_names()
 
-knitr::kable(resumen_tests, caption = "Tests estadísticos de asociación entre TFR medio y vigilancia del aire")
+# Transformación de los datos de población:
+poblacion_data <- poblacion_raw %>%
+  
+  # Filtramos por el año central de nuestro análisis
+  filter(time_period == 2020) %>% 
+  
+  # Seleccionamos y transformamos las columnas clave
+  transmute(
+    country_name_raw = geo,
+    poblacion_millones = as.numeric(obs_value) / 1000000 
+  ) %>%
+  
+  # Homogeneizamos el nombre del país para el join
+  mutate(pais = recode_pais(country_name_raw)) %>% 
+  
+  select(pais, poblacion_millones) %>%
+  filter(!is.na(poblacion_millones))
+
+# Unión y Cálculo de Métricas Normalizadas 
+
+df_vigilancia_tfr <- resumen_aire_fert_pais %>%
+  left_join(vigilancia_infraestructura, by = "pais") %>%
+  left_join(poblacion_data, by = "pais") %>%
+  
+  # Eliminar filas donde el denominador o numerador sea NA/cero
+  filter(
+      poblacion_millones > 0,
+      !is.na(total_obs_aire)
+  ) %>%
+  
+  mutate(
+    estaciones_por_millon = n_estaciones_activas / poblacion_millones,
+    
+    # Cálculo de la variable clave: la función log1p maneja el log(1+0) = 0 sin error.
+    obs_por_millon_log = log1p(total_obs_aire / poblacion_millones)
+  ) %>%
+  
+  # Para solo conservar filas con valores finitos
+  filter(is.finite(tfr_media), is.finite(obs_por_millon_log))
 
 ```
 
-Los resultados de los tests confirman la lectura visual del gráfico:
+### Análisis Descriptivo I (Gráfico de barras)
 
-**Correlación de Pearson (r = 0.017, p = 0.92)** → no se aprecia relación lineal entre la fertilidad media y el nivel total de observaciones de calidad del aire.
+Se genera un gráfico de barras que visualiza la métrica de **Infraestructura de Vigilancia normalizada** (`estaciones_por_millon`). Para facilitar la visualización de la hipótesis, los países se ordenan por su **TFR media**, y el color de las barras se mapea a la TFR. Esto permite evaluar si una mayor TFR se asocia con una mayor altura de barra. 
 
-**Correlación de Spearman (ρ = 0.026, p = 0.877)** → tampoco se observa una relación monótona, es decir, los países con más vigilancia no presentan sistemáticamente mayor ni menor fertilidad.
+```{r Grafico1, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+df_ordenado <- df_vigilancia_tfr %>%
+  # Se crea un factor para ordenar el eje X por TFR_media ascendente
+  mutate(pais_ordenado = forcats::fct_reorder(pais, tfr_media))
+  
+ggplot(df_ordenado, 
+       aes(x = pais_ordenado, y = estaciones_por_millon)) +
+  
+  # Barras (geom_col), coloreadas por la TFR media
+  geom_col(aes(fill = tfr_media), stat = "identity") +
+  
+  # Escala de color para representar la fertilidad
+  scale_fill_gradient(
+    low = "peachpuff", 
+    high = "red", 
+    space = "Lab", 
+    name = "TFR media"
+  ) +
+  
+  labs(
+    title = "Asociación entre Infraestructura de Vigilancia (EEAaq) y Fertilidad",
+    subtitle = "Países ordenados por TFR media. Altura = Estaciones de monitorización por millón de habitantes.",
+    x = NULL, 
+    y = "Nº de Estaciones Activas (por millón de hab.)"
+  ) +
+  
+  scale_y_continuous(expand = expansion(mult = c(0, .1)), 
+                     labels = scales::comma) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1, size = 8),
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
 
-Ambos *p-valores* son muy superiores al umbral convencional de 0.05, lo que implica que no hay evidencia estadísticamente significativa de asociación entre ambas variables.
+```
+**Resultados del gráfico de barras**
+El gráfico está ordenado de izquierda a derecha por la fertilidad (TFR) de los países. *Los países con la TFR más baja están a la izquierda y los que tienen la TFR más alta están a la derecha*.
 
-De manera más simplificada, la intensidad de vigilancia del aire no parece explicar las diferencias de fertilidad entre países europeos. Esto sugiere que la hipótesis naïf (“más vigilancia → más fertilidad”) no se sostiene empíricamente en este corte transversal.
+Si existiera una asociación positiva (mayor vigilancia = mayor fertilidad), esperaríamos ver un patrón en el que las barras (altura) se hicieran progresivamente más altas a medida que se avanza de izquierda a derecha.
+
+En la gráfica observamos que no hay un patrón claro en la altura de las barras a lo largo del eje x, lo que significa que no existe una relación entre la fertilidad con la mayor vigilancia. 
+
+> **Ejemplo:** Países como Lituania y Serbia muestran barras extremadamente altas (muy alta vigilancia por habitante), pero su TFR (color) no es la más alta de Europa.
+
+**Refutación de la Hipótesis Inicial:** El gráfico sugiere que la hipótesis de que "una mayor inversión en vigilancia se asocia con niveles de fertilidad ligeramente superiores" es probablemente falsa.
+
+### Análisis Descriptivo II: Gráfico de Frecuencia (Dispersión)
+
+El diagrama de dispersión analiza la relación entre la **Frecuencia de Reporte normalizada** (`obs_por_millon_log`) y la **TFR**. Se incluye una recta de regresión lineal (OLS) para evaluar visualmente la tendencia y bandas de confianza para la incertidumbre.
+
+```{r Grafico_dispersion, fig.width=8, fig.height=6, message = FALSE, warning = FALSE, cache=FALSE}
+
+df_etiquetas <- df_vigilancia_tfr %>%
+  # Etiquetar países con valores extremos para control visual de outliers
+  mutate(
+    Etiqueta_pais = ifelse(
+      tfr_media < 1.35 | tfr_media > 1.8 | obs_por_millon_log > 10,
+      pais,
+      ""
+    )
+  )
+
+ggplot(df_etiquetas, aes(x = tfr_media, y = obs_por_millon_log)) +
+  # Puntos con transparencia y tamaño fijo
+  geom_point(aes(color = tfr_media), size = 3, alpha = 0.7) +
+  # Línea de regresión lineal (OLS) para visualizar la asociación
+  geom_smooth(method = "lm", se = TRUE, color = "#4682B4", linetype = "dashed") +
+  
+  # Etiquetado para identificar países clave
+  geom_text_repel(
+    aes(label = Etiqueta_pais), 
+    box.padding = 0.5, 
+    point.padding = 0.5,
+    max.overlaps = Inf,
+    segment.color = 'grey50',
+    size = 3
+  ) +
+  
+  scale_color_gradient(low = "#FFD700", high = "#B8860B", name = "TFR") +
+  labs(
+    title = "Frecuencia de Vigilancia (Normalizada) vs. Fertilidad Media",
+    subtitle = "Log(Obs. de Aire/Millón de Hab.) en función de la TFR media",
+    x = "Tasa de Fecundidad Total (TFR) Media",
+    y = "Frecuencia de Vigilancia (Log de Obs. por Millón de Habitantes)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold"))
+ 
+
+```
+
+**Resultados del gráfico de dispersión:**
+
+El gráfico de dispersión muestra cómo se relacionan dos variables al colocar cada país como un punto en un plano.
+
+Este gráfico evalúa la relación entre la *Frecuencia de Reporte de Calidad del Aire* (cuántas mediciones se envían, ajustado por población en el Eje Y) y la *Tasa de Fecundidad Total (TFR)* (en el Eje X).
+
+1. **Eje X:** Cuanto más a la derecha está un país, mayor es su fertilidad media (TFR).
+
+2. **Eje Y:** Cuanto más arriba está un país, mayor es su frecuencia de reporte de datos de aire por habitante (más datos envían).
+
+Los puntos están distribuidos de forma caótica en todo el gráfico. No forman una línea o una curva clara que indique una relación.
+
+La **Línea de Tendencia (Regresión)** que atraviesa la gráfica representa la tendencia media de la relación. Esta línea es casi perfectamente horizontal, lo que significa que el valor de la TFR (movernos a la derecha) no hace que la frecuencia de vigilancia suba ni baje (el punto Y se queda en el mismo nivel).Por lo tanto no existe una relación entre ambos. 
+
+> **Ejemplo:** Hay países extremos, especialmente en la vigilancia, como España, Serbia, Eslovaquia y Alemania, que tienen niveles de vigilancia muy altos (puntos muy altos en el eje Y), pero sus TFRs son promedio o bajas.
+
+**Refutación de la Hipótesis Inicial:** El gráfico sugiere que la hipótesis de que "una mayor vigilancia se asocia con niveles de fertilidad superiores" es probablemente falsa.
+
+### Test Estadístico: Regresión Lineal Robusta
+Este apartado tiene como objetivo someter a prueba nuestra hipótesis central de que la frecuencia de la vigilancia ambiental se asocia con la fertilidad. Para ello, se emplea el **Modelo de Mínimos Cuadrados Ordinarios (OLS)**.
+
+Se utiliza el método de **Errores Estándar Robustos (Huber-White, tipo HC1)**, que ajusta la varianza de los errores para obtener coeficientes y valores p más fiables, incluso bajo la presencia de heterocedasticidad.
+
+La regresión se establece con la **TFR media** como variable dependiente ($Y$) y la variable **Log(Obs. de Aire por Millón de Habitantes)** ($\log(1+X_{Normalizada})$) como variable independiente o predictora.
+
+```{r Test1, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+
+# Filtro final del dataframe (Asegura que X e Y sean finitos)
+datos_regresion <- df_vigilancia_tfr %>% 
+    filter(is.finite(tfr_media), is.finite(obs_por_millon_log))
+
+# Modelo OLS
+modelo_final <- lm(tfr_media ~ obs_por_millon_log, data = datos_regresion)
+
+resultados_robustez <- coeftest(
+    modelo_final, 
+    vcov = vcovHC(modelo_final, type = "HC1")
+)
+
+# Tabulación de resultados 
+tabla_regresion_formato_simple <- tidy(resultados_robustez) %>%
+  rename(
+    T_Estadístico_Robusto = statistic,
+    Valor_P_Robusto = p.value
+  ) %>%
+  mutate(
+    # Redondeamos las estimaciones y errores a 4 decimales
+    Estimación = round(estimate, 4),
+    Error_Estandar_Robusto = round(std.error, 4),
+    # Redondeamos el T-Estadístico a 3 decimales
+    T_Estadístico_Robusto = round(T_Estadístico_Robusto, 3), 
+    # Mantenemos el P-value con más precisión para su interpretación
+    Valor_P_Robusto = round(Valor_P_Robusto, 6), 
+    Significancia = case_when(
+      Valor_P_Robusto < 0.001 ~ "Altamente significativo",
+      Valor_P_Robusto < 0.01 ~ "Muy significativo",
+      Valor_P_Robusto < 0.05 ~ "Significativo",
+      TRUE ~ "No significativo"
+    )
+  ) %>%
+  select(term, Estimación, Error_Estandar_Robusto, T_Estadístico_Robusto, Valor_P_Robusto, Significancia)
+
+# Generación de la tabla
+knitr::kable(
+  tabla_regresion_formato_simple, 
+  caption = "Resultados de Regresión: TFR Media ~ Log(Obs. de Aire por Millón de Hab.) con Errores Estándar Robustos (HC1)",
+  # Alineación de las columnas (L=Left, R=Right)
+  align = c('l', 'r', 'r', 'r', 'r', 'c') 
+)
+ 
+
+```
+### Conclusión del Objetico 1: Vigilancia vs Fertilidad
+Los resultados de la regresión lineal robusta confirman lo visualizado en el análisis descriptivo. El coeficiente de la variable **Frecuencia de Vigilancia normalizada** (`obs_por_millon_log`) es $-0.0009$, lo que indica una relación prácticamente nula entre ambas variables. Más importante aún, el **Valor P Robusto** ($0.7495$) es significativamente superior al umbral de significancia de $0.05$. Por lo tanto, **no existe evidencia estadística significativa** para concluir que la intensidad de la vigilancia ambiental de la calidad del aire (ajustada por población) tenga algún efecto o asociación lineal con la Tasa de Fecundidad Total (TFR) entre los países de la muestra. La hipótesis inicial queda refutada en este primer objetivo.
+
 
 ## Caracterizar la fertilidad media de los países europeos y comparación con los niveles de dióxido de nitrógeno
 
