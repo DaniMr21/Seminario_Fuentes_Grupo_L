@@ -332,6 +332,26 @@ df_vigilancia_tfr <- resumen_aire_fert_pais %>%
 
 ```
 
+```{r metadatos_eeaaq, message = FALSE, warning = FALSE}
+# Creación del objeto stations_meta (metadatos de EEAaq)
+
+stations_eea <- EEAaq_get_dataframe("stations") %>%
+  clean_names() %>%
+  mutate(
+    pais_raw = str_trim(country),
+    pais = recode_pais(country)
+  )
+
+stations_meta <- stations_eea %>%
+  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
+  select(
+    air_quality_station_eoi_code,
+    pais,
+    air_quality_station_area,
+    air_quality_station_type
+  )
+```
+
 ### Análisis Descriptivo I (Gráfico de barras)
 
 Se genera un gráfico de barras que visualiza la métrica de **Infraestructura de Vigilancia normalizada** (`estaciones_por_millon`). Para facilitar la visualización de la hipótesis, los países se ordenan por su **TFR media**, y el color de las barras se mapea a la TFR. Esto permite evaluar si una mayor TFR se asocia con una mayor altura de barra. 
@@ -634,11 +654,12 @@ aire_no2_meta <- aire %>%
     pais = recode_pais(country),
     anio = as.integer(year)
   ) %>%
+  filter(!is.na(air_quality_station_eo_i_code)) %>%
   
   # Unir con los metadatos de las estaciones con el dataframe 'aire'
   left_join(
     stations_meta, 
-    by = "air_quality_station_eoi_code"
+    by = c("air_quality_station_eo_i_code" = "air_quality_station_eoi_code")
   ) %>%
   
   # Filtrar solo las observaciones de NO2
@@ -646,23 +667,23 @@ aire_no2_meta <- aire %>%
   
   # Asegurar que el valor de la medición sea numérico
   mutate(
-    valor_no2 = as.numeric(no2_mediana)
+    valor_no2 = as.numeric(air_pollutant)
   ) %>%
   filter(!is.na(valor_no2))
 
 # Calcular la media de NO2 por país, así como por tipo de estación
-no2_por_tipo_estacion <- aire_no2_con_meta %>%
-  group_by(pais, air_quality_station_type) %>%
+no2_por_tipo_estacion <- aire_no2_meta %>%
+  group_by(country, air_quality_station_type.y) %>%
   summarise(
     no2_media = mean(valor_no2, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  filter(!is.na(air_quality_station_type))
+  filter(!is.na(air_quality_station_type.y))
 
 # Transformar la tabla (pivot_wider) para obtener las variables finales por país
 no2_clasificado_pais <- no2_por_tipo_estacion %>%
   pivot_wider(
-    names_from = air_quality_station_type,
+    names_from = air_quality_station_type.y,
     values_from = no2_media,
     names_prefix = "NO2_"
   ) %>%
@@ -679,8 +700,10 @@ no2_clasificado_pais <- no2_por_tipo_estacion %>%
   )
 
 # El dataframe 'no2_clasificado_pais' ya contiene las nuevas variables
+fert_resumen_nombres_renombrado <- fert_resumen_nombres %>%
+  rename(country = pais)
 resumen_no2_fertilidad <- no2_clasificado_pais %>%
-  left_join(fert_resumen_nombres, by = "pais")
+  left_join(fert_resumen_nombres_renombrado, by = "country")
 
 ```
 
@@ -997,42 +1020,6 @@ Después unimos este resumen con `fert_resumen_nombres` para obtener `pm25_share
 
 
 ```{r codigo4, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
-# Metadatos de estaciones EEA (dataframe interno)
-stations_eea <- EEAaq_get_dataframe("stations") %>%
-  clean_names() %>%
-  mutate(
-    pais_raw = str_trim(country),
-    pais = recode_pais(country)
-  )
-
-# Renombramos columna problemática
-stations_meta <- stations_eea %>%
-  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
-  select(
-    air_quality_station_eoi_code,
-    pais,
-    air_quality_station_area,
-    air_quality_station_type
-  )
-
-# CÁLCULO DE PROPORCIÓN DE PM2.5 POR PAÍS
-pm25_share_pais <- aire %>%
-  mutate(
-    pais = recode_pais(country),
-    anio = as.integer(year),
-    es_pm25 = air_pollutant %in% c("PM2.5", "PM25", "PM2p5")
-  ) %>%
-  group_by(pais) %>%
-  summarise(
-    n_obs_total = n(),
-    n_obs_pm25  = sum(es_pm25, na.rm = TRUE),
-    prop_pm25   = n_obs_pm25 / n_obs_total,
-    n_anios     = n_distinct(anio),
-    .groups     = "drop"
-  ) %>%
-  arrange(desc(prop_pm25))
-
-
 #UNIÓN PM2.5 + TFR
 pm25_share_tfr <- pm25_share_pais %>%
   left_join(fert_resumen_nombres, by = "pais") %>%
@@ -1060,13 +1047,13 @@ aire_con_meta <- aire %>%
   # Unimos por el ID de la estación (usando la tabla 'stations_meta' del chunk 4)
   left_join(
     stations_meta, 
-    by = "air_quality_station_eoi_code"
+    by = c("air_quality_station_eo_i_code" = "air_quality_station_eoi_code")
   )
 
 # Obtener solo la vigilancia en estaciones "background", que miden la exposición regional/urbana general
 pm25_background_share <- aire_con_meta %>%
-  filter(air_quality_station_type == "Background") %>%
-  group_by(pais) %>%
+  filter(air_quality_station_type.y == "Background") %>%
+  group_by(country) %>%
   summarise(
     n_obs_total_bg = n(),
     n_obs_pm25_bg = sum(es_pm25, na.rm = TRUE),
@@ -1077,7 +1064,7 @@ pm25_background_share <- aire_con_meta %>%
 
 # Unir con la TFR media
 pm25_bg_tfr_res <- pm25_background_share %>%
-  left_join(fert_resumen_nombres, by = "pais") %>%
+  left_join(fert_resumen_nombres_renombrado, by = "country") %>%
   filter(!is.na(tfr_media), !is.na(prop_pm25_bg))
 
 # Generar el gráfico de dispersión
