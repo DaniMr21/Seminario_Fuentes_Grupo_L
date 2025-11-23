@@ -576,6 +576,9 @@ pais_no2_fert <- oms_europa_con_fert %>%
 
 ```
 
+Del mismo modo, se recopilarán datos referentes a la clasificación por tipo de área de las estaciones de vigilancia de la calidad del aire, de modo que no solo tengamos información ordenada sobre los niveles de NO₂ en comparación con los de TFR, sino también de la procedencia de dicho gas.
+
+
 ### Estrategia empírica
 
 Para visualizar la relación NO₂–fertilidad utilizamos un **gráfico de burbujas**:
@@ -620,6 +623,68 @@ ggplot(
   theme_minimal()
 ```
 
+A continuación, se proporciona una tabla resumen con la procedencia de las variables de NO₂.
+
+```{r pregunta2_eeaaq, message = FALSE, warning = FALSE}
+
+# Armonizar los nombres para 'pais' y 'anio'
+aire_no2_meta <- aire %>%
+  clean_names() %>%
+  mutate(
+    pais = recode_pais(country),
+    anio = as.integer(year)
+  ) %>%
+  
+  # Unir con los metadatos de las estaciones con el dataframe 'aire'
+  left_join(
+    stations_meta, 
+    by = "air_quality_station_eoi_code"
+  ) %>%
+  
+  # Filtrar solo las observaciones de NO2
+  filter(air_pollutant == "NO2") %>%
+  
+  # Asegurar que el valor de la medición sea numérico
+  mutate(
+    valor_no2 = as.numeric(no2_mediana)
+  ) %>%
+  filter(!is.na(valor_no2))
+
+# Calcular la media de NO2 por país, así como por tipo de estación
+no2_por_tipo_estacion <- aire_no2_con_meta %>%
+  group_by(pais, air_quality_station_type) %>%
+  summarise(
+    no2_media = mean(valor_no2, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(!is.na(air_quality_station_type))
+
+# Transformar la tabla (pivot_wider) para obtener las variables finales por país
+no2_clasificado_pais <- no2_por_tipo_estacion %>%
+  pivot_wider(
+    names_from = air_quality_station_type,
+    values_from = no2_media,
+    names_prefix = "NO2_"
+  ) %>%
+  
+  # Limpiar y renombrar para facilitar su uso
+  rename_with(
+    ~ case_when(
+      .x == "NO2_Traffic" ~ "NO2_Trafico",
+      .x == "NO2_Background" ~ "NO2_Fondo",
+      .x == "NO2_Industrial" ~ "NO2_Industrial",
+      TRUE ~ .x
+    ),
+    .cols = starts_with("NO2_")
+  )
+
+# El dataframe 'no2_clasificado_pais' ya contiene las nuevas variables
+resumen_no2_fertilidad <- no2_clasificado_pais %>%
+  left_join(fert_resumen_nombres, by = "pais")
+
+```
+
+
 ### Resultados
 
 El gráfico revela una estructura altamente dispersa:
@@ -632,7 +697,6 @@ En otras palabras, no se aprecia evidencia de que mayores niveles medios de NO�
 
 Esto es coherente con la lectura de la Parte 1, pues el vínculo entre contaminación atmosférica y natalidad, de existir, parece ser débil a nivel agregado y, probablemente, mediado por múltiples factores (urbanización, edad materna, políticas familiares, estructura económica, densidad poblacional, etc.).
 
-Aunque los efectos biológicos del NO₂ sobre la reproducción han sido documentados en estudios clínicos y epidemiológicos, estos pueden quedar enmascarados por la heterogeneidad interna de cada país y por la diferencia entre contaminación urbana y fertilidad nacional promedio.
 
 ## Descubrir si la relación entre el dióxido de carbono y la fertilidad es directamente proporcional
 
@@ -704,7 +768,7 @@ co2_fert_resumen_pais <- co2_resumen_pais %>%
 
 ### Estrategia empírica
 
-El análisis se estructura en dos pasos complementarios:
+El análisis se estructura en dos pasos complementarios y uno final:
 
 **Gráfico de ranking tipo “lollipop” (Gráfico 3.1)**  
 
