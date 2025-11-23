@@ -388,7 +388,7 @@ En la gráfica observamos que no hay un patrón claro en la altura de las barras
 
 El diagrama de dispersión analiza la relación entre la **Frecuencia de Reporte normalizada** (`obs_por_millon_log`) y la **TFR**. Se incluye una recta de regresión lineal (OLS) para evaluar visualmente la tendencia y bandas de confianza para la incertidumbre.
 
-```{r Grafico_dispersion, fig.width=8, fig.height=6, message = FALSE, warning = FALSE, cache=FALSE}
+```{r Grafico2, fig.width=8, fig.height=6, message = FALSE, warning = FALSE, cache=FALSE}
 
 df_etiquetas <- df_vigilancia_tfr %>%
   # Etiquetar países con valores extremos para control visual de outliers
@@ -595,7 +595,7 @@ Este enfoque es informativo porque combina:
 - diferencias en fertilidad,  
 - y diferencias en la intensidad de monitorización entre países.
 
-```{r grafico2, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+```{r grafico3, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 library(ggplot2)
 library(ggrepel)
 
@@ -624,7 +624,27 @@ ggplot(
   theme_minimal()
 ```
 
-A continuación, se proporciona una tabla resumen con la procedencia de las variables de NO₂.
+```{r pregunta2_e, message = FALSE, warning = FALSE}
+
+# Metadatos de estaciones EEA (dataframe interno)
+
+stations_eea <- EEAaq_get_dataframe("stations") %>%
+  clean_names() %>%
+  mutate(
+    pais_raw = str_trim(country),
+    pais = recode_pais(country)
+  )
+
+# Renombramos columna problemática
+stations_meta <- stations_eea %>%
+  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
+  select(
+    air_quality_station_eoi_code,
+    pais,
+    air_quality_station_area,
+    air_quality_station_type
+  )
+```
 
 ```{r pregunta2_eeaaq, message = FALSE, warning = FALSE}
 
@@ -635,6 +655,8 @@ aire_no2_meta <- aire %>%
     pais = recode_pais(country),
     anio = as.integer(year)
   ) %>%
+  # Se renombra para que coincida con el nombre de columna en stations_meta.
+  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
   
   # Unir con los metadatos de las estaciones con el dataframe 'aire'
   left_join(
@@ -647,12 +669,12 @@ aire_no2_meta <- aire %>%
   
   # Asegurar que el valor de la medición sea numérico
   mutate(
-    valor_no2 = as.numeric(no2_mediana)
+    valor_no2 = as.numeric(value)
   ) %>%
   filter(!is.na(valor_no2))
 
 # Calcular la media de NO2 por país, así como por tipo de estación
-no2_por_tipo_estacion <- aire_no2_con_meta %>%
+no2_por_tipo_estacion <- aire_no2_meta %>%
   group_by(pais, air_quality_station_type) %>%
   summarise(
     no2_media = mean(valor_no2, na.rm = TRUE),
@@ -1000,6 +1022,25 @@ Finalmente, unimos este resumen con `fert_resumen_nombres` para obtener `pm25_sh
 
 ```{r PM2.5_por_pais, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
 
+# Metadatos de estaciones EEA (dataframe interno)
+
+stations_eea <- EEAaq_get_dataframe("stations") %>%
+  clean_names() %>%
+  mutate(
+    pais_raw = str_trim(country),
+    pais = recode_pais(country)
+  )
+
+# Renombramos columna problemática
+stations_meta <- stations_eea %>%
+  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
+  select(
+    air_quality_station_eoi_code,
+    pais,
+    air_quality_station_area,
+    air_quality_station_type
+  )
+
 # Cálculo de proporción de PM2.5 por país
 pm25_share_pais <- aire %>%
   mutate(
@@ -1229,3 +1270,6 @@ Carré, J., Gatimel, N., Moreau, J., Parinaud, J., & Léandri, R. (2017). Does a
 Landrigan, P. J., Fuller, R., Acosta, N. J. R., et al. (2018). The Lancet Commission on pollution and health. The Lancet, 391(10119), 462–512.
 
 WHO. (2021). WHO global air quality guidelines: Particulate matter (PM₂.₅ and PM₁₀), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide. World Health Organization.
+
+Eurostat. (14 de 10 de 2025). Obtenido de https://ec.europa.eu/eurostat/databrowser/view/demo_gind/default/table?lang=en&category=demo.demo_ind
+
