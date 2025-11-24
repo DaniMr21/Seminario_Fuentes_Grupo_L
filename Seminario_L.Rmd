@@ -636,6 +636,21 @@ ggplot(
   ) +
   theme_minimal()
 ```
+**Resultados del gráfico de dispersión**
+
+En el grafico se observa: 
+
+- **Tendencia General (Línea Discontinua):** La línea de regresión (la línea azul discontinua) es casi horizontal y muy plana. Esto significa que a medida que te mueves de izquierda a derecha (es decir, de países menos contaminados a países más contaminados por $\text{NO}_2$), la TFR media (el Eje Y) apenas cambia.
+
+- **Banda de Confianza (Sombra Gris):** La banda de sombra gris alrededor de la línea es muy ancha. Esto indica que la tendencia observada es poco fiable. 
+
+- **Dispersión:** Los puntos de los países están muy dispersos y no siguen un patrón claro a lo largo de la línea.
+
+Se esperaba una **relación negativa;** es decir, que los países con mayores niveles de contaminación urbana por $\text{NO}_2$ tendrían una Tasa de Fecundidad Total (TFR) más baja.
+
+El nivel medio de contaminación urbana por $\text{NO}_2$ en un país **no tiene una asociación observable o significativa** con su TFR media.
+
+
 
 ```{r pregunta2_e, message = FALSE, warning = FALSE}
 
