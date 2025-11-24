@@ -90,6 +90,7 @@ Trabajamos con dos fuentes principales de datos:
 1. **Calidad del aire**: obtenida mediante `EEAaq::aq_annual_data()` o CSV original (`DataExtract.csv`)  
 
 2. **Fertilidad:** obtenida de Eurostat (`Fertilidad.csv`)
+
 Se leen los archivos, se realiza una limpieza inicial de columnas y se transforma el formato de los datos de Eurostat (códigos geo) al formato de nombres de país homogéneos (pais) para permitir la unión con los datos de vigilancia.
    
 ```{r datos obj 1, message=FALSE, warning=FALSE}
@@ -332,31 +333,7 @@ df_vigilancia_tfr <- resumen_aire_fert_pais %>%
 
 ```
 
-<<<<<<< HEAD
-```{r metadatos_eeaaq, message = FALSE, warning = FALSE}
-# Creación del objeto stations_meta (metadatos de EEAaq)
-
-stations_eea <- EEAaq_get_dataframe("stations") %>%
-  clean_names() %>%
-  mutate(
-    pais_raw = str_trim(country),
-    pais = recode_pais(country)
-  )
-
-stations_meta <- stations_eea %>%
-  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
-  select(
-    air_quality_station_eoi_code,
-    pais,
-    air_quality_station_area,
-    air_quality_station_type
-  )
-```
-
-### Análisis Descriptivo I (Gráfico de barras)
-=======
 ### Análisis Descriptivo I: Gráfico de barras
->>>>>>> 19c126305ef032a43c3570b8411bd8033adfdefe
 
 Se genera un gráfico de barras que visualiza la métrica de **Infraestructura de Vigilancia normalizada** (`estaciones_por_millon`). Para facilitar la visualización de la hipótesis, los países se ordenan por su **TFR media**, y el color de las barras se mapea a la TFR. Esto permite evaluar si una mayor TFR se asocia con una mayor altura de barra. 
 
@@ -397,6 +374,7 @@ ggplot(df_ordenado,
 
 ```
 **Resultados del gráfico de barras**
+
 El gráfico está ordenado de izquierda a derecha por la fertilidad (TFR) de los países. *Los países con la TFR más baja están a la izquierda y los que tienen la TFR más alta están a la derecha*.
 
 Si existiera una asociación positiva (mayor vigilancia = mayor fertilidad), esperaríamos ver un patrón en el que las barras (altura) se hicieran progresivamente más altas a medida que se avanza de izquierda a derecha.
@@ -411,7 +389,7 @@ En la gráfica observamos que no hay un patrón claro en la altura de las barras
 
 El diagrama de dispersión analiza la relación entre la **Frecuencia de Reporte normalizada** (`obs_por_millon_log`) y la **TFR**. Se incluye una recta de regresión lineal (OLS) para evaluar visualmente la tendencia y bandas de confianza para la incertidumbre.
 
-```{r Grafico_dispersion, fig.width=8, fig.height=6, message = FALSE, warning = FALSE, cache=FALSE}
+```{r Grafico2, fig.width=8, fig.height=6, message = FALSE, warning = FALSE, cache=FALSE}
 
 df_etiquetas <- df_vigilancia_tfr %>%
   # Etiquetar países con valores extremos para control visual de outliers
@@ -530,27 +508,24 @@ Los resultados de la regresión lineal robusta confirman lo visualizado en el an
 
 ## Caracterizar la fertilidad media de los países europeos y comparación con los niveles de dióxido de nitrógeno
 
-En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la **calidad del aire** en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, incluyendo riesgos durante el embarazo y potenciales impactos en la salud reproductiva.
+En esta segunda parte ampliamos el análisis pasando de la “vigilancia del aire” a la **calidad del aire** en sí, centrándonos en un contaminante clave: el dióxido de nitrógeno (NO₂). Este compuesto es un marcador típico de tráfico rodado y combustión urbana, y se ha vinculado con diversos efectos adversos para la salud, el objetivo aquí es evaluar la asociación agregada entre los niveles medios de NO₂
+ en países europeos y su Tasa de Fertilidad Total (TFR)..
 
 **Pregunta:**
-¿Existe una relación entre los niveles medios de NO₂ en cada país europeo y su fertilidad media? ¿De dónde proviene dicho NO₂?
+¿Existe una asociación entre los niveles medios de NO₂ en cada país europeo y su fertilidad media?
 
 **Hipótesis:**
-Esperamos observar una relación **negativa**, es decir, que países con mayor NO₂ medio deberían presentar, en promedio, niveles más bajos de fertilidad.
+Se espera una relación negativa, donde una mayor contaminación media por NO₂ se asocie con TFR más bajas, reflejando el entorno urbano e industrializado que suele caracterizar a los países con baja natalidad.
 
-Como en el caso anterior, esta hipótesis es descriptiva, no causal; buscamos el signo de la asociación en los datos agregados.
+> Como en el caso anterior, esta hipótesis es descriptiva, no causal; buscamos el signo de la asociación en los datos agregados.
 
 ### Datos y construcción de variables
 
 Para esta sección combinamos dos fuentes principales:
 
-1. **OMS — AAP 2022 (`OMS_Datos.xlsx`)**  
-   - Filtramos únicamente los países pertenecientes a la *European Region*.  
-   - Extraemos los valores de NO₂ por ciudad (`NO2 (μg/m3)`).  
-   - Armonizamos los nombres de país en la variable `pais` (por ejemplo, *Turkey → Türkiye*, *Russian Federation → Russia*, *Republic of Moldova → Moldova*).
+1. **OMS — AAP 2022 (`OMS_Datos.xlsx`):** Valores de NO₂ por ciudad.
 
-2. **Eurostat — Fertilidad (`fert_resumen_nombres`)**  
-   - Contiene la TFR media por país (`tfr_media`), ya homogeneizada en la Parte 1 con la misma codificación de `pais`.
+2. **Eurostat — Fertilidad (`fert_resumen_nombres`):** TFR media por país.
 
 ```{r pregunta2_datos, message = FALSE, warning = FALSE}
 # Leer directamente desde la hoja principal
@@ -599,27 +574,25 @@ pais_no2_fert <- oms_europa_con_fert %>%
   filter(!is.na(no2_media), !is.na(tfr_media))
 
 ```
+Del mismo modo, se recopilarán datos referentes a la clasificación por tipo de área de las estaciones de vigilancia de la calidad del aire, de modo que no solo tengamos información ordenada sobre los niveles de NO₂ en comparación con los de TFR, sino también de la procedencia de dicho gas.
 
-
-### Estrategia empírica
+### Análisis Descriptivo I: Gráfico de Burbujas
 
 Para visualizar la relación NO₂–fertilidad utilizamos un **gráfico de burbujas**:
 
 - **Eje X:** concentración media de NO₂ por país (`no2_media`).  
 - **Eje Y:** fertilidad media (TFR, `tfr_media`).  
 - **Tamaño del punto:** número de ciudades monitorizadas (`n_ciudades`).  
-- **Etiqueta:** nombre del país (`pais`).  
-- **Recta OLS:** ajustada con banda de confianza (estimación visual del signo de la asociación).
 
-Este enfoque es informativo porque combina:
-- diferencias en contaminación,  
-- diferencias en fertilidad,  
-- y diferencias en la intensidad de monitorización entre países.
+La recta de regresión lineal (OLS, línea discontinua) se incluye para estimar visualmente la dirección y la fuerza de la asociación.
 
-```{r grafico2, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+Este enfoque gráfico es fundamental para determinar si la hipótesis de una relación negativa entre NO2 y la TFR se manifiesta en los datos agregados europeos.
+
+```{r grafico3, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 library(ggplot2)
 library(ggrepel)
 
+# Define el dataframe y las asignaciones a los ejes (Aesthetics)
 ggplot(
   pais_no2_fert,
   aes(
@@ -637,35 +610,33 @@ ggplot(
   ) +
   scale_size_continuous(name = "Nº de ciudades\nmonitorizadas") +
   labs(
-    title    = "NO₂ medio vs fertilidad media por país europeo",
-    subtitle = "Tamaño del punto = nº de ciudades con datos de NO₂",
-    x        = "NO₂ medio (µg/m³, OMS)",
+    title    = "NO"[2]~" medio vs fertilidad media por país europeo",
+    subtitle = "Tamaño del punto = nº de ciudades con datos de NO"[2]~"",
+    x        = "NO"[2]~" medio (µg/m³, OMS)",
     y        = "TFR media (Eurostat)"
   ) +
   theme_minimal()
 ```
+**Resultados del gráfico de dispersión**
 
+En el grafico se observa:
 
-### Resultados
+- **Tendencia General (Línea Discontinua):** La línea de regresión (la línea azul discontinua) es casi horizontal y muy plana. Esto significa que a medida que te mueves de izquierda a derecha (es decir, de países menos contaminados a países más contaminados por NO2), la TFR media (el Eje Y) apenas cambia.
 
-El gráfico revela una estructura altamente dispersa:
+- **Banda de Confianza (Sombra Gris):** La banda de sombra gris alrededor de la línea es muy ancha. Esto indica que la tendencia observada es poco fiable.
 
-- Los países con NO₂ alto no se concentran especialmente en la parte baja del eje de fertilidad.  
-- Varios países muy contaminados (*Turquía* o *Italia*) exhiben fertilidades relativamente bajas, pero otros no.  
-- La recta de regresión muestra una pendiente casi plana, con una banda de confianza amplia que incluye valores cercanos a cero en la mayor parte del rango.
+- **Dispersión:** Los puntos de los países están muy dispersos y no siguen un patrón claro a lo largo de la línea.
 
-En otras palabras, no se aprecia evidencia de que mayores niveles medios de NO₂ estén sistemáticamente asociados con menores niveles de fertilidad en Europa.
+Se esperaba una **relación negativa;** es decir, que los países con mayores niveles de contaminación urbana por NO₂ tendrían una Tasa de Fecundidad Total (TFR) más baja.
 
-<<<<<<< HEAD
-Esto es coherente con la lectura de la Parte 1, pues el vínculo entre contaminación atmosférica y natalidad, de existir, parece ser débil a nivel agregado y, probablemente, mediado por múltiples factores (urbanización, edad materna, políticas familiares, estructura económica, densidad poblacional, etc.).
-=======
-El nivel medio de contaminación urbana por $\text{NO}_2$ en un país **no tiene una asociación observable o significativa** con su TFR media.
+El nivel medio de contaminación urbana por NO₂ en un país **no tiene una asociación observable o significativa** con su TFR media.
+
 
 ### Análisis Descriptivo y Prueba Formal de la Asociación $\text{NO}_2$
 
-Para cerrar la sección de $\text{NO}_2$ y dar una respuesta concluyente a la pregunta de investigación, se complementa el análisis visual con estadísticas descriptivas y una prueba de significancia de la correlación de Pearson.
+Para cerrar la sección de NO₂ y dar una respuesta concluyente a la pregunta de investigación, se complementa el análisis visual con estadísticas descriptivas y una prueba de significancia de la correlación de Pearson.
 
-Se presentan las estadísticas básicas de las variables clave del análisis (la concentración media de $\text{NO}_2$ por país y la TFR media) para entender su distribución y rango.
+Se presentan las estadísticas básicas de las variables clave del análisis (la concentración media de NO₂ por país y la TFR media) para entender su distribución y rango.
 
 ```{r no2_descriptivas, message = FALSE, warning = FALSE}
 # Calcular estadísticas descriptivas para NO2 y TFR (usando los datos de la OMS)
@@ -691,13 +662,13 @@ no2_descriptivas <- pais_no2_fert %>%
 
 El análisis descriptivo de las variables en los 36 países  revela grandes diferencias en la variación:
 
-- **$\text{NO}_2$ Media (Contaminación):** La media es de $18.73\ \mu \text{g}/\text{m}^3$. Existe una amplia variación en los niveles de contaminación (rango de $6.77$ a $29.98\ \mu \text{g}/\text{m}^3$), lo que significa que los países de la muestra tienen niveles de $\text{NO}_2$ muy distintos.
+- **NO₂ Media (Contaminación):** La media es de $18.73\ \mu \text{g}/\text{m}^3$. Existe una amplia variación en los niveles de contaminación (rango de $6.77$ a $29.98\ \mu \text{g}/\text{m}^3$), lo que significa que los países de la muestra tienen niveles de NO₂ muy distintos.
 
 - **TFR Media (Fertilidad):** La media es de $1.55$ nacimientos por mujer. La variación es mucho más baja (rango de $1.24$ a $1.96$), confirmando que los patrones de baja natalidad son la norma homogénea en Europa.
 
-**En resumen:** La contaminación por $\text{NO}_2$ varía mucho más que la TFR. El análisis de correlación determinará si esta gran variación en $\text{NO}_2$ tiene algún poder para explicar la pequeña variación en la fertilidad.
+**En resumen:** La contaminación por NO₂ varía mucho más que la TFR. El análisis de correlación determinará si esta gran variación en NO₂ tiene algún poder para explicar la pequeña variación en la fertilidad.
 
-###Prueba de Significancia de la Correlación
+### Prueba de Significancia de la Correlación
 Para determinar si la correlación débil observada en el gráfico es estadísticamente significativa o simplemente un producto del azar en esta muestra, se utiliza una prueba de significancia de la correlación de Pearson (`cor.test`).
 
 ```{r no2_prueba_cor, message = FALSE, warning = FALSE}
@@ -705,22 +676,21 @@ Para determinar si la correlación débil observada en el gráfico es estadísti
 prueba_correlacion <- cor.test(pais_no2_fert$no2_media, pais_no2_fert$tfr_media, method = "pearson")
 
 ```
-### Conclusión del Objetico 2: $\text{NO}_2$ vs Fertilidad
-El análisis de correlación formal entre los niveles de $\text{NO}_2$ medio y la Tasa de Fecundidad Total (TFR) en 36 países europeos revela una **ausencia de asociación**. El coeficiente de Pearson ($\rho$) de $0.0724$ indica una relación lineal prácticamente nula, que es contraria a la hipótesis inicial de una relación negativa. Además, esta correlación resulta ser **estadísticamente no significativa**, con un Valor P de $0.675$ (muy superior al umbral de $0.05$).
+### Conclusión del Objetico 2: NO₂ vs Fertilidad
+El análisis de correlación formal entre los niveles de NO₂ medio y la Tasa de Fecundidad Total (TFR) en 36 países europeos revela una **ausencia de asociación**. El coeficiente de Pearson ($\rho$) de $0.0724$ indica una relación lineal prácticamente nula, que es contraria a la hipótesis inicial de una relación negativa. Además, esta correlación resulta ser **estadísticamente no significativa**, con un Valor P de $0.675$ (muy superior al umbral de $0.05$).
 
-En consecuencia, **se rechaza la hipótesis** de que la contaminación atmosférica urbana (medida por el $\text{NO}_2$) es un factor determinante de la fertilidad a nivel agregado. El $\text{NO}_2$ no actúa como un predictor sistemático de la TFR; en su lugar, las variaciones en la natalidad están impulsadas por factores macroeconómicos, culturales y de políticas públicas que no están correlacionados con los niveles medios de este contaminante.
->>>>>>> 19c126305ef032a43c3570b8411bd8033adfdefe
+En consecuencia, **se rechaza la hipótesis** de que la contaminación atmosférica urbana (medida por el NO₂) es un factor determinante de la fertilidad a nivel agregado. El NO₂ no actúa como un predictor sistemático de la TFR; en su lugar, las variaciones en la natalidad están impulsadas por factores macroeconómicos, culturales y de políticas públicas que no están correlacionados con los niveles medios de este contaminante.
 
 
 ## Descubrir si la relación entre el dióxido de carbono y la fertilidad es directamente proporcional
 
 En este tercer objetivo analizamos el papel de un contaminante global: las **Emisiones de $\text{CO}_2$ per cápita**. 
 
-Exploramos la asociación entre las emisiones de $\text{CO}_2$ y la Tasa de Fecundidad Total (TFR) para evaluar si las estructuras económicas de alto impacto ambiental se correlacionan con los patrones de baja natalidad.
+Exploramos la asociación entre las emisiones de CO₂ y la Tasa de Fecundidad Total (TFR) para evaluar si las estructuras económicas de alto impacto ambiental se correlacionan con los patrones de baja natalidad.
 
-**Pregunta:** ¿Existe una relación entre las Emisiones de $\text{CO}_2$ per cápita en los países europeos y su fertilidad media?
+**Pregunta:** ¿Existe una relación entre las Emisiones de CO₂ per cápita en los países europeos y su fertilidad media?
 
-**Hipótesis:** Se espera una relación **negativa**. Los países con mayores emisiones de $\text{CO}_2$ (altamente industrializados/desarrollados) presentarán TFR bajas.
+**Hipótesis:** Se espera una relación **negativa**. Los países con mayores emisiones de CO₂ (altamente industrializados/desarrollados) presentarán TFR bajas.
 
 ### Datos y construcción de variables
 
@@ -739,7 +709,7 @@ dioxidocarbono_df <- jsonlite::fromJSON(
   as_tibble() %>%
   clean_names()
 
-#TABLA co2_limpio (país-año)
+# Tabla co2_limpio (país-año)
 co2_limpio <- dioxidocarbono_df %>%
   transmute(
     pais = recode_pais(country_name),
@@ -751,11 +721,11 @@ co2_limpio <- dioxidocarbono_df %>%
     co2_kt = sum(co2_kt, na.rm = TRUE),
     .groups = "drop"
   )
-#PANEL CO2 + FERTILIDAD (país–año)
+# Panel CO2 + FERTILIDAD (país–año)
 co2_fert_panel <- co2_limpio %>%
   inner_join(fert_paises, by = c("pais", "anio"))
 
-# RESUMEN POR PAÍS
+# Resumen por país
 co2_resumen_pais <- co2_limpio %>%
   group_by(pais) %>%
   summarise(
@@ -774,15 +744,15 @@ co2_fert_resumen_pais <- co2_resumen_pais %>%
 
 ### Análisis Descriptivo I: Gráfico de ranking tipo “lollipop” 
 
-La primera estrategia visual para abordar la relación $\text{CO}_2$-Fertilidad es un **gráfico de ranking** que ordena a los países por sus Emisiones Medias de $\text{CO}_2$ a lo largo del periodo de estudio.
+La primera estrategia visual para abordar la relación CO₂-Fertilidad es un **gráfico de ranking** que ordena a los países por sus Emisiones Medias de CO₂ a lo largo del periodo de estudio.
 
 Este formato de visualización, permite:
 
-1. **Establecer un ranking** claro para identificar rápidamente a los mayores y menores emisores de $\text{CO}_2$ total.
+1. **Establecer un ranking** claro para identificar rápidamente a los mayores y menores emisores CO₂ total.
 
 2. **Superponer la TFR:** La Tasa de Fecundidad Total (tfr_media) se representa mediante el color y el tamaño del punto al final de cada barra.
 
-Al ordenar los países por $\text{CO}_2$ y colorearlos por TFR, se puede evaluar visualmente si existe una agrupación sistemática. Si la hipótesis de una relación negativa fuera cierta, esperaríamos que los países con las barras de $\text{CO}_2$ más largas tuvieran puntos más pequeños y de color menos intenso (TFR baja), y viceversa.
+Al ordenar los países por CO₂ y colorearlos por TFR, se puede evaluar visualmente si existe una agrupación sistemática. Si la hipótesis de una relación negativa fuera cierta, esperaríamos que los países con las barras de CO₂ más largas tuvieran puntos más pequeños y de color menos intenso (TFR baja), y viceversa.
 
 ```{r grafico4, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 co2_lolli <- co2_fert_resumen_pais %>%
@@ -935,7 +905,9 @@ anim
 **Resultados del gráfico animado**
 
 El gráfico de dispersión, que compara las CO₂ medias frente a la TFR medias, demuestra que la **asociación es nula** y la hipótesis **se rechaza visualmente**.
+
 1. **Nula Tendencia:** La nube de puntos está extremadamente dispersa. La línea de regresión es casi plana (horizontal), lo que indica que el CO₂ no tiene capacidad para explicar la variación en la TFR.
+
 2. **Hipótesis Refutada:** La hipótesis de una relación negativa ("más CO₂ = menos TFR") queda descartada. Los países se distribuyen de forma aleatoria, confirmando que las variables socioeconómicas asociadas al desarrollo (que el CO₂ representa) no determinan la fertilidad de forma sistemática.
 
 ### Análisis Descriptivo III: Gráfico de Dispersión
@@ -983,7 +955,7 @@ ggplot(
   ) +
   theme_minimal()
 ```
-**Resultados del gráfico animado**
+**Resultados del Gráfico de Dispersión **
 
 El gráfico de dispersión  confirma que la relación CO₂-Fertilidad es **prácticamente nula**:
 
@@ -994,7 +966,7 @@ El gráfico de dispersión  confirma que la relación CO₂-Fertilidad es **prá
  La **hipótesis** inicial de una relación negativa (a más CO₂, menos fertilidad), por lo que **se rechaza** visualmente.
 
 ### Prueba de significancia
-El paso final es aplicar la Prueba de Correlación de Pearson (cor.test) para determinar:
+El paso final es aplicar la Prueba de Correlación de Pearson (`cor.test`) para determinar:
 
 1. **Cuantificación Final:** El valor exacto del coeficiente de correlación ($\rho$) para todo el periodo.
 
@@ -1012,7 +984,7 @@ prueba_cor_co2 <- cor.test(datos_cor_co2$co2_kt_media, datos_cor_co2$tfr_media, 
 
 ```
 
-#### Conclusión del Objetivo 3: CO₂ vs fertilidad
+#### Conclusiones del Objetivo 3: CO₂ vs fertilidad
 El análisis formal de la asociación entre las **Emisiones medias de CO**₂ y la Tasa de **Fecundidad Total (TFR)** en los países europeos confirma las impresiones visuales obtenidas en los gráficos. El coeficiente de Pearson ($\rho$) es de **$\mathbf{-0.043}$**, un valor prácticamente nulo que indica que las emisiones de CO₂ no tienen una relación lineal con la TFR. Este resultado contradice la hipótesis de una relación negativa fuerte.
 La falta de relación se confirma mediante la prueba de significancia: el **Valor P es de $\mathbf{0.8839}$**, siendo superior al umbral de $\mathbf{0.05}$. Por lo tanto, se concluye formalmente que no existe una asociación estadísticamente significativa entre el CO₂ total y la TFR media en Europa. 
 
@@ -1024,15 +996,15 @@ cuando miramos a nivel país, con indicadores agregados, la relación entre cont
 
 ## Caracterizar la importancia del PM₂.₅ dentro de la vigilancia del aire y su relación con la fertilidad
 
-En este último objetivo profundizamos en un contaminante concreto, el material particulado fino (PM₂.₅), que se ha asociado con efectos adversos sobre la salud reproductiva, el embarazo y la mortalidad perinatal. A diferencia de los objetivos anteriores, centrados en la intensidad global de la vigilancia o en contaminantes específicos como el NO₂ o el CO₂, aquí nos interesa qué peso tiene el PM₂.₅ dentro del esfuerzo total de monitorización de la calidad del aire en cada país. Este indicador mide el tamaño de las partículas en el aire, tomando en cuenta aquellas de 2,5 micrómetros o menos; cuanto más pequeñas son estas partículas, más profundo llegan a los pulmones. Es claro que personas con  patologías respiratorias sufrirán más la presencia de un PM₂.₅ alto, aunque a largo plazo toda la población se acaba viendo afectada por ellas.
+En este último objetivo profundizamos en un contaminante concreto, el material particulado fino (PM₂.₅), que se ha asociado con efectos adversos sobre la salud reproductiva, el embarazo y la mortalidad perinatal. A diferencia de los objetivos anteriores, centrados en la intensidad global de la vigilancia o en contaminantes específicos como el NO₂ o el CO₂, aquí nos interesa el  **peso específico de las particulas de PM₂.₅** dentro la monitorización de la calidad del aire en cada país. Este indicador mide el tamaño de las partículas en el aire, tomando en cuenta aquellas de 2,5 micrómetros o menos; cuanto más pequeñas son estas partículas, más profundo llegan a los pulmones. Es claro que personas con patologías respiratorias sufrirán más la presencia de un PM₂.₅ alto, aunque a largo plazo toda la población se acaba viendo afectada por ellas. Por ello, el PM₂.₅ está regulado por la **Agencia Europea de Medio ambiente (EEA**) y por la OMS, que recomiendan niveles bajo de exposición por su impacto demostrado en la salud.
 
-La lógica es la siguiente: incluso si dos países tienen un volumen similar de observaciones de calidad del aire, pueden diferir en el énfasis que ponen sobre determinados contaminantes. Un país que dedica una mayor proporción de su vigilancia al PM₂.₅ estaría, en principio, más orientado a monitorizar riesgos finos para la salud cardiovascular y respiratoria, con posibles implicaciones para la salud reproductiva y, de forma indirecta, para la planificación familiar. No obstante, la forma de medición de dichas partículas también debe ser tomada en cuenta para deducir el tipo de exposición que la población sufre. Concretamente, vamos a analizar las estaciones de vigilancia de la calidad del aire de tipo "background", pues son el indicador más relevante a la hora de medir la exposición crónica de los individuos.
+La **lógica** es la siguiente: Un país que dedica una mayor proporción de sus observaciones al PM₂.₅ estaría, en principio, más orientado a monitorizar riesgos finos para la salud, lo que podría estar asociado indirectamente con entornos más saludables y una planificación familiar más favorable.
 
 **Pregunta:**
-¿Existe una relación entre el peso relativo del PM₂.₅ en la vigilancia del aire y la fertilidad media (TFR) de los países europeos? ¿Cuál es realmente la exposición general de la población a este agente contaminante? 
+¿Existe una relación entre el peso relativo del PM₂.₅ en la vigilancia del aire y la fertilidad media (TFR) de los países europeos?
 
 **Hipótesis:**
-Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efectivos, cabría esperar que los países que dedican una fracción mayor de sus observaciones a este contaminante presenten entornos más saludables o más vigilados, lo que podría asociarse con una fertilidad algo más elevada. De forma descriptiva, planteamos la hipótesis de que una mayor proporción de observaciones de PM₂.₅ se asocia con una TFR media más alta, aunque sin asumir causalidad. Además, cuanto mayor sea la monitorización de la exposición crónica a PM₂.₅, mayor estabilidad en los niveles de fertilidad podremos encontrar, siendo la relación todavía de tipo descriptivo.
+Si el PM₂.₅ es un marcador relevante de riesgos ambientales percibidos o efectivos, cabría esperar que los países que dedican una mayor porción de sus observaciones a este contaminante presenten entornos más saludables o más vigilados, lo que podría asociarse con una fertilidad algo más elevada. De forma descriptiva, planteamos la hipótesis de que una **mayor proporción de observaciones de PM₂.₅** se asocia con una **TFR media más alta**, aunque sin asumir causalidad.
 
 ### Datos y construcción de variables
 
@@ -1053,9 +1025,11 @@ Con esta base construimos el resumen por país `pm25_share_pais`, que contiene:
 
 Después unimos este resumen con `fert_resumen_nombres` para obtener `pm25_share_tfr`, que contiene tanto la proporción de PM₂.₅ como la fertilidad media (`tfr_media`) por país.
 
+Finalmente, unimos este resumen con `fert_resumen_nombres` para obtener `pm25_share_tfr`. Se aplica un **filtrado final** para asegurar que solo se incluyan los países que poseen datos válidos tanto de la proporción de PM₂.₅ como de la Tasa de Fecundidad Total (TFR), garantizando la integridad de la muestra para el análisis.
+
 
 ```{r codigo4, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
-#UNIÓN PM2.5 + TFR
+# Unión PM2.5 + TFR
 pm25_share_tfr <- pm25_share_pais %>%
   left_join(fert_resumen_nombres, by = "pais") %>%
   filter(!is.na(tfr_media), !is.na(prop_pm25))
@@ -1064,44 +1038,21 @@ pm25_share_tfr <- pm25_share_pais %>%
 
 No hay que olvidar que el análisis inicial de la proporción total de PM₂.₅ (`prop_pm25`) puede ser engañoso, ya que una medición baja puede deberse a que el país prioriza otras variables como las analizadas anteriormente, o bien tiene estaciones de vigilancia concentradas en zonas de tráfico o industriales. 
 
+### Análisis Descriptivo I: Gráfico de Barras Ordenadas por Proporción de $\text{PM}_{2.5}$
 
-### Estrategia empírica
+Para examinar de manera descriptiva la posible asociación entre la prioridad técnica que un país otorga al PM₂.₅ y su fertilidad, se ha optado por un Gráfico de Barras Ordenadas.
 
-Para examinar cómo se relacionan el **peso relativo de PM₂.₅** y la **fertilidad media**, utilizamos un **gráfico circular de barras radiales**. Esta visualización permite comparar simultáneamente ambos indicadores de manera intuitiva. El planteamiento es el siguiente:
+1. **Evaluación de Prioridad:** La altura de la barra (**Eje Y**) representa el porcentaje de todas las observaciones de vigilancia de calidad del aire que un país dedica al PM₂.₅. Los países se ordenan progresivamente en el **Eje X** de menor a mayor prioridad.
 
-#### Representación
+2. **Relación con la TFR:** El **color de la barra** codifica la Tasa de Fecundidad Total (TFR) media.
 
-- **Cada barra corresponde a un país europeo.**
-- **La longitud (radio)** de la barra representa `prop_pm25`, es decir, la **proporción de todas las observaciones de calidad del aire que pertenecen a PM₂.₅** en ese país.
-- **El color de la barra** está mapeado a `tfr_media` (tasa global de fecundidad media).  
-  Cuanto mayor es la fertilidad, **más intenso** es el color asignado según la escala continua elegida.
-- En el **extremo** de cada barra se incorpora una **etiqueta con el porcentaje de PM₂.₅**, facilitando la comparación directa entre países.
+Al ordenar la variable independiente ($\text{Prop}_{\text{PM}_{2.5}}$) en el eje, el gráfico permite identificar si existe un **patrón visual** donde el color se intensifica (o se aclara) a medida que las barras se hacen más altas. Si la hipótesis fuera correcta, observaríamos un claro gradiente de color que va de claro a oscuro (mayor TFR) a lo largo del eje X. Este análisis descriptivo sirve como paso previo indispensable antes de confirmar la relación mediante la regresión robusta.
 
-#### Construcción del gráfico
-
-1. **Ordenamos los países** de forma descendente por `prop_pm25`.  
-   Después, convertimos `pais` en un factor con ese orden.  
-   Esto asegura que, al pasar a coordenadas polares, los países aparezcan **ordenados alrededor del círculo** según su peso relativo de PM₂.₅.
-
-2. Creamos un gráfico con `geom_col()` en **coordenadas cartesianas**.
-
-3. Transformamos el gráfico mediante **`coord_polar()`**, convirtiendo las barras en **segmentos radiales** que parten del centro.
-
-#### Por qué esta visualización es útil
-
-- Permite **comparar de un vistazo** qué países dedican una mayor proporción de su vigilancia al PM₂.₅.
-- La codificación por color según `tfr_media` facilita detectar **patrones visuales**:  
-  por ejemplo, si una mayor intensidad de monitorización del PM₂.₅ se asocia visualmente con países de fertilidad alta o baja.
-- Aunque puramente **descriptivo**, el gráfico sirve como **primera aproximación no paramétrica** a la asociación entre ambas variables, sin necesidad de imponer una forma funcional concreta (lineal, cuadrática, etc.).
-
-
-
-<<<<<<< HEAD
 ```{r grafico4, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
 
 # Ordenamos países por prop_pm25 y preparamos factor
 pm25_circ <- pm25_share_tfr %>%
-  arrange(desc(prop_pm25)) %>%
+  arrange(prop_pm25) %>% # Ordenamos ascendentemente para el eje X
   mutate(
     pais      = factor(pais, levels = pais),
     label_pm  = scales::percent(prop_pm25, accuracy = 1)
@@ -1115,56 +1066,56 @@ ggplot(
     fill = tfr_media
   )
 ) +
-  # barras radiales
-  geom_col(color = "white", width = 0.9, alpha = 0.9) +
-  # pasamos a coordenadas polares
-  coord_polar(start = -pi/2) +
-  # etiquetas con % PM2.5
-  geom_text(
-    aes(label = label_pm),
-    position   = position_stack(vjust = 1.02),
-    size       = 2.5,
-    show.legend = FALSE
+  # Barras (geom_col), coloreadas por la TFR media
+  geom_col(aes(fill = tfr_media), stat = "identity") +
+  
+  # Escala de color para representar la fertilidad (misma escala que Obj 1)
+  scale_fill_gradient(
+    low = "peachpuff", 
+    high = "red", 
+    space = "Lab", 
+    name = "TFR media"
   ) +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 10)) +
+  
+  # Etiquetas y formato del eje Y
+  scale_y_continuous(
+    labels = scales::percent_format(accuracy = 1),
+    expand = expansion(mult = c(0, .1))
+  ) +
+  
   labs(
-    title    = "Peso relativo de PM2.5 en la vigilancia del aire por país",
-    subtitle = "Longitud de la barra = proporción de observaciones de PM2.5\nColor = TFR media",
-    x        = NULL,
-    y        = NULL,
-    fill     = "TFR media"
+    title = expression("Asociación entre Prioridad de Vigilancia PM"[2.5]~"y Fertilidad"),
+    subtitle = expression("Países ordenados por Proporción de Observaciones PM"[2.5]~"(Eje Y) | Color = TFR media"), 
+    x = NULL, 
+    y = expression("Proporción de Observaciones PM"[2.5]~"sobre el Total"),
+    fill = "TFR media"
   ) +
-  theme_minimal() +
+  
+  theme_classic() +
   theme(
-    axis.text.x   = element_text(size = 7, angle = 0, vjust = 0.5),
-    axis.text.y   = element_blank(),
-    axis.ticks    = element_blank(),
-    panel.grid    = element_blank(),
-    plot.title    = element_text(face = "bold", hjust = 0.5),
-    plot.subtitle = element_text(hjust = 0.5),
-    legend.position = "right"
+    axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1, size = 8),
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
   )
 ```
+**Resultado del gráfico de barras**
 
-### Resultados e interpretación
+El análisis del Gráfico de Barras Ordenadas revela dos mensajes clave sobre la prioridad de monitorización del PM₂.₅ en el contexto de la fertilidad europea:
 
-El gráfico circular revela que el **peso relativo del PM₂.₅** en la vigilancia de la calidad del aire es, en términos generales, **bajo y heterogéneo** entre países. La mayoría sitúa entre **un 5 % y un 10 %** de sus observaciones en PM₂.₅, mientras que solo un grupo reducido (entre ellos algunos países del norte o del entorno caucásico) supera claramente ese umbral y alcanza valores en torno al **12–16 %**. En el extremo inferior aparecen varios países con **barras muy cortas**, señal de que el PM₂.₅ representa únicamente una **fracción marginal** de su registro total.
+- **Baja Prioridad Media:** En la mayoría de los países europeos, el esfuerzo de vigilancia dedicado al PM₂.₅ es minoritario, observando una mayor proporción por debajo del 10% del total. Esta heterogeneidad va desde valores marginales (alrededor del 2% en Luxemburgo) hasta la prioridad más alta (cercana al 18% en Noruega).
 
-Al observar la **escala de color**, que codifica la `tfr_media`, no emerge un gradiente coherente que acompañe la longitud de las barras. Entre los países con **mayor `prop_pm25`** no destacan ni valores particularmente altos ni particularmente bajos de fertilidad: sus tasas se concentran en la **zona intermedia** del rango europeo. De forma simétrica, entre los países cuyo peso relativo del PM₂.₅ es más reducido encontramos tanto **TFR comparativamente altas** como **TFR bajas**.
+- **Ausencia de Patrón Monotónico:** Crucialmente, al examinar el color (TFR media) a lo largo del eje X (prioridad de PM₂.₅), no se observa una tendencia visual coherente que apoye la hipótesis inicial. Los tonos más oscuros (TFR alta) no se concentran de forma sistemática en el extremo derecho (mayor proporción de PM₂.₅). Países como Irlanda o Noruega, que tienen una alta prioridad al PM₂.₅, muestran TFR medias (tonos intermedios), mientras que países con TFRs relativamente altas aparecen dispersos a lo largo de todo el rango de prioridad de vigilancia.
 
-En conjunto, la visualización no sugiere la existencia de un patrón monotónico claro del tipo *«a mayor peso relativo de PM₂.₅, mayor (o menor) fertilidad»*. La importancia que cada país otorga a la monitorización del PM₂.₅ parece estar determinada, más bien, por **criterios técnicos, regulatorios o institucionales** propios de sus sistemas de vigilancia, y no por diferencias sistemáticas en comportamiento demográfico.
+En conjunto, la evidencia descriptiva no sugiere la existencia de una asociación positiva entre el peso del PM₂.₅ en la vigilancia de la calidad del aire y la TFR media. Si existiera un efecto, se vería un cambio gradual y ordenado en el color. Como no lo vemos, el gráfico nos dice de forma preliminar que **nuestra hipótesis no se sostiene**.
 
-<<<<<<< HEAD
-Así, del mismo modo que en los análisis previos, la **evidencia descriptiva** apunta a que la relación entre el peso relativo del PM₂.₅ en la monitorización del aire y la fertilidad media es **débil** y queda probablemente **absorbida por otros factores** económicos, sociales y demográficos que este indicador agregado no capta.
-=======
 ### Análisis Descriptivo II: Gráfico de Dispersión
 El gráfico de dispersión permite evaluar si existe algún patrón funcional entre la $\text{Prop}_{\text{PM}_{2.5}}$ y la TFR, además de identificar posibles países atípicos (outliers).
 
-**Variable Predictora ($X$):** Proporción de Observaciones $\text{PM}_{2.5}$ (`prop_pm25`).
+**Variable Predictora ($X$):** Proporción de Observaciones PM₂.₅ (`prop_pm25`).
 
 **Variable Dependiente ($Y$):** Tasa de Fecundidad Total Media (`tfr_media`).
 
-```{r grafico8, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+```{r grafico5, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 ggplot(pm25_share_tfr, aes(x = prop_pm25, y = tfr_media)) +
 
   geom_point(aes(color = tfr_media), size = 3) +
@@ -1196,26 +1147,26 @@ ggplot(pm25_share_tfr, aes(x = prop_pm25, y = tfr_media)) +
 ```
 **Resultado del gráfico de dispersión**
 
-Nuestra hipótesis era que, si el $\text{PM}_{2.5}$ es un riesgo importante y bien vigilado, los países con más prioridad de $\text{PM}_{2.5}$ (puntos a la derecha) tendrían una TFR más alta (puntos más arriba y de color más claro/azul claro).Es decir, deberíamos ver una línea de tendencia claramente inclinada hacia arriba.
+Nuestra hipótesis era que, si el PM₂.₅ es un riesgo importante y bien vigilado, los países con más prioridad de PM₂.₅ (puntos a la derecha) tendrían una TFR más alta (puntos más arriba y de color más claro/azul claro).Es decir, deberíamos ver una línea de tendencia claramente inclinada hacia arriba.
 
 Sin embargo, lo que observamos es:
-- Los puntos están esparcidos por todo el gráfico, como si no tuvieran una dirección clara. Hay países con baja prioridad ($\text{PM}_{2.5}$) que tienen TFR alta, y países con alta prioridad ($\text{PM}_{2.5}$) que tienen TFR media.
+- Los puntos están esparcidos por todo el gráfico, como si no tuvieran una dirección clara. Hay países con baja prioridad (PM₂.₅) que tienen TFR alta, y países con alta prioridad (PM₂.₅) que tienen TFR media.
 
 - La línea discontinua (que muestra la tendencia promedio) está casi completamente plana. Es cierto que tiene una ligera inclinación ascendente, pero es insignificante.
 
-- Los países europeos están casi todos agrupados en el rango de TFR entre 1.4 y 1.7 (tonos azules oscuros e intermedios). La prioridad del $\text{PM}_{2.5}$ no parece sacarlos de ese rango.
+- Los países europeos están casi todos agrupados en el rango de TFR entre 1.4 y 1.7 (tonos azules oscuros e intermedios). La prioridad del PM₂.₅ no parece sacarlos de ese rango.
 
-En conclusión, **no existe una relación visible** entre el esfuerzo que un país dedica a medir el $\text{PM}_{2.5}$ y su Tasa de Fecundidad Total (TFR). La línea de tendencia es tan plana que nos dice que, sin importar cuánto se preocupe un país por medir este contaminante (eje X), su fertilidad (eje Y) se mantiene casi igual.
+En conclusión, **no existe una relación visible** entre el esfuerzo que un país dedica a medir el PM₂.₅ y su Tasa de Fecundidad Total (TFR). La línea de tendencia es tan plana que nos dice que, sin importar cuánto se preocupe un país por medir este contaminante (eje X), su fertilidad (eje Y) se mantiene casi igual.
 
 
 ### Test Estadístico: Regresión Lineal Robusta
-Tras el análisis descriptivo visual (gráfico de barras y de dispersión), que sugirió la **ausencia de una asociación coherente** entre la prioridad de vigilancia del $\text{PM}_{2.5}$ ($\text{Prop}_{\text{PM}_{2.5}}$) y la fertilidad media (TFR), es necesario aplicar un test estadístico que **confirme o rechace formalmente** la hipótesis nula ($\text{H}_0$: no hay relación).
+Tras el análisis descriptivo visual (gráfico de barras y de dispersión), que sugirió la **ausencia de una asociación coherente** entre la prioridad de vigilancia del PM₂.₅ ($\text{Prop}_{\text{PM}_{2.5}}$) y la fertilidad media (TFR), es necesario aplicar un test estadístico que **confirme o rechace formalmente** la hipótesis nula ($\text{H}_0$: no hay relación).
 
 Para ello, utilizamos el modelo de **Regresión Lineal Robusta (OLS con Errores Estándar Huber-White)**. Este método es el más adecuado para datos de corte transversal por país, ya que permite estimar el coeficiente de asociación ($\beta_1$) y su significancia ($p$-valor), al tiempo que neutraliza el riesgo de heterocedasticidad (varianza no constante de los errores) que es frecuente en este tipo de datos agregados.
 
 El modelo nos permitirá determinar si el impacto de la $\text{Prop}_{\text{PM}_{2.5}}$ sobre la TFR es estadísticamente diferente de cero. Si el $p$-valor es alto ($p > 0.05$), concluiremos que la asociación es tan débil que no es fiable.
 
-```{r grafico9, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+```{r grafico6, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 
 # Filtro final del dataframe
 datos_regresion_pm25 <- pm25_share_tfr %>%
@@ -1259,10 +1210,10 @@ knitr::kable(
 
 ```
 ### Conclusión del Objetivo 4: $\text{PM}_{2.5}$ en la vigilancia vs fertilidad
-El análisis descriptivo, tanto en el gráfico de barras como en el de dispersión , demostró visualmente que la **Tasa de Fecundidad (TFR) no sigue un patrón claro** a medida que aumenta la prioridad de vigilancia del contaminante $\text{PM}_{2.5}$ en un país. La línea de tendencia en el gráfico de dispersión se mostró prácticamente plana, sugiriendo que la relación era débil o inexistente. Al llevar a cabo el **Test Estadístico de Regresión Lineal Robusta**, esta observación se confirmó formalmente. A pesar de que la estimación mostró una ligera inclinación positiva (apoyando superficialmente la hipótesis inicial), el **Valor P fue de $\text{0.0983}$**, el cual es superior al umbral de confianza del $\text{5\%}$ ($p > 0.05$).
+El análisis descriptivo, tanto en el gráfico de barras como en el de dispersión , demostró visualmente que la **Tasa de Fecundidad (TFR) no sigue un patrón claro** a medida que aumenta la prioridad de vigilancia del contaminante $PM₂.₅ en un país. La línea de tendencia en el gráfico de dispersión se mostró prácticamente plana, sugiriendo que la relación era débil o inexistente. Al llevar a cabo el **Test Estadístico de Regresión Lineal Robusta**, esta observación se confirmó formalmente. A pesar de que la estimación mostró una ligera inclinación positiva (apoyando superficialmente la hipótesis inicial), el **Valor P fue de $\text{0.0983}$**, el cual es superior al umbral de confianza del $\text{5\%}$ ($p > 0.05$).
 
-En términos sencillos, el resultado nos indica que, aunque la relación que medimos apunta en la dirección de nuestra hipótesis, es **estadísticamente insignificante**; no es lo suficientemente fuerte para descartar que sea pura casualidad. Por lo tanto, la hipótesis de que una mayor prioridad en la monitorización de $\text{PM}_{2.5}$ se asocia a una mayor fertilidad queda **rechazada**. Esto concluye que la variabilidad en la TFR entre países europeos está impulsada por factores socioeconómicos y demográficos de mayor peso, y no por las decisiones técnicas relativas a la estrategia de vigilancia de la calidad del aire.
->>>>>>> 19c126305ef032a43c3570b8411bd8033adfdefe
+En términos sencillos, el resultado nos indica que, aunque la relación que medimos apunta en la dirección de nuestra hipótesis, es **estadísticamente insignificante**; no es lo suficientemente fuerte para descartar que sea pura casualidad. Por lo tanto, la hipótesis de que una mayor prioridad en la monitorización de PM₂.₅ se asocia a una mayor fertilidad queda **rechazada**. Esto concluye que la variabilidad en la TFR entre países europeos está impulsada por factores socioeconómicos y demográficos de mayor peso, y no por las decisiones técnicas relativas a la estrategia de vigilancia de la calidad del aire.
+
 
 
 # Conclusiones
