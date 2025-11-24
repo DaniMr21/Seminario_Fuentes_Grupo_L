@@ -2,13 +2,6 @@
 <img src="INPUT/IMAGES/portada.png" alt="Gráfico de portada" width="70%">
 </center>
 
-**Autores:** Daniel Marina de la Cal, Nerea Yi Estepar Calvo y Patricia
-Ibarrondo Revilla
-
-<center>
-<img src="INPUT/IMAGES/portada.png" alt="Gráfico de portada" width="70%">
-</center>
-
 # Impacto de la vigilancia del aire sobre la fertilidad en la población europea  
 **Autores:** Daniel Marina de la Cal, Nerea Yi Estepar Calvo y Patricia Ibarrondo Revilla  
 **Fecha:** 2025-11-24  
@@ -110,37 +103,6 @@ Hipótesis rechazada.
 ## Importancia del PM₂.₅ en la vigilancia vs fertilidad
 
 Se analiza la proporción de observaciones que cada país dedica al PM₂.₅.
-
-```{r grafico8, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
-ggplot(pm25_share_tfr, aes(x = prop_pm25, y = tfr_media)) +
-
-  geom_point(aes(color = tfr_media), size = 3) +
-
-  # Añadimos una línea de tendencia (regresión lineal) para guiar la vista
-
-  geom_smooth(method = "lm", se = FALSE, color = "darkgrey", linetype = "dashed") +
-
-  scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
-
-  labs(
-
-    title = "Relación entre la Proporción de Vigilancia PM"[2.5]~" y la Fertilidad Media",
-
-    subtitle = "Cada punto es un país, la línea discontinua es la tendencia media (OLS)",
-
-    x = "Proporción de Observaciones dedicadas a PM"[2.5]~" (Prop_PM"[2.5]~")",
-
-    y = "Tasa de Fecundidad Total Media (TFR)",
-
-    color = "TFR media"
-
-  ) +
-
-  theme_minimal() +
-
-  theme(plot.title = element_text(face = "bold", hjust = 0.5))
-
-```
 
 ### Qué se encontró:
 - La prioridad del PM₂.₅ varía entre países, pero:
