@@ -686,7 +686,6 @@ no2_descriptivas <- pais_no2_fert %>%
     tfr_max = max(tfr_media, na.rm = TRUE)
   )
 
-print(no2_descriptivas)
 ```
 **Resultados de la Prueba de Asociación**
 
@@ -705,7 +704,6 @@ Para determinar si la correlación débil observada en el gráfico es estadísti
 # Realizar la prueba de significancia de la correlación de Pearson
 prueba_correlacion <- cor.test(pais_no2_fert$no2_media, pais_no2_fert$tfr_media, method = "pearson")
 
-print(prueba_correlacion)
 ```
 ### Conclusión del Objetico 2: $\text{NO}_2$ vs Fertilidad
 El análisis de correlación formal entre los niveles de $\text{NO}_2$ medio y la Tasa de Fecundidad Total (TFR) en 36 países europeos revela una **ausencia de asociación**. El coeficiente de Pearson ($\rho$) de $0.0724$ indica una relación lineal prácticamente nula, que es contraria a la hipótesis inicial de una relación negativa. Además, esta correlación resulta ser **estadísticamente no significativa**, con un Valor P de $0.675$ (muy superior al umbral de $0.05$).
@@ -1012,7 +1010,6 @@ datos_cor_co2 <- co2_fert_resumen_pais %>%
 # Realizar la prueba de significancia de la correlación de Pearson
 prueba_cor_co2 <- cor.test(datos_cor_co2$co2_kt_media, datos_cor_co2$tfr_media, method = "pearson")
 
-print(prueba_cor_co2)
 ```
 
 #### Conclusión del Objetivo 3: CO₂ vs fertilidad
