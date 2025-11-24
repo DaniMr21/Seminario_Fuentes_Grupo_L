@@ -76,7 +76,7 @@ Analizar la vigilancia y medición de la calidad del aire en relación con la fe
 **Pregunta:**
 ¿Existe una asociación entre la intensidad de vigilancia de la calidad del aire y la fertilidad en Europa?
  
-**Hipótesis inicial:**
+**Hipótesis:**
 Se espera que una mayor vigilancia del aire implique una mayor fertilidad. Por ello, esperamos que los países con más observaciones de calidad del aire tengan una TFR ligeramente superior, aunque **esta relación no implica causalidad directa**; es un test descriptivo de la asociación.  
 
 Si la hipótesis es consistente con los datos, esperamos observar una relación **positiva** entre el nivel de vigilancia (más observaciones) y la TFR.
@@ -332,7 +332,7 @@ df_vigilancia_tfr <- resumen_aire_fert_pais %>%
 
 ```
 
-### Análisis Descriptivo I (Gráfico de barras)
+### Análisis Descriptivo I: Gráfico de barras
 
 Se genera un gráfico de barras que visualiza la métrica de **Infraestructura de Vigilancia normalizada** (`estaciones_por_millon`). Para facilitar la visualización de la hipótesis, los países se ordenan por su **TFR media**, y el color de las barras se mapea a la TFR. Esto permite evaluar si una mayor TFR se asocia con una mayor altura de barra. 
 
@@ -668,7 +668,7 @@ El análisis descriptivo de las variables en los 36 países  revela grandes dife
 **En resumen:** La contaminación por $\text{NO}_2$ varía mucho más que la TFR. El análisis de correlación determinará si esta gran variación en $\text{NO}_2$ tiene algún poder para explicar la pequeña variación en la fertilidad.
 
 ###Prueba de Significancia de la Correlación
-Para determinar si la correlación débil ($\rho \approx 0.045$) observada en el gráfico es estadísticamente significativa o simplemente un producto del azar en esta muestra, se utiliza una prueba de significancia de la correlación de Pearson (`cor.test`).
+Para determinar si la correlación débil observada en el gráfico es estadísticamente significativa o simplemente un producto del azar en esta muestra, se utiliza una prueba de significancia de la correlación de Pearson (`cor.test`).
 
 ```{r no2_prueba_cor, message = FALSE, warning = FALSE}
 # Realizar la prueba de significancia de la correlación de Pearson
@@ -684,29 +684,21 @@ En consecuencia, **se rechaza la hipótesis** de que la contaminación atmosfér
 
 ## Descubrir si la relación entre el dióxido de carbono y la fertilidad es directamente proporcional
 
+En este tercer objetivo analizamos el papel de un contaminante global: las **Emisiones de $\text{CO}_2$ per cápita**. 
+
+Exploramos la asociación entre las emisiones de $\text{CO}_2$ y la Tasa de Fecundidad Total (TFR) para evaluar si las estructuras económicas de alto impacto ambiental se correlacionan con los patrones de baja natalidad.
+
+**Pregunta:** ¿Existe una relación entre las Emisiones de $\text{CO}_2$ per cápita en los países europeos y su fertilidad media?
+
+**Hipótesis:** Se espera una relación **negativa**. Los países con mayores emisiones de $\text{CO}_2$ (altamente industrializados/desarrollados) presentarán TFR bajas.
+
 ### Datos y construcción de variables
 
-En este tercer objetivo analizamos el papel de un contaminante global: el dióxido de carbono (CO₂). 
+Partimos de 2 ficheros: 
 
-A diferencia del NO₂, que refleja principalmente la contaminación urbana y la exposición directa de la población, el CO₂ es un gas de efecto invernadero cuya variación entre países está más ligada a su tamaño económico, estructura energética y nivel de industrialización.
+- JSON (`CO2.json`) que contiene las emisiones anuales de $\text{CO}_2$ (en kilotoneladas) por país y por año. 
+- Eurostat (`fert_resumen_nombres`) para la TFR.
 
-Partimos de un fichero en formato JSON (`CO2.json`) que contiene las emisiones anuales de CO₂ (en kilotoneladas) por país y por año. A partir de este conjunto:
-
-Se limpia y normaliza la información para construir una tabla `co2_limpio` con las columnas:
-
-- `pais` (nombre del país armonizado),  
-- `anio` (año),  
-- `co2_kt` (emisiones totales de CO₂ en kilotoneladas).
-
-Posteriormente, se agregan los datos por país para obtener el resumen `co2_resumen_pais`, que incluye:
-
-- `co2_kt_media`: emisiones medias anuales de CO₂,  
-- `co2_kt_total`: emisiones acumuladas,  
-- junto con el número de años disponibles (`n_anios_co2`, `anio_min_co2`, `anio_max_co2`).
-
-Finalmente, se realiza un `full_join` con `fert_resumen_nombres`, de modo que `co2_fert_resumen_pais` contiene, para cada país, las emisiones medias de CO₂ y la TFR media en el mismo periodo de referencia.
-
-Este dataset combinado es la base para los gráficos y análisis de este objetivo.
 
 ```{r json CO2, message = FALSE, warning = FALSE}
 # Leemos el JSON como Dataframe, no se por qué pero daba errores sino
@@ -750,19 +742,19 @@ co2_fert_resumen_pais <- co2_resumen_pais %>%
   arrange(pais)
 ```
 
-### Estrategia empírica
+### Análisis Descriptivo I: Gráfico de ranking tipo “lollipop” 
 
-El análisis se estructura en dos pasos complementarios y uno final:
+La primera estrategia visual para abordar la relación $\text{CO}_2$-Fertilidad es un **gráfico de ranking** que ordena a los países por sus Emisiones Medias de $\text{CO}_2$ a lo largo del periodo de estudio.
 
-**Gráfico de ranking tipo “lollipop” (Gráfico 3.1)**  
+Este formato de visualización, permite:
 
-- Ordena a los países por sus emisiones medias de CO₂ (`co2_kt_media`).  
-- La longitud de la barra horizontal indica el nivel de emisiones.  
-- El color y el tamaño del punto representan la TFR media (`tfr_media`): valores más altos se muestran con puntos más grandes y colores más intensos.  
+1. **Establecer un ranking** claro para identificar rápidamente a los mayores y menores emisores de $\text{CO}_2$ total.
 
-Este gráfico permite visualizar si los grandes emisores tienden a concentrarse en niveles de fertilidad sistemáticamente distintos del resto.
+2. **Superponer la TFR:** La Tasa de Fecundidad Total (tfr_media) se representa mediante el color y el tamaño del punto al final de cada barra.
 
-```{r grafico3.1, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+Al ordenar los países por $\text{CO}_2$ y colorearlos por TFR, se puede evaluar visualmente si existe una agrupación sistemática. Si la hipótesis de una relación negativa fuera cierta, esperaríamos que los países con las barras de $\text{CO}_2$ más largas tuvieran puntos más pequeños y de color menos intenso (TFR baja), y viceversa.
+
+```{r grafico4, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 co2_lolli <- co2_fert_resumen_pais %>%
   filter(!is.na(co2_kt_media),
          !is.na(tfr_media))
@@ -804,18 +796,26 @@ ggplot(
   theme_minimal() 
 
 ```
+**Resultados del Gráfico de Lollipop**
 
-**Gráfico animado CO₂–TFR por año (Gráfico 3.2)**  
+El análisis del ranking de CO₂ total frente a la TFR media **no respalda la hipótesis** de una relación negativa (más CO₂ significa menos fertilidad). El gráfico muestra que los **mayores emisores** (ej., Polonia) tienen niveles de TFR ($\approx 1.5$) que son similares a la media de la muestra, y los **menores emisores** (ej., Malta) pueden registrar las TFR más bajas, **rompiendo cualquier patrón sistemático**. Por lo tanto, el volumen total de emisiones de CO₂ de un país no es un factor que diferencie significativamente los patrones de natalidad en Europa.
 
-Cada fotograma muestra un diagrama de dispersión entre `co2_kt` y `tfr` para un año concreto.
 
-Se ajusta una recta de regresión lineal por año, con su banda de confianza.
+### Análisis Descriptivo II: Gráfico animado CO₂–TFR por año 
 
-En la esquina de la animación se añaden el número de países incluidos y los coeficientes estimados (pendiente y R²).
+Para un análisis más dinámico, se presenta la relación CO₂-Fertilidad en un diagrama de dispersión animado, donde cada fotograma representa un año concreto del periodo de estudio. 
 
-Esta animación permite ver si la relación CO₂–TFR cambia con el tiempo y si, en algún periodo concreto, aparece una tendencia clara (positiva o negativa).
+La animación permite:
 
-```{r grafico3.2, fig.width=8, fig.height=8, message = FALSE, warning = FALSE}
+1. **Observar la Tendencia Temporal:** Cada fotograma muestra el diagrama de dispersión entre las emisiones totales de CO₂ (`co2_kt`) y la TFR (`tfr`) para un año específico.
+
+2. **Evaluar la Fuerza Anual:** Se ajusta una recta de regresión lineal con su banda de confianza a los datos de cada año. La inspección visual de si la recta es plana o inclinada permite ver la tendencia dominante en ese momento.
+
+3. **Cuantificación Métrica:** En una esquina de la animación, se añaden los coeficientes estimados (la pendiente "Beta" y el $\text{R}^2$), junto con el número de países, permitiendo cuantificar la fuerza de la relación en ese año específico.
+
+De esta forma, la animación permite ver si la relación cambia con el tiempo y si, en algún periodo concreto, la hipótesis de una tendencia clara (positiva o negativa) llega a ser temporalmente significativa.
+
+```{r grafico5, fig.width=8, fig.height=8, message = FALSE, warning = FALSE}
 
 co2_fert_anim <- co2_fert_panel %>%
   filter(!is.na(co2_kt),
@@ -902,47 +902,92 @@ anim <- animate(
 
 anim
 ```
+**Resultados del gráfico animado**
 
-### Resultados
+El gráfico de dispersión, que compara las CO₂ medias frente a la TFR medias, demuestra que la **asociación es nula** y la hipótesis **se rechaza visualmente**.
+1. **Nula Tendencia:** La nube de puntos está extremadamente dispersa. La línea de regresión es casi plana (horizontal), lo que indica que el CO₂ no tiene capacidad para explicar la variación en la TFR.
+2. **Hipótesis Refutada:** La hipótesis de una relación negativa ("más CO₂ = menos TFR") queda descartada. Los países se distribuyen de forma aleatoria, confirmando que las variables socioeconómicas asociadas al desarrollo (que el CO₂ representa) no determinan la fertilidad de forma sistemática.
 
-#### Resultados del ranking de CO₂ (Gráfico 3.1)
+### Análisis Descriptivo III: Gráfico de Dispersión
 
-El gráfico de “lollipop” muestra que:
+Tras analizar el ranking y la evolución temporal, la siguiente estrategia visual es un **Gráfico de Dispersión Agregado**. 
 
-- Los países con mayores emisiones medias de CO₂ (por ejemplo, economías más grandes o con un mix energético intensivo en combustibles fósiles) **no presentan niveles de fertilidad claramente diferenciados** del resto.
+Este formato de visualización, que compara las CO₂ medias frente a la TFR medias, permite:
 
-- Entre los países de la parte alta del ranking observamos TFR medias en un rango relativamente estrecho (en torno a 1.3–1.7 hijos por mujer), similares a las del resto de Europa.
+1. **Visualizar la Nube de Puntos:** Muestra la distribución de todos los países en el plano CO₂-TFR, revelando de inmediato si la asociación es dispersa (débil) o concentrada (fuerte).
 
-- Algunos países con emisiones muy bajas (como Malta o Albania) tampoco destacan por una fertilidad especialmente alta; al contrario, se sitúan en la parte baja o media del rango de TFR.
+2. **Evaluar la Tendencia:** La recta de regresión ajustada y su banda de confianza indican la dirección (positiva o negativa) y la robustez de la tendencia lineal general.
 
-En conjunto, el ranking sugiere que **no existe un patrón monotónico evidente del tipo “a más CO₂, menos (o más) fertilidad”**. La posición en el ranking de emisiones parece estar explicada sobre todo por factores estructurales (tamaño económico, industria, energía), mientras que la fertilidad se mueve en un margen relativamente estrecho sin alinearse claramente con esas diferencias.
+3. **Contrastar la Hipótesis:** La hipótesis de una relación negativa requiere que la recta de regresión tenga una pendiente descendente. Si la recta es plana, la hipótesis no se verifica.
 
-#### Resultados del gráfico animado CO₂–TFR (Gráfico 3.2)
+Al inspeccionar la pendiente de la recta y la dispersión de los puntos, se obtiene la última confirmación visual antes de pasar a cuantificar la asociación con el Valor P.
 
-La animación año a año refuerza esta impresión:
+```{r grafico6, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+# Calculamos la correlación agregada para mostrarla en el gráfico
+co2_correlacion_agregada <- co2_fert_resumen_pais %>%
+  filter(!is.na(co2_kt_media), !is.na(tfr_media)) %>%
+  summarise(
+    cor_pearson = cor(co2_kt_media, tfr_media, use = "complete.obs")
+  )
 
-- En cada fotograma, los puntos (países) se distribuyen de forma bastante difusa sobre el plano CO₂–TFR, sin que se forme una nube claramente ascendente o descendente.
+# Creamos el gráfico de dispersión estático
+ggplot(
+  co2_fert_resumen_pais %>% filter(!is.na(co2_kt_media), !is.na(tfr_media)),
+  aes(
+    x = co2_kt_media,
+    y = tfr_media,
+    label = pais # Se añaden etiquetas de país para identificar outliers
+  )
+) +
+  geom_point(alpha = 0.7, color = "#9B59B6", size = 2) + # Puntos de datos
+  geom_smooth(method = "lm", se = TRUE, linetype = "dashed", color = "#3498DB") + # Línea de regresión
+  ggrepel::geom_text_repel(
+    size = 3,
+    max.overlaps = 30
+  ) +
+  labs(
+    title = "CO"[2]~" medio total vs. Fertilidad media en Europa (Análisis Agregado)",
+    subtitle = paste0("Correlación de Pearson (ρ): ", round(co2_correlacion_agregada$cor_pearson, 3)),
+    x = "CO"[2]~"  medio por país (Kilotoneladas, kt)",
+    y = "TFR media (Eurostat)"
+  ) +
+  theme_minimal()
+```
+**Resultados del gráfico animado**
 
-- Las rectas de regresión que se ajustan por año suelen tener pendientes pequeñas y, visualmente, la banda de confianza es amplia y abarca valores cercanos a una pendiente nula.
+El gráfico de dispersión  confirma que la relación CO₂-Fertilidad es **prácticamente nula**:
 
-- Los coeficientes de determinación (R²) que se muestran en la animación son bajos en la mayoría de años, lo que indica que las emisiones de CO₂ explican sólo una fracción muy limitada de la variación en fertilidad entre países.
+1. **Correlación ($\rho$) Nula:** El coeficiente de correlación de $\mathbf{-0.043}$ está pegado a cero, lo que significa que el CO₂ no tiene poder de explicación.
 
-Tampoco se aprecia un cambio cualitativo de la relación a lo largo del tiempo: no hay un periodo donde la asociación se vuelva claramente más fuerte o cambie de signo de forma clara.
+2. **Línea Plana:** La línea de tendencia es casi perfectamente horizontal, indicando que la TFR no cambia sistemáticamente, sin importar si el país tiene mucho o poco CO₂.
 
-En términos prácticos, la lectura estadística es que, en los datos agregados país–año, las emisiones totales de CO₂ no guardan una relación robusta con la TFR:
+ La **hipótesis** inicial de una relación negativa (a más CO₂, menos fertilidad), por lo que **se rechaza** visualmente.
 
-- **Países muy emisores pueden tener fertilidad baja, media o relativamente alta.**
-- **Países con bajas emisiones pueden situarse también en cualquier punto dentro del rango de TFR observado.**
+### Prueba de significancia
+El paso final es aplicar la Prueba de Correlación de Pearson (cor.test) para determinar:
 
-#### Interpretación
+1. **Cuantificación Final:** El valor exacto del coeficiente de correlación ($\rho$) para todo el periodo.
 
-Estos resultados son coherentes con la naturaleza del indicador:
+2. **Significancia Estadística:** El Valor P. Si este valor es superior a $0.05$, se concluye que la correlación observada es un producto del azar y no es válida para la población.
 
-- El CO₂ es un contaminante global, cuyo volumen anual refleja principalmente tamaño económico, estructura productiva e intensidad energética, más que la exposición individual de la población a contaminantes locales.
+Este análisis proporcionará el veredicto estadístico final sobre la hipótesis del Objetivo 3.
 
-- Los mecanismos biológicos que podrían afectar a la fertilidad suelen estar más vinculados a exposiciones locales (NO₂, PM₂.₅, ozono, etc.) que a las emisiones totales de CO₂ a escala nacional.
+```{r objetivo3_correlacion_formal, message = FALSE, warning = FALSE}
+# Aseguramos que solo incluimos países con ambos datos (CO2 medio y TFR media)
+datos_cor_co2 <- co2_fert_resumen_pais %>%
+  filter(!is.na(co2_kt_media), !is.na(tfr_media))
 
-- Además, la fertilidad está fuertemente condicionada por factores demográficos y socioeconómicos (edad a la maternidad, mercado laboral, políticas de conciliación, normas culturales), que pueden enmascarar cualquier efecto asociado a un indicador tan agregado como las emisiones de CO₂.
+# Realizar la prueba de significancia de la correlación de Pearson
+prueba_cor_co2 <- cor.test(datos_cor_co2$co2_kt_media, datos_cor_co2$tfr_media, method = "pearson")
+
+print(prueba_cor_co2)
+```
+
+#### Conclusión del Objetivo 3: CO₂ vs fertilidad
+El análisis formal de la asociación entre las **Emisiones medias de CO**₂ y la Tasa de **Fecundidad Total (TFR)** en los países europeos confirma las impresiones visuales obtenidas en los gráficos. El coeficiente de Pearson ($\rho$) es de **$\mathbf{-0.043}$**, un valor prácticamente nulo que indica que las emisiones de CO₂ no tienen una relación lineal con la TFR. Este resultado contradice la hipótesis de una relación negativa fuerte.
+La falta de relación se confirma mediante la prueba de significancia: el **Valor P es de $\mathbf{0.8839}$**, siendo superior al umbral de $\mathbf{0.05}$. Por lo tanto, se concluye formalmente que no existe una asociación estadísticamente significativa entre el CO₂ total y la TFR media en Europa. 
+
+La **hipótesis** de una relación entre el desarrollo industrial y la baja natalidad, medida a través de las emisiones de CO₂, **se rechaza**. Las variaciones en la TFR están impulsadas por otros factores socioeconómicos y culturales que el CO₂ no logra capturar de manera sistemática.
 
 Por tanto, el tercer objetivo **confirma la idea general de los anteriores**:  
 cuando miramos a nivel país, con indicadores agregados, la relación entre contaminación (o emisiones) y fertilidad en Europa parece ser, como mínimo, muy débil y fuertemente confundida por otras dimensiones estructurales.
@@ -1037,7 +1082,7 @@ Para examinar de manera descriptiva la posible asociación entre la prioridad t�
 
 Al ordenar la variable independiente ($\text{Prop}_{\text{PM}_{2.5}}$) en el eje, el gráfico permite identificar si existe un **patrón visual** donde el color se intensifica (o se aclara) a medida que las barras se hacen más altas. Si la hipótesis fuera correcta, observaríamos un claro gradiente de color que va de claro a oscuro (mayor TFR) a lo largo del eje X. Este análisis descriptivo sirve como paso previo indispensable antes de confirmar la relación mediante la regresión robusta.
 
-```{r grafico4, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
+```{r grafico7, fig.width=10, fig.height=10, message = FALSE, warning = FALSE}
 
 # Ordenamos países por prop_pm25 y preparamos factor
 pm25_circ <- pm25_share_tfr %>%
@@ -1104,7 +1149,7 @@ El gráfico de dispersión permite evaluar si existe algún patrón funcional en
 
 **Variable Dependiente ($Y$):** Tasa de Fecundidad Total Media (`tfr_media`).
 
-```{r grafico5, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+```{r grafico8, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 ggplot(pm25_share_tfr, aes(x = prop_pm25, y = tfr_media)) +
 
   geom_point(aes(color = tfr_media), size = 3) +
@@ -1155,7 +1200,7 @@ Para ello, utilizamos el modelo de **Regresión Lineal Robusta (OLS con Errores 
 
 El modelo nos permitirá determinar si el impacto de la $\text{Prop}_{\text{PM}_{2.5}}$ sobre la TFR es estadísticamente diferente de cero. Si el $p$-valor es alto ($p > 0.05$), concluiremos que la asociación es tan débil que no es fiable.
 
-```{r grafico6, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+```{r grafico9, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
 
 # Filtro final del dataframe
 datos_regresion_pm25 <- pm25_share_tfr %>%
