@@ -532,7 +532,7 @@ En esta segunda parte ampliamos el análisis pasando de la “vigilancia del air
 ¿Existe una relación entre los niveles medios de NO₂ en cada país europeo y su fertilidad media? ¿De dónde proviene dicho NO₂?
 
 **Hipótesis:**
-Esperamos observar una relación **negativa**, es decir, que países con mayor NO₂ medio deberían presentar, en promedio, niveles más bajos de fertilidad. Además, suponemos que la mayor parte del gas procederá de las estaciones de vigilancia de la calidad del aire de tráfico.
+Esperamos observar una relación **negativa**, es decir, que países con mayor NO₂ medio deberían presentar, en promedio, niveles más bajos de fertilidad.
 
 Como en el caso anterior, esta hipótesis es descriptiva, no causal; buscamos el signo de la asociación en los datos agregados.
 
@@ -641,70 +641,6 @@ ggplot(
     y        = "TFR media (Eurostat)"
   ) +
   theme_minimal()
-```
-
-A continuación, se proporciona una tabla resumen con la procedencia de las variables de NO₂.
-
-```{r pregunta2_eeaaq, message = FALSE, warning = FALSE}
-
-# Armonizar los nombres para 'pais' y 'anio'
-aire_no2_meta <- aire %>%
-  clean_names() %>%
-  mutate(
-    pais = recode_pais(country),
-    anio = as.integer(year)
-  ) %>%
-  filter(!is.na(air_quality_station_eo_i_code)) %>%
-  
-  # Unir con los metadatos de las estaciones con el dataframe 'aire'
-  left_join(
-    stations_meta, 
-    by = c("air_quality_station_eo_i_code" = "air_quality_station_eoi_code")
-  ) %>%
-  
-  # Filtrar solo las observaciones de NO2
-  filter(air_pollutant == "NO2") %>%
-  
-  # Asegurar que el valor de la medición sea numérico
-  mutate(
-    valor_no2 = as.numeric(air_pollutant)
-  ) %>%
-  filter(!is.na(valor_no2))
-
-# Calcular la media de NO2 por país, así como por tipo de estación
-no2_por_tipo_estacion <- aire_no2_meta %>%
-  group_by(country, air_quality_station_type.y) %>%
-  summarise(
-    no2_media = mean(valor_no2, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  filter(!is.na(air_quality_station_type.y))
-
-# Transformar la tabla (pivot_wider) para obtener las variables finales por país
-no2_clasificado_pais <- no2_por_tipo_estacion %>%
-  pivot_wider(
-    names_from = air_quality_station_type.y,
-    values_from = no2_media,
-    names_prefix = "NO2_"
-  ) %>%
-  
-  # Limpiar y renombrar para facilitar su uso
-  rename_with(
-    ~ case_when(
-      .x == "NO2_Traffic" ~ "NO2_Trafico",
-      .x == "NO2_Background" ~ "NO2_Fondo",
-      .x == "NO2_Industrial" ~ "NO2_Industrial",
-      TRUE ~ .x
-    ),
-    .cols = starts_with("NO2_")
-  )
-
-# El dataframe 'no2_clasificado_pais' ya contiene las nuevas variables
-fert_resumen_nombres_renombrado <- fert_resumen_nombres %>%
-  rename(country = pais)
-resumen_no2_fertilidad <- no2_clasificado_pais %>%
-  left_join(fert_resumen_nombres_renombrado, by = "country")
-
 ```
 
 
