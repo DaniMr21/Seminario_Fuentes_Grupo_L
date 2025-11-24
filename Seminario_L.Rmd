@@ -332,26 +332,6 @@ df_vigilancia_tfr <- resumen_aire_fert_pais %>%
 
 ```
 
-```{r metadatos_eeaaq, message = FALSE, warning = FALSE}
-# Creación del objeto stations_meta (metadatos de EEAaq)
-
-stations_eea <- EEAaq_get_dataframe("stations") %>%
-  clean_names() %>%
-  mutate(
-    pais_raw = str_trim(country),
-    pais = recode_pais(country)
-  )
-
-stations_meta <- stations_eea %>%
-  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
-  select(
-    air_quality_station_eoi_code,
-    pais,
-    air_quality_station_area,
-    air_quality_station_type
-  )
-```
-
 ### Análisis Descriptivo I (Gráfico de barras)
 
 Se genera un gráfico de barras que visualiza la métrica de **Infraestructura de Vigilancia normalizada** (`estaciones_por_millon`). Para facilitar la visualización de la hipótesis, los países se ordenan por su **TFR media**, y el color de las barras se mapea a la TFR. Esto permite evaluar si una mayor TFR se asocia con una mayor altura de barra. 
@@ -650,117 +630,56 @@ Se esperaba una **relación negativa;** es decir, que los países con mayores ni
 
 El nivel medio de contaminación urbana por $\text{NO}_2$ en un país **no tiene una asociación observable o significativa** con su TFR media.
 
+### Análisis Descriptivo y Prueba Formal de la Asociación $\text{NO}_2$
 
+Para cerrar la sección de $\text{NO}_2$ y dar una respuesta concluyente a la pregunta de investigación, se complementa el análisis visual con estadísticas descriptivas y una prueba de significancia de la correlación de Pearson.
 
-```{r pregunta2_e, message = FALSE, warning = FALSE}
+Se presentan las estadísticas básicas de las variables clave del análisis (la concentración media de $\text{NO}_2$ por país y la TFR media) para entender su distribución y rango.
 
-# Metadatos de estaciones EEA (dataframe interno)
-
-stations_eea <- EEAaq_get_dataframe("stations") %>%
-  clean_names() %>%
-  mutate(
-    pais_raw = str_trim(country),
-    pais = recode_pais(country)
-  )
-
-# Renombramos columna problemática
-stations_meta <- stations_eea %>%
-  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
-  select(
-    air_quality_station_eoi_code,
-    pais,
-    air_quality_station_area,
-    air_quality_station_type
-  )
-```
-
-```{r pregunta2_eeaaq, message = FALSE, warning = FALSE}
-
-# Armonizar los nombres para 'pais' y 'anio'
-aire_no2_meta <- aire %>%
-  clean_names() %>%
-  mutate(
-    pais = recode_pais(country),
-    anio = as.integer(year)
-  ) %>%
-<<<<<<< HEAD
-  # Se renombra para que coincida con el nombre de columna en stations_meta.
-  rename(air_quality_station_eoi_code = air_quality_station_eo_i_code) %>%
-=======
-  filter(!is.na(air_quality_station_eo_i_code)) %>%
->>>>>>> cc1c1ce692d3c01facc2e118e3ebb3d6e528e9d5
-  
-  # Unir con los metadatos de las estaciones con el dataframe 'aire'
-  left_join(
-    stations_meta, 
-    by = c("air_quality_station_eo_i_code" = "air_quality_station_eoi_code")
-  ) %>%
-  
-  # Filtrar solo las observaciones de NO2
-  filter(air_pollutant == "NO2") %>%
-  
-  # Asegurar que el valor de la medición sea numérico
-  mutate(
-<<<<<<< HEAD
-    valor_no2 = as.numeric(value)
-=======
-    valor_no2 = as.numeric(air_pollutant)
->>>>>>> cc1c1ce692d3c01facc2e118e3ebb3d6e528e9d5
-  ) %>%
-  filter(!is.na(valor_no2))
-
-# Calcular la media de NO2 por país, así como por tipo de estación
-no2_por_tipo_estacion <- aire_no2_meta %>%
-<<<<<<< HEAD
-  group_by(pais, air_quality_station_type) %>%
-=======
-  group_by(country, air_quality_station_type.y) %>%
->>>>>>> cc1c1ce692d3c01facc2e118e3ebb3d6e528e9d5
+```{r no2_descriptivas, message = FALSE, warning = FALSE}
+# Calcular estadísticas descriptivas para NO2 y TFR (usando los datos de la OMS)
+no2_descriptivas <- pais_no2_fert %>%
   summarise(
-    no2_media = mean(valor_no2, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  filter(!is.na(air_quality_station_type.y))
-
-# Transformar la tabla (pivot_wider) para obtener las variables finales por país
-no2_clasificado_pais <- no2_por_tipo_estacion %>%
-  pivot_wider(
-    names_from = air_quality_station_type.y,
-    values_from = no2_media,
-    names_prefix = "NO2_"
-  ) %>%
-  
-  # Limpiar y renombrar para facilitar su uso
-  rename_with(
-    ~ case_when(
-      .x == "NO2_Traffic" ~ "NO2_Trafico",
-      .x == "NO2_Background" ~ "NO2_Fondo",
-      .x == "NO2_Industrial" ~ "NO2_Industrial",
-      TRUE ~ .x
-    ),
-    .cols = starts_with("NO2_")
+    n_paises = n(),
+    
+    # Estadísticas de NO2 (Contaminación)
+    no2_media_total = mean(no2_media, na.rm = TRUE),
+    no2_sd = sd(no2_media, na.rm = TRUE),
+    no2_min = min(no2_media, na.rm = TRUE),
+    no2_max = max(no2_media, na.rm = TRUE),
+    
+    # Estadísticas de TFR (Fertilidad)
+    tfr_media_total = mean(tfr_media, na.rm = TRUE),
+    tfr_sd = sd(tfr_media, na.rm = TRUE),
+    tfr_min = min(tfr_media, na.rm = TRUE),
+    tfr_max = max(tfr_media, na.rm = TRUE)
   )
 
-# El dataframe 'no2_clasificado_pais' ya contiene las nuevas variables
-fert_resumen_nombres_renombrado <- fert_resumen_nombres %>%
-  rename(country = pais)
-resumen_no2_fertilidad <- no2_clasificado_pais %>%
-  left_join(fert_resumen_nombres_renombrado, by = "country")
-
+print(no2_descriptivas)
 ```
+**Resultados de la Prueba de Asociación**
 
+El análisis descriptivo de las variables en los 36 países  revela grandes diferencias en la variación:
 
-### Resultados
+- **$\text{NO}_2$ Media (Contaminación):** La media es de $18.73\ \mu \text{g}/\text{m}^3$. Existe una amplia variación en los niveles de contaminación (rango de $6.77$ a $29.98\ \mu \text{g}/\text{m}^3$), lo que significa que los países de la muestra tienen niveles de $\text{NO}_2$ muy distintos.
 
-El gráfico revela una estructura altamente dispersa:
+- **TFR Media (Fertilidad):** La media es de $1.55$ nacimientos por mujer. La variación es mucho más baja (rango de $1.24$ a $1.96$), confirmando que los patrones de baja natalidad son la norma homogénea en Europa.
 
-- Los países con NO₂ alto no se concentran especialmente en la parte baja del eje de fertilidad.  
-- Varios países muy contaminados (*Turquía* o *Italia*) exhiben fertilidades relativamente bajas, pero otros no.  
-- La recta de regresión muestra una pendiente casi plana, con una banda de confianza amplia que incluye valores cercanos a cero en la mayor parte del rango.
+**En resumen:** La contaminación por $\text{NO}_2$ varía mucho más que la TFR. El análisis de correlación determinará si esta gran variación en $\text{NO}_2$ tiene algún poder para explicar la pequeña variación en la fertilidad.
 
-En otras palabras, no se aprecia evidencia de que mayores niveles medios de NO₂ estén sistemáticamente asociados con menores niveles de fertilidad en Europa.
+###Prueba de Significancia de la Correlación
+Para determinar si la correlación débil ($\rho \approx 0.045$) observada en el gráfico es estadísticamente significativa o simplemente un producto del azar en esta muestra, se utiliza una prueba de significancia de la correlación de Pearson (`cor.test`).
 
-Esto es coherente con la lectura de la Parte 1, pues el vínculo entre contaminación atmosférica y natalidad, de existir, parece ser débil a nivel agregado y, probablemente, mediado por múltiples factores (urbanización, edad materna, políticas familiares, estructura económica, densidad poblacional, etc.).
+```{r no2_prueba_cor, message = FALSE, warning = FALSE}
+# Realizar la prueba de significancia de la correlación de Pearson
+prueba_correlacion <- cor.test(pais_no2_fert$no2_media, pais_no2_fert$tfr_media, method = "pearson")
+
+print(prueba_correlacion)
+```
+### Conclusión del Objetico 2: $\text{NO}_2$ vs Fertilidad
+El análisis de correlación formal entre los niveles de $\text{NO}_2$ medio y la Tasa de Fecundidad Total (TFR) en 36 países europeos revela una **ausencia de asociación**. El coeficiente de Pearson ($\rho$) de $0.0724$ indica una relación lineal prácticamente nula, que es contraria a la hipótesis inicial de una relación negativa. Además, esta correlación resulta ser **estadísticamente no significativa**, con un Valor P de $0.675$ (muy superior al umbral de $0.05$).
+
+En consecuencia, **se rechaza la hipótesis** de que la contaminación atmosférica urbana (medida por el $\text{NO}_2$) es un factor determinante de la fertilidad a nivel agregado. El $\text{NO}_2$ no actúa como un predictor sistemático de la TFR; en su lugar, las variaciones en la natalidad están impulsadas por factores macroeconómicos, culturales y de políticas públicas que no están correlacionados con los niveles medios de este contaminante.
 
 
 ## Descubrir si la relación entre el dióxido de carbono y la fertilidad es directamente proporcional
