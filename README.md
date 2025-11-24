@@ -5,95 +5,195 @@
 **Autores:** Daniel Marina de la Cal, Nerea Yi Estepar Calvo y Patricia
 Ibarrondo Revilla
 
-# Impacto de la vigilancia del aire sobre la fertilidad en la población europea
+<center>
+<img src="INPUT/IMAGES/portada.png" alt="Gráfico de portada" width="70%">
+</center>
 
-En este seminario analizamos si existe alguna relación entre la  
-**vigilancia y la calidad del aire** y la **fertilidad media (TFR)** en
-los países europeos, combinando distintas bases de datos de calidad del
-aire (EEA, OMS, emisiones de CO₂) con estadísticas de fertilidad de
-Eurostat.
+# Impacto de la vigilancia del aire sobre la fertilidad en la población europea  
+**Autores:** Daniel Marina de la Cal, Nerea Yi Estepar Calvo y Patricia Ibarrondo Revilla  
+**Fecha:** 2025-11-24  
 
-El enfoque es **ecológico y descriptivo**, con la unidad de análisis en
-el nivel **país**.
+---
 
-## Objetivos
+## Introducción
 
-Explorar hasta qué punto la vigilancia y la contaminación atmosférica
-pueden estar asociadas con los niveles medios de fertilidad, a través de:
+La fertilidad humana es sensible a condiciones ambientales que afectan tanto a la salud reproductiva como a las decisiones familiares. Entre estos factores, la **calidad del aire** puede influir mediante:
 
-- Analizar la intensidad de la **vigilancia de la calidad del aire**
-  (número de observaciones reportadas y densidad de estaciones) por país.
-- Estudiar la relación entre la **vigilancia del aire** y la
-  **fertilidad media (TFR)**.
-- Analizar si los niveles medios de **NO₂** por país se asocian con la
-  TFR.
-- Evaluar si las **emisiones de CO₂** se relacionan con la fertilidad.
-- Analizar el peso relativo del **PM₂.₅** dentro de la vigilancia del
-  aire y su relación con la fertilidad.
+- Alteraciones hormonales  
+- Inflamación sistémica  
+- Estrés oxidativo  
+- Percepción del riesgo ambiental  
 
-## Resultados
+Además, la **vigilancia de la calidad del aire** (densidad de estaciones, frecuencia de reporte, cobertura territorial) actúa como un indicador de capacidad institucional y políticas ambientales.
 
-### Relación entre la vigilancia del aire y la fertilidad
+Este estudio examina la **relación entre vigilancia/contaminación atmosférica y fertilidad** a nivel de país en Europa, desde un enfoque **ecológico y descriptivo**.
 
-Los análisis descriptivos y los modelos de regresión lineal (con errores
-estándar robustos) muestran que **no existe una asociación clara ni
-estadísticamente significativa** entre el volumen total de observaciones
-de calidad del aire —normalizado por población— y la fertilidad media
-por país. Los países que vigilan más no presentan, de forma sistemática,
-una TFR más alta ni más baja que los que vigilan menos.
 
-### Relación entre NO₂ y fertilidad
+## Objetivo general
 
-El gráfico que relaciona el **NO₂ medio** con la TFR muestra una nube de
-puntos muy dispersa y una recta de regresión con pendiente prácticamente
-nula. El coeficiente de correlación de Pearson es cercano a cero y no
-significativo. En consecuencia, **no se observa un patrón sistemático**
-que indique que los países más contaminados por NO₂ tengan menor (o
-mayor) fertilidad.
+Evaluar si la vigilancia de la calidad del aire y ciertos contaminantes atmosféricos se relacionan con la **Tasa Global de Fecundidad (TFR)** en países europeos.
 
-### Relación entre CO₂ y fertilidad
 
-El ranking de **emisiones medias de CO₂** y los diagramas de dispersión,
-tanto agregados como por año, indican que los grandes emisores no se
-diferencian claramente del resto en términos de TFR. Las pendientes de
-las rectas de regresión son muy pequeñas y los valores de R² bajos, de
-modo que **las emisiones de CO₂ explican una fracción mínima de la
-variación en fertilidad** entre países europeos. La correlación de
-Pearson entre CO₂ medio y TFR es cercana a cero y no significativa.
+## Objetivos específicos
 
-### Relación entre el peso del PM₂.₅ y la fertilidad
+1. **Vigilancia vs fertilidad**  
+   ¿Existe asociación entre la intensidad de vigilancia del aire y la TFR?
 
-El análisis del **peso relativo del PM₂.₅** en la vigilancia (proporción
-de observaciones dedicadas a este contaminante) muestra valores
-generalmente bajos y heterogéneos entre países. Aunque algunos países
-asignan una mayor proporción de su vigilancia al PM₂.₅, **no presentan
-niveles de fertilidad claramente diferenciados** de los que lo
-monitorizan menos.  
+2. **NO₂ vs fertilidad**  
+   ¿Los niveles medios de NO₂ están relacionados con la TFR?
 
-La regresión lineal robusta sugiere una pendiente ligeramente positiva,
-pero el efecto es **estadísticamente no significativo**, por lo que no
-puede descartarse que la asociación observada se deba al azar.
+3. **CO₂ vs fertilidad**  
+   ¿Existe relación (posible relación negativa) entre emisiones per cápita de CO₂ y la fertilidad?
 
-## Conclusiones
+4. **PM₂.₅ vs fertilidad**  
+   ¿La proporción de observaciones dedicadas al PM₂.₅ se asocia con la TFR?
 
-Los resultados apuntan a una **gran variabilidad y ausencia de patrones
-simples** en la relación entre vigilancia del aire, contaminación
-atmosférica (NO₂, CO₂, PM₂.₅) y fertilidad a nivel país. En este marco
-ecológico, estos factores ambientales se comportan como **posibles
-riesgos indirectos** insertos en un entramado mucho más amplio de
-determinantes demográficos, socioeconómicos e institucionales, pero **no
-aparecen como causas directas ni únicas** de las diferencias de
-fertilidad entre países europeos.
 
-Dado que se trata de un estudio **ecológico y descriptivo**, basado en
-indicadores agregados y sin control detallado por otros factores de
-confusión (renta, estructura por edades, urbanización, políticas
-familiares, mercado laboral, etc.), las conclusiones deben
-interpretarse con cautela.  
+## Metodología
 
-El trabajo funciona como un **punto de partida exploratorio** que señala
-la necesidad de estudios con **mayor resolución espacial, datos
-individuales y diseños longitudinales o cuasi experimentales**, que
-permitan evaluar con más precisión cómo la calidad del aire puede
-influir en la salud reproductiva y, en última instancia, en los niveles
-de fertilidad observados.
+- Datos de **Eurostat**: TFR y población.
+- Datos de **EEA (AQ e-Reporting)**: observaciones de vigilancia, estaciones, contaminantes.
+- Datos de **OMS AAP 2022**: niveles urbanos de NO₂.
+- Datos de **UNESCO/OWID**: emisiones de CO₂.
+- Limpieza y homogeneización de nombres de países.
+- Normalización por población (obs por millón; estaciones por millón).
+- Modelos OLS con **errores estándar robustos (HC1)**.
+- Gráficos: dispersión, barras, burbujas y animaciones.
+
+
+# Resultados
+
+## Vigilancia del aire vs fertilidad
+
+Se esperaba una relación positiva: *más vigilancia → entornos más saludables → mayor TFR*.  
+
+### Qué se encontró:
+- No existen patrones visuales claros en los gráficos.
+- La regresión lineal robusta muestra:
+  - Coeficiente ≈ 0  
+  - Valor p = 0.749 → **no significativo**  
+
+### Conclusión:
+**No existe asociación entre la intensidad de vigilancia y la fertilidad.**  
+Hipótesis rechazada.
+
+
+## NO₂ medio vs fertilidad
+
+Se esperaba una relación negativa: *más NO₂ → menor TFR*.
+
+### Qué se encontró:
+- Gráficos extremadamente dispersos.
+- Línea de regresión horizontal.
+- Pearson ρ = 0.0724  
+- Valor p = 0.675 → **no significativo**  
+
+### Conclusión:
+**NO₂ no predice la fertilidad media en países europeos.**  
+Hipótesis rechazada.
+
+
+## Emisiones de CO₂ vs fertilidad
+
+Se esperaba que *más CO₂ (más industrialización) → menor fertilidad*.
+
+### Qué se encontró:
+- Los países de alta emisión no muestran TFR particularmente bajas.
+- Animación año a año → tendencias planas.
+- Pearson ρ = −0.043  
+- Valor p = 0.8839 → **no significativo**  
+
+### Conclusión:
+**Las emisiones de CO₂ no explican la fertilidad europea.**  
+Hipótesis rechazada.
+
+## Importancia del PM₂.₅ en la vigilancia vs fertilidad
+
+Se analiza la proporción de observaciones que cada país dedica al PM₂.₅.
+
+```{r grafico8, fig.width=8, fig.height=6, message = FALSE, warning = FALSE}
+ggplot(pm25_share_tfr, aes(x = prop_pm25, y = tfr_media)) +
+
+  geom_point(aes(color = tfr_media), size = 3) +
+
+  # Añadimos una línea de tendencia (regresión lineal) para guiar la vista
+
+  geom_smooth(method = "lm", se = FALSE, color = "darkgrey", linetype = "dashed") +
+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+
+  labs(
+
+    title = "Relación entre la Proporción de Vigilancia PM"[2.5]~" y la Fertilidad Media",
+
+    subtitle = "Cada punto es un país, la línea discontinua es la tendencia media (OLS)",
+
+    x = "Proporción de Observaciones dedicadas a PM"[2.5]~" (Prop_PM"[2.5]~")",
+
+    y = "Tasa de Fecundidad Total Media (TFR)",
+
+    color = "TFR media"
+
+  ) +
+
+  theme_minimal() +
+
+  theme(plot.title = element_text(face = "bold", hjust = 0.5))
+
+```
+
+### Qué se encontró:
+- La prioridad del PM₂.₅ varía entre países, pero:
+  - No existe un gradiente de TFR al aumentar la proporción de PM₂.₅.
+  - Gráfico de dispersión → nube desordenada.
+- Regresión robusta:
+  - Pendiente positiva pero **no significativa** (p = 0.0983)
+
+### Inclusión:
+**La prioridad al PM₂.₅ no está relacionada con la fertilidad.**  
+Hipótesis rechazada.
+
+
+# Conclusiones finales
+
+Tras analizar múltiples dimensiones de la calidad del aire:
+
+- **Vigilancia total**
+- **NO₂**
+- **CO₂**
+- **PM₂.₅**
+
+Ninguna mostró **asociaciones estadísticamente significativas** con la TFR media a nivel país en Europa.
+
+### Razón principal:
+La **TFR europea es extremadamente homogénea** (≈ 1.55 en casi todos los países), mientras que la contaminación varía enormemente. Esta baja variación demográfica impide detectar asociaciones con indicadores ambientales agregados.
+
+### Limitaciones:
+- Estudio **ecológico** (no causal).
+- Unidad de análisis = país → pierde resolución.
+- No se controlan factores económicos/estructurales:
+  - Políticas familiares
+  - Urbanización
+  - Mercado laboral
+  - Edad media materna
+  - Migración
+  - Acceso a vivienda
+
+
+
+# Referencias
+
+Eurostat. (s. f.). Fertility statistics (TFR by country and year). Oficina de Estadística de la Unión Europea.
+
+Air Quality e-Reporting (AQ e-Reporting). (2022, August 5). https://www.eea.europa.eu/en/datahub/datahubitem-view/3b390c9c-f321-490a-b25a-ae93b2ed80c1
+
+Emisiones globales de CO2. (2025, August 18). https://data.unesco.org/explore/dataset/co2001/information/?flg=es-es
+
+World Health Organization. (2022). Ambient Air Pollution Database (AAP 2022). WHO, Department of Environment, Climate Change and Health.
+
+Carré, J., Gatimel, N., Moreau, J., Parinaud, J., & Léandri, R. (2017). Does air pollution play a role in infertility? A systematic review. Environmental Health, 16(1), 82.
+
+Landrigan, P. J., Fuller, R., Acosta, N. J. R., et al. (2018). The Lancet Commission on pollution and health. The Lancet, 391(10119), 462–512.
+
+WHO. (2021). WHO global air quality guidelines: Particulate matter (PM₂.₅ and PM₁₀), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide. World Health Organization.
+
