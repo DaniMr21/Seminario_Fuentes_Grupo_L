@@ -1254,16 +1254,23 @@ En términos sencillos, el resultado nos indica que, aunque la relación que med
 
 
 # Conclusiones
+El objetivo principal de este proyecto era ver si la contaminación ambiental (NO₂ y PM₂.₅) y las emisiones económicas (CO₂) tienen alguna relación con cuántos hijos nacen en Europa (la Tasa de Fecundidad Total o TFR). Los resultados, después de analizar los tres indicadores, son contundentes: **no encontramos ninguna relación lineal estadísticamente significativa** entre estas variables a nivel de país.
 
-Los análisis realizados indican que, a escala de país, la relación entre vigilancia de la calidad del aire, niveles de contaminación y fertilidad (TFR) en Europa es, en el mejor de los casos, **débil y poco sistemática**. El volumen total de observaciones de calidad del aire no muestra una asociación clara con la TFR media: los países que vigilan más no presentan, en promedio, una fertilidad ni claramente más alta ni más baja que los que vigilan menos. Los tests de correlación refuerzan esta idea, con coeficientes muy pequeños y no significativos.
+- Para el contaminante urbano NO₂, la correlación ($\rho$) fue casi cero ($\approx 0.07$) y, lo más importante, el Valor P de $\mathbf{0.675}$ nos dice que esta pequeña tendencia es fruto del azar.
 
-Algo similar ocurre cuando se pasa de la vigilancia a la contaminación efectiva. Ni los niveles medios de NO₂ ni las emisiones de CO₂ —interpretadas como un indicador agregado de tamaño económico e intensidad energética— permiten ordenar a los países europeos según su nivel de fertilidad. Los diagramas de dispersión y las rectas de regresión muestran nubes muy dispersas, pendientes próximas a cero y R² bajos, lo que indica que estas variables ambientales explican solo una fracción mínima de la variación en TFR entre países.
+- Para las emisiones de CO₂ (que representan el desarrollo industrial de cada país), la correlación fue igualmente nula ($\rho \approx -0.043$) y el Valor P de $\mathbf{0.8839}$ confirma que no hay conexión real.
 
-El análisis del peso relativo del PM₂.₅ en la vigilancia tampoco revela patrones robustos: algunos países otorgan a este contaminante una proporción relativamente alta de sus observaciones, mientras que otros apenas lo monitorizan, pero en ambos grupos aparecen TFR bajas, medias y algo más altas. En definitiva, dedicar una mayor parte del esfuerzo de vigilancia al PM₂.₅ no se traduce en niveles de fertilidad claramente diferenciados.
+En resumen, la hipótesis de que un país más contaminado o más industrializado automáticamente tiene menos bebés se rechaza en este estudio.
 
-En conjunto, los resultados apuntan a que la variación en la fertilidad europea está dominada por factores demográficos, socioeconómicos e institucionales (estructura de edades, mercado laboral, políticas de conciliación, normas culturales, gasto social, etc.) que este marco descriptivo no modeliza de forma directa. Las variables ambientales consideradas —vigilancia, NO₂, CO₂, peso del PM₂.₅— parecen jugar, a este nivel de agregación, un papel secundario frente a esos determinantes estructurales.
 
-Estas conclusiones deben interpretarse con cautela: se trata de un estudio ecológico y descriptivo, basado en datos agregados por país, sin control exhaustivo por posibles factores de confusión y con indicadores ambientales relativamente gruesos (medias nacionales, totales anuales). La evidencia disponible no niega que la calidad del aire afecte a la salud reproductiva, pero sí sugiere que sus efectos sobre la fecundidad observada a nivel de país son difíciles de detectar con este tipo de datos. En este sentido, el trabajo funciona como un **punto de partida exploratorio** que señala la necesidad de estudios con mayor resolución espacial, datos individuales y diseños longitudinales o cuasi experimentales para comprender con más precisión los vínculos entre contaminación atmosférica y fertilidad.
+La clave de este resultado radica en la naturaleza de la TFR. El estudio demostró que la **TFR media es muy estable** y se mueve en un rango muy estrecho (alrededor de $1.55$ nacimientos por mujer) en casi toda Europa. Esta estabilidad contrasta enormemente con la gran diferencia que existe en los niveles de NO₂ y CO₂ entre un país y otro. Si la TFR variase mucho, quizás el CO₂ o el NO₂ podrían influir, pero como casi todos los países están en la misma situación demográfica, la contaminación no tiene espacio para ser un factor diferenciador. Esto confirma que los patrones de natalidad están dominados por variables mucho más poderosas que la contaminación atmosférica media.
+
+Aunque las conclusiones son claras a nivel agregado, es vital mencionar la **limitación principal** de nuestro análisis:
+
+- **Escala Agregada:** Todos los indicadores de contaminación y TFR se promediaron a nivel de país. Esta metodología es ideal para ver tendencias macroeconómicas, pero es muy mala para capturar efectos biológicos directos.
+
+Para futuros análisis, sería necesario utilizar datos con mucha más resolución, comparando la exposición directa a contaminantes (ej., el PM₂.₅ en el código postal) con las tasas de natalidad o los datos de salud a nivel micro (municipio o región).
+
 
 # Referencias
 
